@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知識中心 | Cat Gaze - 透過貓眼凝視植栽之美</title>
+    <style>
+        /* --- CSS 樣式設定 (與首頁保持一致) --- */
+        :root {
+            --brand-main: #7F916A;      /* 鼠尾草綠 */
+            --brand-accent: #B0C4B8;    /* 淺灰綠 */
+            --brand-cream: #FDFAD9;     /* 米白/奶油色 */
+            --bg-light: #fcfcf8;        /* 背景色 */
+            --text-dark: #4a4a4a;       /* 文字色 */
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- Header --- */
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #eeeeee;
+            padding: 1rem 0;
+        }
+        .navbar { display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 45px; width: auto; margin-right: 10px; border-radius: 50%; }
+        .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--brand-main); }
+        .nav-links a { text-decoration: none; color: var(--text-dark); margin-left: 2rem; font-weight: 500; }
+        .nav-links a:hover { color: var(--brand-main); }
+
+        /* --- Blog Hero Section --- */
+        .blog-hero {
+            background-color: var(--brand-accent);
+            padding: 4rem 0;
+            text-align: center;
+            color: white;
+        }
+        .blog-hero h1 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 300; letter-spacing: 2px; }
+        .blog-hero p { font-size: 1.1rem; opacity: 0.9; }
+
+        /* --- 分類篩選器 --- */
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            padding: 2rem 0;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: white;
+            border: 1px solid var(--brand-accent);
+            padding: 8px 25px;
+            border-radius: 20px;
+            color: var(--brand-main);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--brand-main);
+            color: white;
+        }
+
+        /* --- 文章列表網格 --- */
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            padding-bottom: 5rem;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        .article-card:hover { transform: translateY(-5px); }
+
+        .article-image {
+            height: 220px;
+            background-color: #e0e0d8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-weight: bold;
+        }
+
+        .article-content { padding: 1.5rem; }
+        .article-meta { font-size: 0.85rem; color: #888; margin-bottom: 10px; }
+        .article-title { font-size: 1.3rem; color: var(--brand-main); margin-bottom: 10px; font-weight: 600; line-height: 1.4; }
+        .article-excerpt { font-size: 0.95rem; color: #666; margin-bottom: 20px; }
+        
+        .read-more {
+            color: var(--brand-main);
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 1px solid var(--brand-main);
+            padding-bottom: 2px;
+            font-size: 0.9rem;
+        }
+
+        /* --- 精選文章 (特別標註) --- */
+        .featured-post {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            background: var(--brand-cream);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .featured-post .article-image { height: 100%; min-height: 300px; }
+        .featured-post .article-content { display: flex; flex-direction: column; justify-content: center; padding: 3rem; }
+
+        /* --- Footer --- */
+        footer { background-color: var(--brand-main); color: white; padding: 4rem 0; text-align: center; }
+        footer p { opacity: 0.8; font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .featured-post { grid-template-columns: 1fr; }
+            .featured-post .article-content { padding: 1.5rem; }
+        }
+/* --- RWD 響應式優化 --- */
+
+@media (max-width: 768px) {
+    /* 1. 調整導覽列：由橫排改為直排 */
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .nav-links {
+        margin-top: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .nav-links a {
+        margin-left: 10px;
+        margin-right: 10px;
+        font-size: 0.9rem;
+    }
+
+    /* 2. 調整所有兩欄佈局：統一改為單欄 */
+    .product-detail-grid, 
+    .contact-wrapper, 
+    .featured-post,
+    .care-grid {
+        grid-template-columns: 1fr !important;
+        gap: 30px;
+    }
+
+    /* 3. 調整字體大小，適合手機閱讀 */
+    h1 { font-size: 1.8rem !important; }
+    .hero h1 { font-size: 2rem !important; }
+    .price { font-size: 2rem !important; }
+    
+    /* 4. 調整圖片與區塊間距 */
+    .image-gallery img {
+        margin-bottom: 20px;
+    }
+
+    .container {
+        width: 92%; /* 手機版留邊稍微縮窄 */
+    }
+
+    /* 5. 聯絡表單與資訊區塊順序 */
+    .contact-wrapper {
+        display: flex;
+        flex-direction: column-reverse; /* 手機上先看表單，資訊往後放 */
+    }
+    
+    /* 6. 頁尾排版 */
+    .footer-grid {
+        flex-direction: column;
+        text-align: center;
+    }
+    .footer-col {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo-container">
+                <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="logo-img">
+                <span class="logo-text">Cat Gaze</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">首頁</a>
+                <a href="index.html">全部商品</a>
+                <a href="knowledge.html">知識中心</a>
+                <a href="about.html">關於我們</a>
+                <a href="contact.html">聯繫我們</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="blog-hero">
+        <div class="container">
+            <h1>貓眼看世界：知識中心</h1>
+            <p>分享關於盆景、植物與生活的凝視筆記</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="category-filter">
+            <button class="filter-btn active">全部文章</button>
+            <button class="filter-btn">養護基礎</button>
+            <button class="filter-btn">貓眼專欄</button>
+            <button class="filter-btn">職人訪談</button>
+            <button class="filter-btn">盆景美學</button>
+        </div>
+
+        <div class="article-grid">
+            
+            <div class="article-card featured-post">
+                <div class="article-image">
+                    [ 精選圖片：如何選擇人生第一盆黑松 ]
+                </div>
+                <div class="article-content">
+                    <div class="article-meta">2026.01.10 | 貓眼專欄</div>
+                    <div class="article-title">透過貓的凝視，選出屬於你的靈魂盆景</div>
+                    <div class="article-excerpt">
+                        挑選盆景不只是看外型，更是在挑選一個未來十年的夥伴。我們將從樹幹的肌理、枝條的流向，到與空間的契合度，教你如何用最細膩的視角挑選第一盆黑松...
+                    </div>
+                    <a href="#" class="read-more">繼續閱讀 →</a>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <div class="article-image">[ 圖片：澆水基本功 ]</div>
+                <div class="article-content">
+                    <div class="article-meta">2026.01.05 | 養護基礎</div>
+                    <div class="article-title">乾透澆透：別讓你的關愛淹沒了它的呼吸</div>
+                    <div class="article-excerpt">澆水是養植的第一課，也是最難的一課。掌握盆土的水分判斷，是讓盆景長青的不二法門...</div>
+                    <a href="#" class="read-more">繼續閱讀 →</a>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <div class="article-image">[ 圖片：四季修剪指南 ]</div>
+                <div class="article-content">
+                    <div class="article-meta">2025.12.28 | 職人訪談</div>
+                    <div class="article-title">對話大師：台灣盆景藝術的傳承與當代轉化</div>
+                    <div class="article-excerpt">本期我們拜訪了隱居於溪頭的職人林先生，探討如何將傳統盆景融入現代居家空間...</div>
+                    <a href="#" class="read-more">繼續閱讀 →</a>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <div class="article-image">[ 圖片：黑松摘芽 ]</div>
+                <div class="article-content">
+                    <div class="article-meta">2025.12.15 | 養護基礎</div>
+                    <div class="article-title">春季摘芽：維持松針細緻的關鍵操作</div>
+                    <div class="article-excerpt">松柏類盆景的美在於其緊湊的針葉，這一切都取決於清明前後的摘芽時機...</div>
+                    <a href="#" class="read-more">繼續閱讀 →</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Cat Gaze | 透過貓的視角，與自然共處</p>
+            <p style="margin-top: 10px; font-size: 0.8rem;">本網站內容受版權保護，轉載請註明出處</p>
+        </div>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4>快速連結</h4>
+                <a href="index.html">首頁</a>
+                <a href="knowledge.html">知識中心</a>
+                <a href="about.html">關於我們</a>
+                <a href="contact.html">聯繫我們</a>
+            </div>
+            </div>
+    </footer>
+
+</body>
+</html>

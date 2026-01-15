@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>關於我們 | Cat Gaze - 透過貓眼凝視植栽之美</title>
+    <style>
+        /* --- CSS 樣式設定 (保持 Cat Gaze 一貫的高質感) --- */
+        :root {
+            --brand-main: #7F916A;      /* 鼠尾草綠 */
+            --brand-accent: #B0C4B8;    /* 淺灰綠 */
+            --brand-cream: #FDFAD9;     /* 奶油米白 */
+            --bg-light: #fcfcf8;        
+            --text-dark: #4a4a4a;       
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            margin: 0; padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 2;
+        }
+
+        .container { width: 90%; max-width: 1000px; margin: 0 auto; }
+
+        /* --- Header --- */
+        header { background-color: #ffffff; border-bottom: 1px solid #eeeeee; padding: 1rem 0; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; justify-content: center;}
+        .logo-img { height: 45px; width: auto; margin-right: 10px; border-radius: 50%; }
+        .logo-text { font-size: 1.6rem; font-weight: 700; color: var(--brand-main); letter-spacing: 2px; }
+
+        /* --- Hero Section --- */
+        .about-hero {
+            padding: 6rem 0;
+            text-align: center;
+            background-color: var(--brand-cream);
+            margin-bottom: 4rem;
+        }
+        .about-hero h1 {
+            font-size: 2.8rem;
+            color: var(--brand-main);
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        .about-hero p {
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            color: var(--brand-main);
+            opacity: 0.8;
+        }
+
+        /* --- 故事內文區 --- */
+        .story-section { padding-bottom: 5rem; }
+        .story-content { max-width: 700px; margin: 0 auto; text-align: justify; }
+        
+        .story-content h2 {
+            color: var(--brand-main);
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .highlight-box {
+            background-color: white;
+            border-left: 5px solid var(--brand-main);
+            padding: 2rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        /* --- 核心理念 (三欄式) --- */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 4rem;
+        }
+        .value-card {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--brand-accent);
+        }
+        .value-card .icon { font-size: 2.5rem; margin-bottom: 15px; display: block; }
+        .value-card h3 { color: var(--brand-main); margin-bottom: 15px; }
+        .value-card p { font-size: 0.95rem; color: #666; line-height: 1.6; }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--brand-main);
+            color: white;
+            text-align: center;
+            padding: 4rem 0;
+            margin-top: 4rem;
+        }
+        .footer-logo { font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; display: block; }
+/* --- RWD 響應式優化 --- */
+
+@media (max-width: 768px) {
+    /* 1. 調整導覽列：由橫排改為直排 */
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .nav-links {
+        margin-top: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .nav-links a {
+        margin-left: 10px;
+        margin-right: 10px;
+        font-size: 0.9rem;
+    }
+
+    /* 2. 調整所有兩欄佈局：統一改為單欄 */
+    .product-detail-grid, 
+    .contact-wrapper, 
+    .featured-post,
+    .care-grid {
+        grid-template-columns: 1fr !important;
+        gap: 30px;
+    }
+
+    /* 3. 調整字體大小，適合手機閱讀 */
+    h1 { font-size: 1.8rem !important; }
+    .hero h1 { font-size: 2rem !important; }
+    .price { font-size: 2rem !important; }
+    
+    /* 4. 調整圖片與區塊間距 */
+    .image-gallery img {
+        margin-bottom: 20px;
+    }
+
+    .container {
+        width: 92%; /* 手機版留邊稍微縮窄 */
+    }
+
+    /* 5. 聯絡表單與資訊區塊順序 */
+    .contact-wrapper {
+        display: flex;
+        flex-direction: column-reverse; /* 手機上先看表單，資訊往後放 */
+    }
+    
+    /* 6. 頁尾排版 */
+    .footer-grid {
+        flex-direction: column;
+        text-align: center;
+    }
+    .footer-col {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo-container">
+                <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="logo-img">
+                <span class="logo-text">Cat Gaze</span>
+            </a>
+        </div>
+    </header>
+    <nav class="nav-links">
+        <a href="index.html">首頁</a>
+        <a href="knowledge.html">知識中心</a>
+        <a href="about.html">關於我們</a>
+        <a href="contact.html">聯繫我們</a>
+    </nav>
+    <section class="about-hero">
+        <div class="container">
+            <h1>關於 Cat Gaze</h1>
+            <p>透過貓眼，重新發現時間的形狀</p>
+        </div>
+    </section>
+
+    <section class="story-section">
+        <div class="container">
+            <div class="story-content">
+                <h2>為什麼是貓的凝視？</h2>
+                <p>
+                    貓，是天生的觀察家。當牠們定睛凝視某一處時，周遭的世界彷彿靜止了。那種專注、安靜，且不放過任何微小細節的神情，正是我們對盆景與植栽的態度。
+                </p>
+                <p>
+                    在 Cat Gaze，每一棵盆景的入選，都經歷了如同貓般挑剔且細膩的審核過程。我們觀察葉片的厚實度、樹幹隨歲月扭轉的肌理、以及盆器與植物之間那份微妙的比例平衡。
+                </p>
+
+                <div class="highlight-box">
+                    「我們不只是在販售植物，我們是在幫您挑選一個能與您對話、隨時光緩慢成長的生命伴侶。」
+                </div>
+
+                <h2>我們眼中的盆景</h2>
+                <p>
+                    傳統盆景常讓人覺得遙遠、嚴肅，但我們認為，盆景是「方寸之間的自然宇宙」。它是忙碌現代生活中的一個呼吸口。
+                    透過 Cat Gaze 的嚴選，我們希望將這份經過職人多年淬鍊的美學，以更親近、更溫潤的方式帶入您的居家生活。
+                </p>
+
+                <div class="values-grid">
+                    <div class="value-card">
+                        <span class="icon">🔍</span>
+                        <h3>極致嚴選</h3>
+                        <p>僅與理念相合的台灣與日本專業職人園區合作，確保每一棵樹皆健康、具生命力且姿態優美。</p>
+                    </div>
+                    <div class="value-card">
+                        <span class="icon">🪴</span>
+                        <h3>當代美學</h3>
+                        <p>打破陳規，挑選適合現代居家空間的造型與盆器，讓盆景藝術不再受限於傳統茶室。</p>
+                    </div>
+                    <div class="value-card">
+                        <span class="icon">🤝</span>
+                        <h3>終身陪伴</h3>
+                        <p>提供詳盡的養護指南與專業諮詢。我們在乎的不止是售出，更是植物在您家中的每一次發芽。</p>
+                    </div>
+                </div>
+
+                <h2 style="margin-top: 5rem;">我們與您的約定</h2>
+                <p>
+                    Cat Gaze 承諾，您在網站上看見的每一張照片，都是該株植物最真實的樣子。
+                    我們用最緩慢的腳步挑選，用最嚴謹的眼光審核，
+                    只為了讓您在收到植物的那一刻，能與我們一樣，露出貓咪般滿足的凝視。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <span class="footer-logo">Cat Gaze</span>
+            <p>透過貓的視角，與自然共處</p>
+            <div style="margin-top: 20px; font-size: 0.8rem; opacity: 0.6;">
+                © 2026 Cat Gaze Bonsai Selection. All Rights Reserved.
+            </div>
+        </div>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4>快速連結</h4>
+                <a href="index.html">首頁</a>
+                <a href="knowledge.html">知識中心</a>
+                <a href="about.html">關於我們</a>
+                <a href="contact.html">聯繫我們</a>
+            </div>
+            </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聯繫我們 | Cat Gaze - 專屬您的植栽諮詢</title>
+    <style>
+        /* --- CSS 樣式設定 (Cat Gaze 品牌規範) --- */
+        :root {
+            --brand-main: #7F916A;      /* 鼠尾草綠 */
+            --brand-accent: #B0C4B8;    /* 淺灰綠 */
+            --brand-cream: #FDFAD9;     /* 奶油米白 */
+            --bg-light: #fcfcf8;        
+            --text-dark: #4a4a4a;       
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            margin: 0; padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        .container { width: 90%; max-width: 1100px; margin: 0 auto; }
+
+        /* Header */
+        header { background-color: #ffffff; border-bottom: 1px solid #eeeeee; padding: 1rem 0; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 45px; width: auto; margin-right: 10px; border-radius: 50%; }
+        .logo-text { font-size: 1.5rem; font-weight: 700; color: var(--brand-main); }
+        .nav-links a { text-decoration: none; color: var(--text-dark); margin-left: 2rem; font-weight: 500; }
+
+        /* --- Hero Section --- */
+        .contact-hero {
+            padding: 5rem 0;
+            text-align: center;
+            background-color: var(--brand-cream);
+        }
+        .contact-hero h1 { font-size: 2.5rem; color: var(--brand-main); margin-bottom: 1rem; font-weight: 300; }
+        .contact-hero p { color: #666; font-size: 1.1rem; }
+
+        /* --- 聯絡區塊佈局 --- */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            padding: 5rem 0;
+        }
+
+        /* 左側資訊 */
+        .contact-info h2 { color: var(--brand-main); margin-bottom: 1.5rem; }
+        .info-item { margin-bottom: 2rem; }
+        .info-item h4 { margin: 0 0 5px 0; color: var(--brand-main); font-size: 1.1rem; }
+        .info-item p { margin: 0; color: #777; }
+
+        /* 右側表單 */
+        .contact-form {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--brand-main); }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: var(--text-dark);
+            box-sizing: border-box; /* 確保寬度包含 padding */
+        }
+        .form-group textarea { height: 150px; resize: vertical; }
+        .form-group input:focus { border-color: var(--brand-main); outline: none; }
+
+        .btn-submit {
+            background-color: var(--brand-main);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+        }
+        .btn-submit:hover { background-color: #5d7065; transform: translateY(-2px); }
+
+        /* Footer */
+        footer { background-color: var(--brand-main); color: white; text-align: center; padding: 3rem 0; }
+/* --- RWD 響應式優化 --- */
+
+@media (max-width: 768px) {
+    /* 1. 調整導覽列：由橫排改為直排 */
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .nav-links {
+        margin-top: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .nav-links a {
+        margin-left: 10px;
+        margin-right: 10px;
+        font-size: 0.9rem;
+    }
+
+    /* 2. 調整所有兩欄佈局：統一改為單欄 */
+    .product-detail-grid, 
+    .contact-wrapper, 
+    .featured-post,
+    .care-grid {
+        grid-template-columns: 1fr !important;
+        gap: 30px;
+    }
+
+    /* 3. 調整字體大小，適合手機閱讀 */
+    h1 { font-size: 1.8rem !important; }
+    .hero h1 { font-size: 2rem !important; }
+    .price { font-size: 2rem !important; }
+    
+    /* 4. 調整圖片與區塊間距 */
+    .image-gallery img {
+        margin-bottom: 20px;
+    }
+
+    .container {
+        width: 92%; /* 手機版留邊稍微縮窄 */
+    }
+
+    /* 5. 聯絡表單與資訊區塊順序 */
+    .contact-wrapper {
+        display: flex;
+        flex-direction: column-reverse; /* 手機上先看表單，資訊往後放 */
+    }
+    
+    /* 6. 頁尾排版 */
+    .footer-grid {
+        flex-direction: column;
+        text-align: center;
+    }
+    .footer-col {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" class="logo-container">
+                <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="logo-img">
+                <span class="logo-text">Cat Gaze</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">首頁</a>
+                <a href="knowledge.html">知識中心</a>
+                <a href="about.html">關於我們</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="contact-hero">
+        <div class="container">
+            <h1>聯繫我們</h1>
+            <p>無論是養護疑問或合作洽談，我們都在這裡傾聽您的需求</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="contact-wrapper">
+            
+            <div class="contact-info">
+                <h2>與我們聊聊</h2>
+                <p>Cat Gaze 的團隊（和貓咪們）會儘快給您回覆。通常我們會在 24 小時內處理您的訊息。</p>
+                
+                <div class="info-item" style="margin-top: 3rem;">
+                    <h4>📍 實體工作室</h4>
+                    <p>新北市某個充滿綠意的角落 (採預約制)</p>
+                </div>
+
+                <div class="info-item">
+                    <h4>✉️ 電子郵件</h4>
+                    <p>service@catgaze.com</p>
+                </div>
+
+                <div class="info-item">
+                    <h4>📱 社群媒體</h4>
+                    <p>Instagram: @catgaze_bonsai</p>
+                    <p>Line ID: @catgaze</p>
+                </div>
+
+                <div style="margin-top: 3rem; font-style: italic; color: var(--brand-accent);">
+                    「靜下心來，傾聽植物的聲音。」
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <form action="#">
+                    <div class="form-group">
+                        <label for="name">您如何稱呼？</label>
+                        <input type="text" id="name" name="name" placeholder="您的姓名" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">電子郵件</label>
+                        <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">諮詢主題</label>
+                        <select id="subject" name="subject">
+                            <option value="purchase">盆景購買詢問</option>
+                            <option value="care">植物養護建議 (請附上照片)</option>
+                            <option value="workshop">課程與體驗活動</option>
+                            <option value="collaboration">商業合作洽談</option>
+                            <option value="other">其他問題</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">訊息內容</label>
+                        <textarea id="message" name="message" placeholder="請告訴我們您的需求..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">傳送訊息 ✦</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Cat Gaze | 透過貓的視角，與自然共處</p>
+        </div>
+    </footer>
+
+</body>
+</html>

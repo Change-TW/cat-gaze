@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系魚川真柏 | 職人手作雲朵造型 - Cat Gaze</title>
+    <style>
+        /* --- CSS 樣式設定 (Cat Gaze 品牌規範) --- */
+        :root {
+            --brand-main: #7F916A;      /* 鼠尾草綠 (主色) */
+            --brand-accent: #B0C4B8;    /* 淺灰綠 (裝飾) */
+            --brand-cream: #FDFAD9;     /* 米白/奶油色 */
+            --bg-light: #fcfcf8;        /* 背景色 */
+            --text-dark: #4a4a4a;       /* 文字色 */
+            --price-color: #d14900;     /* 價格橙色 */
+        }
+
+        body {
+            font-family: 'Noto Sans TC', 'Helvetica Neue', Arial, sans-serif;
+            margin: 0; padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+        /* Header */
+        header { background-color: #ffffff; border-bottom: 1px solid #eeeeee; padding: 1rem 0; }
+        .logo-text { font-size: 1.5rem; font-weight: 700; color: var(--brand-main); text-decoration: none; }
+        .back-link { color: #888; text-decoration: none; font-size: 0.9rem; margin-top: 20px; display: inline-block; }
+        .back-link:hover { color: var(--brand-main); }
+        
+        /* 產品詳格佈局 */
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 60px;
+            padding: 3rem 0;
+        }
+        
+        /* 圖片區 */
+        .image-gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+        .thumbnail-placeholder { display: flex; gap: 10px; }
+        .thumbnail-placeholder div {
+            flex: 1; height: 80px; background-color: #eee; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #999;
+        }
+
+        /* 資訊區 */
+        .info-section h1 { font-size: 2.2rem; color: var(--brand-main); margin: 0 0 10px 0; font-weight: 500; }
+        .product-id { color: #aaa; font-size: 0.9rem; margin-bottom: 20px; letter-spacing: 1px; }
+        .price { font-size: 2.5rem; color: var(--price-color); font-weight: bold; margin-bottom: 20px; }
+        
+        .btn-buy {
+            display: block; width: 100%; background-color: var(--brand-main); color: white;
+            padding: 16px; text-align: center; border: none; border-radius: 30px;
+            font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s;
+            margin-bottom: 10px; text-decoration: none;
+        }
+        .btn-buy:hover { background-color: #5d7065; transform: translateY(-2px); }
+
+        /* 嚴選檔案列表 */
+        .gaze-files { margin-top: 40px; background: white; padding: 25px; border-radius: 12px; border: 1px solid #eee; }
+        .gaze-files h3 { color: var(--brand-main); margin-top: 0; font-size: 1.1rem; border-bottom: 1px solid var(--brand-accent); padding-bottom: 10px; }
+        .gaze-list div { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #f0f0f0; font-size: 0.95rem; }
+        .gaze-list span:first-child { color: #888; }
+
+        /* 故事與指南 */
+        .content-section { padding: 4rem 0; border-top: 1px solid #eee; }
+        .section-heading { font-size: 1.8rem; color: var(--brand-main); margin-bottom: 30px; position: relative; }
+        .section-heading::after { content: ''; display: block; width: 50px; height: 3px; background: var(--brand-accent); margin-top: 8px; }
+        
+        .care-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .care-item { display: flex; gap: 15px; }
+        .care-icon { font-size: 1.8rem; }
+        .care-text h4 { margin: 0; color: var(--brand-main); }
+        .care-text p { margin: 5px 0 0 0; font-size: 0.9rem; color: #666; }
+
+        footer { background-color: var(--brand-main); color: white; text-align: center; padding: 3rem 0; margin-top: 4rem; }
+/* --- RWD 響應式優化 --- */
+
+@media (max-width: 768px) {
+    /* 1. 調整導覽列：由橫排改為直排 */
+    .navbar {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .nav-links {
+        margin-top: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .nav-links a {
+        margin-left: 10px;
+        margin-right: 10px;
+        font-size: 0.9rem;
+    }
+
+    /* 2. 調整所有兩欄佈局：統一改為單欄 */
+    .product-detail-grid, 
+    .contact-wrapper, 
+    .featured-post,
+    .care-grid {
+        grid-template-columns: 1fr !important;
+        gap: 30px;
+    }
+
+    /* 3. 調整字體大小，適合手機閱讀 */
+    h1 { font-size: 1.8rem !important; }
+    .hero h1 { font-size: 2rem !important; }
+    .price { font-size: 2rem !important; }
+    
+    /* 4. 調整圖片與區塊間距 */
+    .image-gallery img {
+        margin-bottom: 20px;
+    }
+
+    .container {
+        width: 92%; /* 手機版留邊稍微縮窄 */
+    }
+
+    /* 5. 聯絡表單與資訊區塊順序 */
+    .contact-wrapper {
+        display: flex;
+        flex-direction: column-reverse; /* 手機上先看表單，資訊往後放 */
+    }
+    
+    /* 6. 頁尾排版 */
+    .footer-grid {
+        flex-direction: column;
+        text-align: center;
+    }
+    .footer-col {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo-text">Cat Gaze</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="index.html" class="back-link">← 返回首頁</a>
+        <a href="index.html">首頁</a>
+        <a href="knowledge.html">知識中心</a>
+        <a href="about.html">關於我們</a>
+        <a href="contact.html">聯繫我們</a>
+    </nav>
+        <div class="product-detail-grid">
+            
+            <div class="image-gallery">
+                <img src="itoigawa_shimpaku_main.jpg" alt="系魚川真柏">
+                <div class="thumbnail-placeholder">
+                    <div>葉團細節</div>
+                    <div>樹幹扭轉美</div>
+                    <div>比例對照</div>
+                    <div>盆器底部</div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h1>系魚川真柏 | 職人手作雲朵造型</h1>
+                <p class="product-id">編號: CG-SB002 | 松柏專區</p>
+                
+                <div class="price">NT$ 4,500</div>
+
+                <div style="color: var(--brand-main); font-weight: 600; margin-bottom: 20px;">
+                    ✦ 貓眼嚴選：葉質細緻，適合居家窗台首選
+                </div>
+
+                <a href="#" class="btn-buy">✦ 加入購物車</a>
+                <p style="text-align: center; font-size: 0.8rem; color: #999;">預計 2-3 個工作天內出貨 (不含例假日)</p>
+                
+                <div class="gaze-files">
+                    <h3>【Cat Gaze 嚴選檔案】</h3>
+                    <div class="gaze-list">
+                        <div><span>✦ 樹種</span><span>系魚川真柏 (Itoigawa Shimpaku)</span></div>
+                        <div><span>✦ 樹齡</span><span>約 8 年</span></div>
+                        <div><span>✦ 尺寸 (含盆高)</span><span>22公分</span></div>
+                        <div><span>✦ 盆器材質</span><span>復古朱泥圓盆</span></div>
+                        <div><span>✦ 特點</span><span>雲朵造型、樹性強健、極耐修剪</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-heading">系魚川真柏：貓的視角</h2>
+            <p style="font-size: 1.1rem; color: #555; max-width: 800px;">
+                真柏的迷人之處，在於它那如雲朵般綿密的葉團與扭轉的樹幹。系魚川品種的葉色更是翠綠奪目。貓咪最愛在午後凝視窗台，而這盆真柏在陽光下投射出的剪影，就像是一座微縮的山林。它極其強韌，能容忍初學者的幾次小失誤，是陪你進入盆景世界的最佳夥伴。
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-heading">專業養護指南</h2>
+            <div class="care-grid">
+                <div class="care-item">
+                    <div class="care-icon">☀️</div>
+                    <div class="care-text">
+                        <h4>陽光需求：愛好陽光</h4>
+                        <p>它是陽光的孩子，請給予全日照或至少 4 小時以上的直射光，這能讓葉團保持緊湊。</p>
+                    </div>
+                </div>
+
+                <div class="care-item">
+                    <div class="care-icon">💧</div>
+                    <div class="care-text">
+                        <h4>澆水方式：觀察粉塵感</h4>
+                        <p>喜歡濕潤但怕積水。觀察表土變淺色、貓咪抓弄土面有粉塵感時，就是灌透的時候。</p>
+                    </div>
+                </div>
+
+                <div class="care-item">
+                    <div class="care-icon">🍃</div>
+                    <div class="care-text">
+                        <h4>通風環境：拒絕悶熱</h4>
+                        <p>務必保持空氣流通，它不喜歡悶熱的轉角。良好的通風能有效防止病蟲害。</p>
+                    </div>
+                </div>
+
+                <div class="care-item">
+                    <div class="care-icon">✂️</div>
+                    <div class="care-text">
+                        <h4>定期修剪：維持美感</h4>
+                        <p>真柏生長力旺盛，建議在生長季定期摘除過長的新芽，維持那如雲朵般優美的輪廓。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Cat Gaze | 透過貓眼凝視，發掘植栽的靈魂</p>
+        </div>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4>快速連結</h4>
+                <a href="index.html">首頁</a>
+                <a href="knowledge.html">知識中心</a>
+                <a href="about.html">關於我們</a>
+                <a href="contact.html">聯繫我們</a>
+            </div>
+            </div>
+    </footer>
+
+</body>
+</html>

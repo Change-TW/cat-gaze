@@ -158,7 +158,6 @@
 
     <div class="container">
         <a href="index.html" class="back-link">← 返回首頁</a>
-        <a href="index.html">首頁</a>
         <a href="knowledge.html">知識中心</a>
         <a href="about.html">關於我們</a>
         <a href="contact.html">聯繫我們</a>
@@ -185,7 +184,7 @@
                     ✦ 貓眼嚴選：葉質細緻，適合居家窗台首選
                 </div>
 
-                <a href="#" class="btn-buy">✦ 加入購物車</a>
+                <button class="btn-buy" onclick="addToCart('系魚川真柏 | 職人手作', 4500)">✦ 加入購物車</button>
                 <p style="text-align: center; font-size: 0.8rem; color: #999;">預計 2-3 個工作天內出貨 (不含例假日)</p>
                 
                 <div class="gaze-files">
@@ -258,9 +257,113 @@
                 <a href="knowledge.html">知識中心</a>
                 <a href="about.html">關於我們</a>
                 <a href="contact.html">聯繫我們</a>
+                <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
+    🛒 購物車 <span id="cart-count" style="background: var(--price-color); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -10px; right: -15px;">0</span>
+</a>
             </div>
             </div>
     </footer>
+<div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
 
+<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
+        <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
+        <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+
+    <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;">
+        <p style="text-align:center; color:#999;">目前沒有選購植物</p>
+    </div>
+
+    <div style="border-top:1px solid #eee; padding-top:20px;">
+        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
+            <span>總計金額</span>
+            <span id="cart-total-price" style="color:#d14900;">NT$ 0</span>
+        </div>
+        <button onclick="checkoutToLine()" style="width:100%; background:#7F916A; color:white; border:none; padding:15px; border-radius:30px; font-weight:bold; cursor:pointer;">
+            帶它們回家 (聯繫 LINE 結帳)
+        </button>
+    </div>
+</div>
+<script>
+    // 1. 初始化：從瀏覽器記憶體拿資料
+    let cart = JSON.parse(localStorage.getItem('CatGazeCart')) || [];
+
+    // 2. 開關購物車選單
+    function toggleCart() {
+        const drawer = document.getElementById('cart-drawer');
+        const overlay = document.getElementById('cart-overlay');
+        if (drawer.style.right === '0px') {
+            drawer.style.right = '-400px';
+            overlay.style.display = 'none';
+        } else {
+            drawer.style.right = '0px';
+            overlay.style.display = 'block';
+            renderCart(); // 每次打開就重新畫一次內容
+        }
+    }
+
+    // 3. 加入購物車動作
+    function addToCart(pName, pPrice) {
+        cart.push({ name: pName, price: pPrice });
+        localStorage.setItem('CatGazeCart', JSON.stringify(cart));
+        updateCount();
+        toggleCart(); // 自動彈出來讓客人看到
+    }
+
+    // 4. 更新右上角的小數字
+    function updateCount() {
+        document.getElementById('cart-count').innerText = cart.length;
+    }
+
+    // 5. 把清單畫出來
+    function renderCart() {
+        const list = document.getElementById('cart-items-content');
+        const total = document.getElementById('cart-total-price');
+        
+        if (cart.length === 0) {
+            list.innerHTML = '<p style="text-align:center; color:#999;">清單是空的</p>';
+            total.innerText = 'NT$ 0';
+            return;
+        }
+
+        let html = '';
+        let sum = 0;
+        cart.forEach((item, index) => {
+            html += `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #f9f9f9; padding-bottom:10px;">
+                    <div>
+                        <div style="font-weight:bold; color:#4a4a4a;">${item.name}</div>
+                        <div style="color:#d14900; font-size:0.9rem;">NT$ ${item.price.toLocaleString()}</div>
+                    </div>
+                    <button onclick="removeItem(${index})" style="color:red; background:none; border:none; cursor:pointer;">移除</button>
+                </div>
+            `;
+            sum += item.price;
+        });
+        list.innerHTML = html;
+        total.innerText = `NT$ ${sum.toLocaleString()}`;
+    }
+
+    // 6. 移除商品
+    function removeItem(index) {
+        cart.splice(index, 1);
+        localStorage.setItem('CatGazeCart', JSON.stringify(cart));
+        renderCart();
+        updateCount();
+    }
+
+    // 7. 點擊結帳（模擬行為）
+    function checkoutToLine() {
+        if(cart.length === 0) return alert("清單是空的喔！");
+        let msg = "您好，我想訂購以下盆景：\n";
+        cart.forEach(item => msg += `- ${item.name} (NT$ ${item.price})\n`);
+        alert("即將為您導向諮詢表單，訊息已生成：\n\n" + msg);
+        // 這裡未來可以換成 window.location.href = "LINE的連結";
+    }
+
+    // 網頁剛打開時，先更新一次數字
+    updateCount();
+</script>
 </body>
 </html>

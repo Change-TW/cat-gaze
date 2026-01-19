@@ -84,68 +84,15 @@
         .care-text p { margin: 5px 0 0 0; font-size: 0.9rem; color: #666; }
 
         footer { background-color: var(--brand-main); color: white; text-align: center; padding: 3rem 0; margin-top: 4rem; }
-/* --- RWD 響應式優化 --- */
 
-@media (max-width: 768px) {
-    /* 1. 調整導覽列：由橫排改為直排 */
-    .navbar {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .nav-links {
-        margin-top: 15px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .nav-links a {
-        margin-left: 10px;
-        margin-right: 10px;
-        font-size: 0.9rem;
-    }
-
-    /* 2. 調整所有兩欄佈局：統一改為單欄 */
-    .product-detail-grid, 
-    .contact-wrapper, 
-    .featured-post,
-    .care-grid {
-        grid-template-columns: 1fr !important;
-        gap: 30px;
-    }
-
-    /* 3. 調整字體大小，適合手機閱讀 */
-    h1 { font-size: 1.8rem !important; }
-    .hero h1 { font-size: 2rem !important; }
-    .price { font-size: 2rem !important; }
-    
-    /* 4. 調整圖片與區塊間距 */
-    .image-gallery img {
-        margin-bottom: 20px;
-    }
-
-    .container {
-        width: 92%; /* 手機版留邊稍微縮窄 */
-    }
-
-    /* 5. 聯絡表單與資訊區塊順序 */
-    .contact-wrapper {
-        display: flex;
-        flex-direction: column-reverse; /* 手機上先看表單，資訊往後放 */
-    }
-    
-    /* 6. 頁尾排版 */
-    .footer-grid {
-        flex-direction: column;
-        text-align: center;
-    }
-    .footer-col {
-        width: 100%;
-        margin-bottom: 30px;
-    }
-}
+        @media (max-width: 768px) {
+            .product-detail-grid, .care-grid {
+                grid-template-columns: 1fr !important;
+                gap: 30px;
+            }
+            h1 { font-size: 1.8rem !important; }
+            .price { font-size: 2rem !important; }
+        }
     </style>
 </head>
 <body>
@@ -158,12 +105,13 @@
 
     <div class="container">
         <a href="index.html" class="back-link">← 返回首頁</a>
-        <a href="knowledge.html">知識中心</a>
-        <a href="about.html">關於我們</a>
-        <a href="contact.html">聯繫我們</a>
-    </nav>
+        <nav style="margin-top: 10px;">
+            <a href="knowledge.html" style="margin-right:15px; text-decoration:none; color:var(--brand-main);">知識中心</a>
+            <a href="about.html" style="margin-right:15px; text-decoration:none; color:var(--brand-main);">關於我們</a>
+            <a href="contact.html" style="text-decoration:none; color:var(--brand-main);">聯繫我們</a>
+        </nav>
+
         <div class="product-detail-grid">
-            
             <div class="image-gallery">
                 <img src="itoigawa_shimpaku_main.jpg" alt="系魚川真柏">
                 <div class="thumbnail-placeholder">
@@ -177,13 +125,10 @@
             <div class="info-section">
                 <h1>系魚川真柏 | 職人手作雲朵造型</h1>
                 <p class="product-id">編號: CG-SB002 | 松柏專區</p>
-                
                 <div class="price">NT$ 4,500</div>
-
                 <div style="color: var(--brand-main); font-weight: 600; margin-bottom: 20px;">
                     ✦ 貓眼嚴選：葉質細緻，適合居家窗台首選
                 </div>
-
                 <button class="btn-buy" onclick="addToCart('系魚川真柏 | 職人手作', 4500)">✦ 加入購物車</button>
                 <p style="text-align: center; font-size: 0.8rem; color: #999;">預計 2-3 個工作天內出貨 (不含例假日)</p>
                 
@@ -199,171 +144,41 @@
                 </div>
             </div>
         </div>
-
-        <div class="content-section">
-            <h2 class="section-heading">系魚川真柏：貓的視角</h2>
-            <p style="font-size: 1.1rem; color: #555; max-width: 800px;">
-                真柏的迷人之處，在於它那如雲朵般綿密的葉團與扭轉的樹幹。系魚川品種的葉色更是翠綠奪目。貓咪最愛在午後凝視窗台，而這盆真柏在陽光下投射出的剪影，就像是一座微縮的山林。它極其強韌，能容忍初學者的幾次小失誤，是陪你進入盆景世界的最佳夥伴。
-            </p>
-        </div>
-
-        <div class="content-section">
-            <h2 class="section-heading">專業養護指南</h2>
-            <div class="care-grid">
-                <div class="care-item">
-                    <div class="care-icon">☀️</div>
-                    <div class="care-text">
-                        <h4>陽光需求：愛好陽光</h4>
-                        <p>它是陽光的孩子，請給予全日照或至少 4 小時以上的直射光，這能讓葉團保持緊湊。</p>
-                    </div>
-                </div>
-
-                <div class="care-item">
-                    <div class="care-icon">💧</div>
-                    <div class="care-text">
-                        <h4>澆水方式：觀察粉塵感</h4>
-                        <p>喜歡濕潤但怕積水。觀察表土變淺色、貓咪抓弄土面有粉塵感時，就是灌透的時候。</p>
-                    </div>
-                </div>
-
-                <div class="care-item">
-                    <div class="care-icon">🍃</div>
-                    <div class="care-text">
-                        <h4>通風環境：拒絕悶熱</h4>
-                        <p>務必保持空氣流通，它不喜歡悶熱的轉角。良好的通風能有效防止病蟲害。</p>
-                    </div>
-                </div>
-
-                <div class="care-item">
-                    <div class="care-icon">✂️</div>
-                    <div class="care-text">
-                        <h4>定期修剪：維持美感</h4>
-                        <p>真柏生長力旺盛，建議在生長季定期摘除過長的新芽，維持那如雲朵般優美的輪廓。</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <footer>
         <div class="container">
             <p>© 2026 Cat Gaze | 透過貓眼凝視，發掘植栽的靈魂</p>
+            <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative; color: white; text-decoration: none;">
+                🛒 購物車 <span id="cart-count" style="background: var(--price-color); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -10px; right: -15px;">0</span>
+            </a>
         </div>
-        <div class="container footer-grid">
-            <div class="footer-col">
-                <h4>快速連結</h4>
-                <a href="index.html">首頁</a>
-                <a href="knowledge.html">知識中心</a>
-                <a href="about.html">關於我們</a>
-                <a href="contact.html">聯繫我們</a>
-                <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
-    🛒 購物車 <span id="cart-count" style="background: var(--price-color); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -10px; right: -15px;">0</span>
-</a>
-            </div>
-            </div>
     </footer>
-<div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
 
-<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
-    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
-        <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
-        <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
-    </div>
-
-    <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;">
-        <p style="text-align:center; color:#999;">目前沒有選購植物</p>
-    </div>
-
-    <div style="border-top:1px solid #eee; padding-top:20px;">
-        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
-            <span>總計金額</span>
-            <span id="cart-total-price" style="color:#d14900;">NT$ 0</span>
+    <div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
+    <div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
+            <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
+            <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
         </div>
-        <button onclick="checkoutToLine()" style="width:100%; background:#7F916A; color:white; border:none; padding:15px; border-radius:30px; font-weight:bold; cursor:pointer;">
-            帶它們回家 (聯繫 LINE 結帳)
-        </button>
+        <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;">
+            <p style="text-align:center; color:#999;">目前沒有選購植物</p>
+        </div>
+        <div style="border-top:1px solid #eee; padding-top:20px;">
+            <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
+                <span>總計金額</span>
+                <span id="cart-total-price" style="color:#d14900;">NT$ 0</span>
+            </div>
+            <button onclick="checkoutToLine()" style="width:100%; background:#7F916A; color:white; border:none; padding:15px; border-radius:30px; font-weight:bold; cursor:pointer;">
+                確認下單 (同步雲端並結帳)
+            </button>
+        </div>
     </div>
-</div>
-<script>
-    // 1. 初始化：從瀏覽器記憶體拿資料
-    let cart = JSON.parse(localStorage.getItem('CatGazeCart')) || [];
 
-    // 2. 開關購物車選單
-    function toggleCart() {
-        const drawer = document.getElementById('cart-drawer');
-        const overlay = document.getElementById('cart-overlay');
-        if (drawer.style.right === '0px') {
-            drawer.style.right = '-400px';
-            overlay.style.display = 'none';
-        } else {
-            drawer.style.right = '0px';
-            overlay.style.display = 'block';
-            renderCart(); // 每次打開就重新畫一次內容
-        }
-    }
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-    // 3. 加入購物車動作
-    function addToCart(pName, pPrice) {
-        cart.push({ name: pName, price: pPrice });
-        localStorage.setItem('CatGazeCart', JSON.stringify(cart));
-        updateCount();
-        toggleCart(); // 自動彈出來讓客人看到
-    }
+<script src="cart-system.js"></script>
 
-    // 4. 更新右上角的小數字
-    function updateCount() {
-        document.getElementById('cart-count').innerText = cart.length;
-    }
-
-    // 5. 把清單畫出來
-    function renderCart() {
-        const list = document.getElementById('cart-items-content');
-        const total = document.getElementById('cart-total-price');
-        
-        if (cart.length === 0) {
-            list.innerHTML = '<p style="text-align:center; color:#999;">清單是空的</p>';
-            total.innerText = 'NT$ 0';
-            return;
-        }
-
-        let html = '';
-        let sum = 0;
-        cart.forEach((item, index) => {
-            html += `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #f9f9f9; padding-bottom:10px;">
-                    <div>
-                        <div style="font-weight:bold; color:#4a4a4a;">${item.name}</div>
-                        <div style="color:#d14900; font-size:0.9rem;">NT$ ${item.price.toLocaleString()}</div>
-                    </div>
-                    <button onclick="removeItem(${index})" style="color:red; background:none; border:none; cursor:pointer;">移除</button>
-                </div>
-            `;
-            sum += item.price;
-        });
-        list.innerHTML = html;
-        total.innerText = `NT$ ${sum.toLocaleString()}`;
-    }
-
-    // 6. 移除商品
-    function removeItem(index) {
-        cart.splice(index, 1);
-        localStorage.setItem('CatGazeCart', JSON.stringify(cart));
-        renderCart();
-        updateCount();
-    }
-
-    // 7. 點擊結帳（模擬行為）
-    function checkoutToLine() {
-        if(cart.length === 0) return alert("清單是空的喔！");
-        let msg = "您好，我想訂購以下盆景：\n";
-        cart.forEach(item => msg += `- ${item.name} (NT$ ${item.price})\n`);
-        alert("即將為您導向諮詢表單，訊息已生成：\n\n" + msg);
-        // 這裡未來可以換成 window.location.href = "LINE的連結";
-    }
-
-    // 網頁剛打開時，先更新一次數字
-    updateCount();
-</script>
 </body>
 </html>

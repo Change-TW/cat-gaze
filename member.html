@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員中心 | Cat Gaze</title>
+    <style>
+        /* --- 延用之前的品牌配色與字體 --- */
+        :root {
+            --brand-main: #7F916A;
+            --brand-cream: #FDFAD9;
+            --bg-light: #fcfcf8;
+            --text-dark: #4a4a4a;
+        }
+
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); margin: 0; }
+        .container { width: 90%; max-width: 1000px; margin: 0 auto; }
+
+        /* --- Header (請確保與 Index 一致) --- */
+        header { background: white; border-bottom: 1px solid #eee; padding: 1rem 0; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; }
+        .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--brand-main); text-decoration: none; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); margin-left: 2rem; font-weight: 500; }
+
+        /* --- 會員佈局 --- */
+        .member-wrapper {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 40px;
+            padding: 4rem 0;
+        }
+
+        /* 左側選單 */
+        .member-sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: fit-content;
+        }
+        .sidebar-item {
+            padding: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f9f9f9;
+            color: var(--text-dark);
+            transition: 0.3s;
+        }
+        .sidebar-item:hover, .sidebar-item.active { color: var(--brand-main); font-weight: bold; }
+
+        /* 右側內容卡片 */
+        .member-content {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .form-section { margin-bottom: 30px; }
+        .form-section h3 { border-left: 4px solid var(--brand-main); padding-left: 15px; margin-bottom: 20px; color: var(--brand-main); }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;
+        }
+
+        /* 興趣標籤 */
+        .interest-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+        .tag-checkbox { display: none; }
+        .tag-label {
+            padding: 8px 18px; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 0.9rem;
+        }
+        .tag-checkbox:checked + .tag-label {
+            background: var(--brand-main); color: white; border-color: var(--brand-main);
+        }
+
+        .btn-save {
+            background: var(--brand-main); color: white; border: none; padding: 12px 30px;
+            border-radius: 25px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .member-wrapper { grid-template-columns: 1fr; }
+        }
+    </style>
+
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo-text">Cat Gaze</a>
+            <nav class="nav-links">
+                <a href="index.html">首頁</a>
+                <a href="about.html">關於我們</a>
+                <a href="member.html" style="color: var(--brand-main);">會員中心</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="member-wrapper">
+            <aside class="member-sidebar">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="width: 80px; height: 80px; background: #eee; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">🐱</div>
+                    <div style="font-weight: bold;" id="display-name">訪客</div>
+                    <div style="font-size: 0.8rem; color: #999;">一般會員</div>
+                </div>
+                <div class="sidebar-item active">個人資料</div>
+                <div class="sidebar-item">訂單查詢</div>
+                <div class="sidebar-item">我的收藏</div>
+                <div class="sidebar-item" style="color: #ff4d4d;">登出</div>
+            </aside>
+
+            <main class="member-content">
+                <div class="form-section">
+                    <h3>基本資料收集</h3>
+                    <div class="form-group">
+                        <label>真實姓名</label>
+                        <input type="text" id="member-name" placeholder="請輸入姓名">
+                    </div>
+                    <div class="form-group">
+                        <label>電子郵件</label>
+                        <input type="email" id="member-email" placeholder="example@gmail.com">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>植栽偏好調查 (數據收集重點)</h3>
+                    <p style="font-size: 0.9rem; color: #777;">這些資訊能幫助我們為您挑選更適合您的植物。</p>
+                    
+                    <div class="form-group">
+                        <label>您的植栽經驗</label>
+                        <select id="experience">
+                            <option value="beginner">我是新手 (剛開始凝視植物)</option>
+                            <option value="intermediate">略有經驗 (養過幾盆且存活)</option>
+                            <option value="expert">植栽達人 (對修剪與換盆有心得)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>感興趣的類別</label>
+                        <div class="interest-tags">
+                            <input type="checkbox" id="tag1" class="tag-checkbox" value="松柏"><label for="tag1" class="tag-label">松柏類</label>
+                            <input type="checkbox" id="tag2" class="tag-checkbox" value="雜木"><label for="tag2" class="tag-label">雜木類</label>
+                            <input type="checkbox" id="tag3" class="tag-checkbox" value="迷你盆景"><label for="tag3" class="tag-label">迷你盆景</label>
+                            <input type="checkbox" id="tag4" class="tag-checkbox" value="開花類"><label for="tag4" class="tag-label">開花類</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-save" onclick="saveProfile()">儲存個人檔案</button>
+            </main>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script src="cart-system.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Gaze | 老闆後台管理系統</title>
+    <style>
+        :root {
+            --brand-main: #7F916A;
+            --bg-light: #fcfcf8;
+            --text-dark: #4a4a4a;
+        }
+        body { font-family: sans-serif; background: var(--bg-light); color: var(--text-dark); margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        h1 { color: var(--brand-main); border-bottom: 2px solid var(--brand-main); padding-bottom: 10px; }
+        
+        .order-card {
+            background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 5px solid var(--brand-main);
+        }
+        .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .order-id { font-weight: bold; color: #888; font-size: 0.9rem; }
+        .status-badge { background: #eee; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; }
+        
+        .customer-info { background: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 0.9rem; }
+        .item-list { border-top: 1px solid #eee; padding-top: 10px; }
+        .item-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        
+        .total-row { text-align: right; font-weight: bold; color: #d14900; font-size: 1.2rem; margin-top: 15px; }
+        .actions { margin-top: 15px; display: flex; gap: 10px; }
+        
+        button { cursor: pointer; border: none; padding: 8px 16px; border-radius: 5px; font-weight: bold; }
+        .btn-done { background: var(--brand-main); color: white; }
+        .btn-del { background: #ffeded; color: #d9534f; }
+        .btn-refresh { background: #eee; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Cat Gaze 訂單後台</h1>
+    <button class="btn-refresh" onclick="fetchOrders()">🔄 重新整理訂單</button>
+    <div id="orders-container">讀取中...</div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+    // 使用與 cart-system.js 相同的 Firebase 配置
+    const firebaseConfig = {
+        apiKey: "AIzaSyCe9jsOgigX1Ok4sMbr1P2o4RcSM15BI_U",
+        authDomain: "cat-gaze-bonsai.firebaseapp.com",
+        databaseURL: "https://cat-gaze-bonsai-default-rtdb.firebaseio.com",
+        projectId: "cat-gaze-bonsai",
+        storageBucket: "cat-gaze-bonsai.firebasestorage.app",
+        messagingSenderId: "411112352421",
+        appId: "1:411112352421:web:265bd6e1372df985cefb4c",
+        measurementId: "G-8ZW69YQQN0"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    function fetchOrders() {
+        const container = document.getElementById('orders-container');
+        container.innerHTML = "讀取中...";
+
+        database.ref('orders').once('value', (snapshot) => {
+            const orders = snapshot.val();
+            if (!orders) {
+                container.innerHTML = "<p>目前沒有任何訂單。</p>";
+                return;
+            }
+
+            let html = "";
+            // 將訂單轉為陣列並按時間倒序排列（最新的在上面）
+            const orderList = Object.values(orders).reverse();
+
+            orderList.forEach(order => {
+                let itemsHtml = "";
+                order.items.forEach(item => {
+                    itemsHtml += `<div class="item-row"><span>${item.name}</span><span>NT$ ${item.price.toLocaleString()}</span></div>`;
+                });
+
+                html += `
+                <div class="order-card" id="card-${order.order_id}">
+                    <div class="order-header">
+                        <div>
+                            <div class="order-id">${order.order_id}</div>
+                            <div style="font-size:0.8rem; color:#aaa;">下單時間：${order.created_at}</div>
+                        </div>
+                        <div class="status-badge">${order.status || '待處理'}</div>
+                    </div>
+                    
+                    <div class="customer-info">
+                        <strong>👤 客戶：${order.customer.name}</strong><br>
+                        📧 Email: ${order.customer.email}<br>
+                        📞 電話: ${order.customer.phone || '未提供'}
+                    </div>
+
+                    <div class="item-list">
+                        ${itemsHtml}
+                    </div>
+
+                    <div class="total-row">總計：NT$ ${order.total_price.toLocaleString()}</div>
+                    
+                    <div class="actions">
+                        <button class="btn-done" onclick="updateStatus('${order.order_id}', '已完成')">標記為已完成</button>
+                        <button class="btn-del" onclick="deleteOrder('${order.order_id}')">刪除訂單記錄</button>
+                    </div>
+                </div>
+                `;
+            });
+            container.innerHTML = html;
+        });
+    }
+
+    function updateStatus(orderId, newStatus) {
+        database.ref('orders/' + orderId).update({ status: newStatus })
+            .then(() => {
+                alert("狀態已更新！");
+                fetchOrders();
+            });
+    }
+
+    function deleteOrder(orderId) {
+        if (confirm("確定要刪除這筆訂單記錄嗎？此動作無法復原。")) {
+            database.ref('orders/' + orderId).remove()
+                .then(() => {
+                    alert("訂單已刪除！");
+                    fetchOrders();
+                });
+        }
+    }
+
+    // 頁面載入時先抓一次
+    window.onload = fetchOrders;
+</script>
+
+</body>
+</html>

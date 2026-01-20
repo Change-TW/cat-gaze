@@ -92,8 +92,12 @@
             <a href="index.html" class="logo-text">Cat Gaze</a>
             <nav class="nav-links">
                 <a href="index.html">首頁</a>
+                <a href="index.html">全部商品</a>
+                <a href="knowledge.html">知識中心</a>
                 <a href="about.html">關於我們</a>
+                <a href="contact.html">聯繫我們</a>
                 <a href="member.html" style="color: var(--brand-main);">會員中心</a>
+               
             </nav>
         </div>
     </header>
@@ -119,10 +123,20 @@
                         <label>真實姓名</label>
                         <input type="text" id="member-name" placeholder="請輸入姓名">
                     </div>
-                    <div class="form-group">
-                        <label>電子郵件</label>
-                        <input type="email" id="member-email" placeholder="example@gmail.com">
-                    </div>
+                    <div id="login-section" style="text-align: center; margin-bottom: 30px;">
+    <p>登入後即可同步您的雲端購物車與收藏</p>
+    <button onclick="handleGoogleLogin()" style="background: white; color: #444; border: 1px solid #ddd; padding: 10px 20px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-weight: bold;">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" style="margin-right: 10px;">
+        使用 Google 帳號登入
+    </button>
+</div>
+
+<div id="profile-fields" style="display:none;">
+    <div class="form-group">
+        <label>電子郵件 (由 Google 提供)</label>
+        <input type="email" id="member-email" readonly style="background: #f0f0f0;">
+    
+    </div>
                 </div>
 
                 <div class="form-section">
@@ -157,5 +171,91 @@
 
 <script src="cart-system.js"></script>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script> <script>
+    // 1. 初始化 Google 驗證實例
+    const auth = firebase.auth();
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    // 2. 處理 Google 登入按鈕
+    function handleGoogleLogin() {
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                const user = result.user;
+                updateUI(user);
+                alert("歡迎回來，" + user.displayName + "！");
+            })
+            .catch((error) => {
+                console.error("登入失敗:", error);
+                alert("登入失敗，請確認 Firebase 後台已開啟 Google 登入功能。");
+            });
+    }
+
+    // 3. 更新介面顯示
+    function updateUI(user) {
+        if (user) {
+            // 填入資料
+            document.getElementById('member-name').value = user.displayName;
+            document.getElementById('member-email').value = user.email;
+            document.getElementById('display-name').innerText = user.displayName;
+            
+            // 顯示資料欄位，隱藏登入按鈕
+            document.getElementById('profile-fields').style.display = 'block';
+            document.getElementById('login-section').style.display = 'none';
+
+            // 存到 localStorage，讓 cart-system.js 知道目前是誰
+            const profileData = {
+                name: user.displayName,
+                email: user.email,
+                uid: user.uid
+            };
+            localStorage.setItem('CatGazeProfile', JSON.stringify(profileData));
+        } else {
+            // 未登入狀態
+            document.getElementById('profile-fields').style.display = 'none';
+            document.getElementById('login-section').style.display = 'block';
+            document.getElementById('display-name').innerText = "訪客";
+        }
+    }
+
+    // 4. 監聽登入狀態切換 (重新整理頁面時自動執行)
+    auth.onAuthStateChanged((user) => {
+        updateUI(user);
+    });
+
+    // 5. 登出功能
+    document.querySelector('.sidebar-item[style*="color: #ff4d4d"]').onclick = function() {
+        if(confirm("確定要登出嗎？")) {
+            auth.signOut().then(() => {
+                localStorage.removeItem('CatGazeProfile');
+                window.location.reload();
+            });
+        }
+    };
+
+    // 6. 覆蓋原本的 saveProfile，改為存入 Firebase Auth 體系
+    function saveProfile() {
+        const user = auth.currentUser;
+        if (!user) return alert("請先登入！");
+
+        const experience = document.getElementById('experience').value;
+        const interests = [];
+        document.querySelectorAll('.tag-checkbox:checked').forEach(box => {
+            interests.push(box.value);
+        });
+
+        const profileData = {
+            name: user.displayName,
+            email: user.email,
+            experience: experience,
+            interests: interests,
+            lastUpdate: new Date().toISOString()
+        };
+
+        // 以 UID 作為 key 存入資料庫，這最安全
+        firebase.database().ref('users/' + user.uid).set(profileData)
+            .then(() => alert("✨ 個人偏好已儲存！"))
+            .catch(err => alert("儲存失敗: " + err));
+    }
+</script>
 </body>
 </html>

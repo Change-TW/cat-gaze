@@ -91,8 +91,8 @@ function checkoutToLine() {
     const profile = JSON.parse(localStorage.getItem('CatGazeProfile'));
 
     if (!userKey || !profile) {
-        alert("下單前請先至【關於我們】填寫聯繫資料！");
-        window.location.href = "about.html";
+        alert("下單前請先至【👤 會員】填寫聯繫資料！");
+        window.location.href = "member.html";
         return;
     }
 

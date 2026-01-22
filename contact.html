@@ -154,29 +154,144 @@
         margin-bottom: 30px;
     }
 }
+/* --- 統一導覽列字體與間距 --- */
+.nav-links {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #4a4a4a; 
+    /* 關鍵修改：增加間距到 2.2rem，並加上字距 */
+    margin-left: 2.2rem; 
+    letter-spacing: 1px; 
+    
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    font-family: 'Noto Sans TC', sans-serif;
+    position: relative; /* 為了讓購物車數字定位準確 */
+}
+
+.nav-links a:hover {
+    color: var(--brand-main);
+}
+
+/* 確保購物車數字紅點的位置不會跑掉 */
+#cart-count {
+    background: #d14900;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+    position: absolute;
+    top: -10px;
+    right: -15px; /* 這裡配合 margin-left 調整 */
+    font-weight: bold;
+}
+/* --- Header 導覽列優化 --- */
+header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #eeeeee;
+    padding: 10px 0; /* 縮小垂直內距，讓行高更精緻 */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Logo 在左，連結在右 */
+    align-items: center;            /* 關鍵：讓所有元素在垂直方向居中對齊 */
+    height: 60px;                   /* 固定高度確保平行度 */
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0; /* 防止 Logo 被壓縮 */
+}
+
+.logo-img {
+    height: 45px;
+    width: auto;
+    margin-right: 12px;
+    border-radius: 50%;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--brand-main);
+    letter-spacing: 1px;
+    white-space: nowrap; /* 防止文字換行 */
+}
+
+.nav-links {
+    display: flex;
+    align-items: center; /* 確保連結文字與 Logo 中線平行 */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-dark);
+    margin-left: 2rem;   /* 設定連結間距 */
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+    white-space: nowrap; /* 確保連結不換行 */
+}
+
+.nav-links a:hover {
+    color: var(--brand-main);
+}
+
+/* 購物車數字定位修正 */
+.cart-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#cart-count {
+    background: #d14900;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+    position: absolute;
+    top: -8px;   /* 向上微調 */
+    right: -12px; /* 向右微調 */
+    font-weight: bold;
+}
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <a href="index.html" class="logo-container">
-                <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="logo-img">
-                <span class="logo-text">Cat Gaze</span>
+<header>
+    <div class="container navbar">
+        <a href="index.html" class="logo-container">
+            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="logo-img">
+            <span class="logo-text">Cat Gaze</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">首頁</a>
+            <a href="knowledge.html">知識中心</a>
+            <a href="about.html">關於我們</a>
+            <a href="contact.html" style="color: var(--brand-main);">聯繫我們</a>
+            <a href="member.html">👤 會員</a>
+            <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
+                🛒 購物車 <span id="cart-count">0</span>
             </a>
-            <nav class="nav-links">
-                <a href="index.html">首頁</a>
-                <a href="knowledge.html">知識中心</a>
-                <a href="about.html">關於我們</a>
-           <div class="utility-icons">
-                <a href="#">🔍 搜尋</a>
-                <a href="member.html">👤 會員</a>
-                <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
-    🛒 購物車 <span id="cart-count" style="background: var(--price-color); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -10px; right: -15px;">0</span>
-</a>
-            </nav>
-        </div>
-    </header>
+        </nav>
+    </div>
+</header>
 
     <section class="contact-hero">
         <div class="container">

@@ -136,6 +136,72 @@
             .featured-post { grid-template-columns: 1fr; }
             .featured-post .article-content { padding: 1.5rem; }
         }
+/* --- 訂閱電子報樣式 --- */
+.subscribe-section {
+    background-color: var(--brand-main);
+    color: white;
+    padding: 5rem 0;
+    border-radius: 15px;
+    margin: 4rem 0 6rem 0;
+    text-align: center;
+}
+
+.subscribe-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.subscribe-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+.subscribe-section p {
+    opacity: 0.9;
+    margin-bottom: 2.5rem;
+}
+
+.subscribe-form {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.subscribe-form input {
+    padding: 15px 25px;
+    border-radius: 30px;
+    border: none;
+    width: 60%;
+    font-size: 1rem;
+}
+
+.subscribe-form button {
+    padding: 15px 35px;
+    border-radius: 30px;
+    border: none;
+    background-color: var(--brand-cream);
+    color: var(--brand-main);
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.subscribe-form button:hover {
+    background-color: white;
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .subscribe-form {
+        flex-direction: column;
+    }
+    .subscribe-form input {
+        width: 100%;
+    }
+}
 /* --- RWD 響應式優化 --- */
 
 @media (max-width: 768px) {
@@ -240,52 +306,71 @@
 
         <div class="article-grid">
             
-            <div class="article-card featured-post">
-                <div class="article-image">
-                    [ 精選圖片：如何選擇人生第一盆黑松 ]
-                </div>
-                <div class="article-content">
-                    <div class="article-meta">2026.01.10 | 貓眼專欄</div>
-                    <div class="article-title">透過貓的凝視，選出屬於你的靈魂盆景</div>
-                    <div class="article-excerpt">
-                        挑選盆景不只是看外型，更是在挑選一個未來十年的夥伴。我們將從樹幹的肌理、枝條的流向，到與空間的契合度，教你如何用最細膩的視角挑選第一盆黑松...
-                    </div>
-                    <a href="#" class="read-more">繼續閱讀 →</a>
-                </div>
-            </div>
+<div class="article-card featured-post">
+    <div class="article-image">
+        <img src="pine-select.jpg" alt="選松指南" style="width:100%; height:100%; object-fit:cover;">
+    </div>
+    <div class="article-content">
+        <div class="article-meta">2026.01.10 | 貓眼專欄</div>
+        <div class="article-title">透過貓的凝視，選出屬於你的靈魂盆景</div>
+        <div class="article-excerpt">...內容省略...</div>
+        <a href="article-soul-bonsai.html" class="read-more">繼續閱讀 →</a>
+    </div>
+</div>
 
-            <div class="article-card">
-                <div class="article-image">[ 圖片：澆水基本功 ]</div>
-                <div class="article-content">
-                    <div class="article-meta">2026.01.05 | 養護基礎</div>
-                    <div class="article-title">乾透澆透：別讓你的關愛淹沒了它的呼吸</div>
-                    <div class="article-excerpt">澆水是養植的第一課，也是最難的一課。掌握盆土的水分判斷，是讓盆景長青的不二法門...</div>
-                    <a href="#" class="read-more">繼續閱讀 →</a>
-                </div>
-            </div>
+<div class="article-card">
+    <div class="article-image">
+        <img src="watering-guide.jpg" alt="澆水指南" style="width:100%; height:100%; object-fit:cover;">
+    </div>
+    <div class="article-content">
+        <div class="article-meta">2026.01.05 | 養護基礎</div>
+        <div class="article-title">乾透澆透：別讓你的關愛淹沒了它的呼吸</div>
+        <div class="article-excerpt">...內容省略...</div>
+        <a href="article-watering.html" class="read-more">繼續閱讀 →</a>
+    </div>
+</div>
 
-            <div class="article-card">
-                <div class="article-image">[ 圖片：四季修剪指南 ]</div>
-                <div class="article-content">
-                    <div class="article-meta">2025.12.28 | 職人訪談</div>
-                    <div class="article-title">對話大師：台灣盆景藝術的傳承與當代轉化</div>
-                    <div class="article-excerpt">本期我們拜訪了隱居於溪頭的職人林先生，探討如何將傳統盆景融入現代居家空間...</div>
-                    <a href="#" class="read-more">繼續閱讀 →</a>
-                </div>
-            </div>
+<div class="article-card">
+    <div class="article-image">
+        <img src="interview-master.jpg" alt="職人訪談" style="width:100%; height:100%; object-fit:cover;">
+    </div>
+    <div class="article-content">
+        <div class="article-meta">2025.12.28 | 職人訪談</div>
+        <div class="article-title">對話大師：台灣盆景藝術的傳承與當代轉化</div>
+        <div class="article-excerpt">
+            本期我們拜訪了隱居於溪頭的職人林先生，探討如何將傳統盆景融入現代居家空間，讓古老的生命藝術在都市水泥森林中找到新家...
+        </div>
+        <a href="article-interview.html" class="read-more">繼續閱讀 →</a>
+    </div>
+</div>
 
-            <div class="article-card">
-                <div class="article-image">[ 圖片：黑松摘芽 ]</div>
-                <div class="article-content">
-                    <div class="article-meta">2025.12.15 | 養護基礎</div>
-                    <div class="article-title">春季摘芽：維持松針細緻的關鍵操作</div>
-                    <div class="article-excerpt">松柏類盆景的美在於其緊湊的針葉，這一切都取決於清明前後的摘芽時機...</div>
-                    <a href="#" class="read-more">繼續閱讀 →</a>
-                </div>
-            </div>
+<div class="article-card">
+    <div class="article-image">
+        <img src="pine-bud.jpg" alt="黑松摘芽" style="width:100%; height:100%; object-fit:cover;">
+    </div>
+    <div class="article-content">
+        <div class="article-meta">2025.12.15 | 養護基礎</div>
+        <div class="article-title">春季摘芽：維持松針細緻的關鍵操作</div>
+        <div class="article-excerpt">
+            松柏類盆景的美在於其緊湊的針葉，這一切都取決於清明前後的摘芽時機。我們將詳細解析摘芽的技巧，讓您的黑松不再「亂長」...
+        </div>
+        <a href="article-pine-bud.html" class="read-more">繼續閱讀 →</a>
+    </div>
+</div>
 
         </div>
     </div>
+<section class="subscribe-section">
+    <div class="subscribe-container">
+        <h2>訂閱貓眼電子報</h2>
+        <p>每月兩次，我們將最適合當季的養護技巧與職人故事，直接寄送到您的信箱。</p>
+        <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+            <input type="email" id="subscriber-email" placeholder="輸入您的 Email 地址" required>
+            <button type="submit">立即訂閱</button>
+        </form>
+        <p id="subscribe-msg" style="margin-top: 15px; font-size: 0.9rem; display: none;"></p>
+    </div>
+</section>
 
     <footer>
         <div class="container">
@@ -294,11 +379,7 @@
         </div>
         <div class="container footer-grid">
             <div class="footer-col">
-                <h4>快速連結</h4>
-                <a href="index.html">首頁</a>
-                <a href="knowledge.html">知識中心</a>
-                <a href="about.html">關於我們</a>
-                <a href="contact.html">聯繫我們</a>
+                
             </div>
             </div>
     </footer>
@@ -329,6 +410,28 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script src="cart-system.js"></script>
+
+<script>
+    // 處理訂閱電子報的互動功能
+    function handleSubscribe(event) {
+        event.preventDefault(); // 防止頁面跳轉
+        
+        const emailInput = document.getElementById('subscriber-email');
+        const email = emailInput.value;
+        const msg = document.getElementById('subscribe-msg');
+        
+        // 這裡顯示成功訊息
+        msg.innerText = "感謝訂閱！養護週報將寄送至：" + email;
+        msg.style.display = "block";
+        msg.style.color = "#FDFAD9"; // 使用品牌奶油色在綠色背景上更清楚
+        
+        // 清空輸入框
+        emailInput.value = "";
+        
+        // (選填) 如果你之後想把資料存到 Firebase，可以寫在這裡
+        console.log("新訂閱者:", email);
+    }
+</script>
 
 </body>
 </html>

@@ -96,6 +96,15 @@ header {
 }
 
         /* --- Hero Section --- */
+.about-hero {
+    padding: 8rem 0; /* 增加上下間距，讓呼吸感更足 */
+    text-align: center;
+    background: linear-gradient(rgba(253, 250, 217, 0.85), rgba(253, 250, 217, 0.85)), 
+                url('brand-story-bg.jpg'); /* 這裡換上你的故事背景圖 */
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 4rem;
+}
         .about-hero {
             padding: 6rem 0;
             text-align: center;
@@ -349,5 +358,18 @@ header {
 
 <script src="cart-system.js"></script>
 
+<script>
+    // 當頁面載入時，更新購物車數字
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof updateCartUI === 'function') {
+            updateCartUI(); 
+        } else {
+            // 如果 cart-system.js 還沒載入完，從 localStorage 抓
+            const cart = JSON.parse(localStorage.getItem('bonsaiCart')) || [];
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').innerText = count;
+        }
+    });
+</script>
 </body>
 </html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>嚴選新品 | Cat Gaze - 跨越季節的凝視</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-main: #7F916A;
+            --brand-gold: #A68D5B; /* 增加金色點綴感 */
+            --bg-light: #fcfcf8;
+            --text-dark: #333;
+        }
+
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); margin: 0; color: var(--text-dark); }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+        /* --- Header (保持統一) --- */
+        header { background: white; border-bottom: 1px solid #eee; padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; height: 60px; }
+        .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--brand-main); text-decoration: none; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); margin-left: 2rem; font-weight: 500; font-size: 0.9rem; }
+
+        /* --- 新品主題區 (Magazine Style) --- */
+        .new-hero { padding: 5rem 0; text-align: center; background: #fff; }
+        .new-hero span { color: var(--brand-gold); letter-spacing: 4px; font-size: 0.9rem; font-weight: 700; }
+        .new-hero h1 { 
+            font-family: 'Noto Serif TC', serif; 
+            font-size: 2.8rem; 
+            margin: 15px 0; 
+            color: var(--brand-main); 
+        }
+
+        /* --- 重點新品展示 (交錯排版) --- */
+        .featured-new { padding: 4rem 0; }
+        .feature-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 50px; 
+            margin-bottom: 8rem; 
+        }
+        .feature-item:nth-child(even) { flex-direction: row-reverse; }
+        
+        .feature-img { flex: 1.2; position: relative; }
+        .feature-img img { width: 100%; border-radius: 4px; box-shadow: 20px 20px 0px var(--brand-cream); }
+        .feature-img::after {
+            content: "NEW";
+            position: absolute; top: -20px; left: -20px;
+            background: var(--brand-gold); color: white;
+            padding: 10px 20px; font-weight: bold; font-size: 0.8rem;
+        }
+
+        .feature-text { flex: 1; }
+        .feature-text h2 { font-family: 'Noto Serif TC', serif; font-size: 2rem; margin-bottom: 1.5rem; }
+        .feature-text p { line-height: 2; color: #666; margin-bottom: 2rem; }
+        
+        /* --- 價格與按鈕 --- */
+        .price-tag { font-size: 1.5rem; font-weight: 700; color: #d14900; margin-bottom: 20px; display: block; }
+        .btn-luxury {
+            display: inline-block;
+            padding: 12px 40px;
+            border: 1px solid var(--brand-main);
+            color: var(--brand-main);
+            text-decoration: none;
+            transition: 0.3s;
+            background: transparent;
+            cursor: pointer;
+        }
+        .btn-luxury:hover { background: var(--brand-main); color: white; }
+
+        /* --- 手機版 RWD --- */
+        @media (max-width: 768px) {
+            .new-hero h1 { font-size: 2rem; }
+            .feature-item { flex-direction: column !important; gap: 30px; margin-bottom: 4rem; }
+            .feature-img img { box-shadow: 10px 10px 0px var(--brand-cream); }
+            .feature-text { text-align: center; }
+            .nav-links { display: none; } /* 建議手機版使用漢堡選單，暫時隱藏避免擠壓 */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container navbar">
+        <a href="index.html" class="logo-text">Cat Gaze</a>
+        <nav class="nav-links">
+            <a href="index.html">首頁</a>
+            <a href="new-arrivals.html" style="color: var(--brand-gold);">嚴選新品</a>
+            <a href="knowledge.html">知識中心</a>
+            <a href="tools.html">資材用具</a>
+            <a href="member.html">👤 會員</a>
+        </nav>
+    </div>
+</header>
+
+<section class="new-hero">
+    <div class="container">
+        <span>CURATED NEW ARRIVALS</span>
+        <h1>本月嚴選新品</h1>
+        <p>每一株植物，都是時間雕琢出的詩。我們為您挑選了剛入庫的稀有品項。</p>
+    </div>
+</section>
+
+<div class="container featured-new">
+    <div class="feature-item">
+        <div class="feature-img">
+            <img src="https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=800&q=80" alt="稀有系柏類">
+        </div>
+        <div class="feature-text">
+            <h2>靜謐時光：百年紀州真柏</h2>
+            <p>來自日本紀州的頂級真柏，擁有極其優美的舍利干線條。經過職人十年以上的耐心培植，展現出與自然對抗後的蒼勁力量。適合作為書房或禪意空間的視覺靈魂。</p>
+            <span class="price-tag">NT$ 12,800</span>
+            <button class="btn-luxury" onclick="addToCart('百年紀州真柏', 12800, 'img_url')">將這份靜謐帶回家</button>
+        </div>
+    </div>
+
+    <div class="feature-item">
+        <div class="feature-img">
+            <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80" alt="迷你楓樹">
+        </div>
+        <div class="feature-text">
+            <h2>赤焰：清姬楓 迷你盆景</h2>
+            <p>清姬楓以其細緻的葉形與四季分明的顏色變化著稱。這批新品特選了比例完美的陶盆搭配，非常適合放在辦公桌前，在凝視與修剪中找回心靈的平衡。</p>
+            <span class="price-tag">NT$ 3,200</span>
+            <button class="btn-luxury" onclick="addToCart('清姬楓 迷你盆景', 3200, 'img_url')">開始您的植感生活</button>
+        </div>
+    </div>
+</div>
+
+<script src="cart-system.js"></script>
+</body>
+</html>

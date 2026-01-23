@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>資材用具 | Cat Gaze - 職人選物</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-main: #7F916A;
+            --brand-accent: #B0C4B8;
+            --brand-cream: #FDFAD9;
+            --bg-light: #fcfcf8;
+            --text-dark: #4a4a4a;
+            --price-color: #d14900;
+        }
+
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); margin: 0; color: var(--text-dark); }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+        /* --- Header (與其他頁面完全統一) --- */
+        header { background: white; border-bottom: 1px solid #eee; padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; height: 60px; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 40px; margin-right: 12px; border-radius: 50%; }
+        .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--brand-main); }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); margin-left: 2.2rem; font-weight: 500; letter-spacing: 1px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--brand-main); }
+
+        /* --- 頁面標題區 --- */
+        .page-header { padding: 4rem 0 2rem; text-align: center; }
+        .page-header h1 { font-size: 2rem; color: var(--brand-main); font-weight: 400; margin-bottom: 10px; }
+        .category-filter { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .filter-btn { 
+            padding: 8px 20px; border: 1px solid var(--brand-main); background: transparent; 
+            color: var(--brand-main); border-radius: 20px; cursor: pointer; transition: 0.3s;
+        }
+        .filter-btn.active, .filter-btn:hover { background: var(--brand-main); color: white; }
+
+        /* --- 產品網格佈局 --- */
+        .product-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 30px; 
+            padding: 3rem 0; 
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.3s;
+            border: 1px solid #f0f0f0;
+            position: relative;
+        }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background-color: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        .product-info { padding: 20px; text-align: center; }
+        .product-tag { font-size: 0.75rem; color: var(--brand-accent); letter-spacing: 1px; text-transform: uppercase; }
+        .product-title { font-size: 1.1rem; margin: 10px 0; color: var(--text-dark); }
+        .product-price { color: var(--price-color); font-weight: bold; font-size: 1.2rem; }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--brand-main);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .add-to-cart-btn:hover { background: #5d7065; }
+
+        /* --- 手機版優化 --- */
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; height: auto; padding: 15px 0; }
+            .nav-links { margin-top: 15px; flex-wrap: wrap; justify-content: center; width: 100%; }
+            .nav-links a { margin: 5px 10px; font-size: 0.85rem; margin-left: 0; }
+            .product-grid { grid-template-columns: 1fr 1fr; gap: 15px; } /* 手機版一排兩個 */
+            .product-image { height: 180px; }
+            .product-title { font-size: 0.95rem; }
+        }
+
+        #cart-count {
+            background: #d14900; color: white; border-radius: 50%; padding: 2px 6px;
+            font-size: 10px; position: absolute; top: -10px; right: -15px; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container navbar">
+        <a href="index.html" class="logo-container">
+            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze" class="logo-img">
+            <span class="logo-text">Cat Gaze</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">首頁</a>
+            <a href="knowledge.html">知識中心</a>
+            <a href="tools.html" style="color: var(--brand-main);">資材用具</a>
+            <a href="about.html">關於我們</a>
+            <a href="member.html">👤 會員</a>
+            <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
+                🛒 <span id="cart-count">0</span>
+            </a>
+        </nav>
+    </div>
+</header>
+
+<section class="page-header">
+    <div class="container">
+        <h1>資材用具</h1>
+        <p>工欲善其事，必先利其器。精選日本職人剪定工具與介質。</p>
+        <div class="category-filter">
+            <button class="filter-btn active">全部</button>
+            <button class="filter-btn">修剪工具</button>
+            <button class="filter-btn">專業介質</button>
+            <button class="filter-btn">職人盆器</button>
+            <button class="filter-btn">養護資材</button>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="product-grid" id="product-container">
+        <div class="product-card">
+            <div class="product-image">
+                <img src="tool-1.jpg" alt="職人剪定鋏">
+            </div>
+            <div class="product-info">
+                <div class="product-tag">修剪工具</div>
+                <h3 class="product-title">日本製 職人級黑鋼剪定鋏</h3>
+                <div class="product-price">NT$ 1,880</div>
+            </div>
+            <button class="add-to-cart-btn" onclick="addToCart('黑鋼剪定鋏', 1880, 'tool-1.jpg')">加入選植清單</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-image">
+                <img src="tool-2.jpg" alt="赤玉土">
+            </div>
+            <div class="product-info">
+                <div class="product-tag">專業介質</div>
+                <h3 class="product-title">三本線 赤玉土 (極硬質 - 5L)</h3>
+                <div class="product-price">NT$ 450</div>
+            </div>
+            <button class="add-to-cart-btn" onclick="addToCart('赤玉土', 450, 'tool-2.jpg')">加入選植清單</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-image">
+                <img src="tool-3.jpg" alt="手作陶盆">
+            </div>
+            <div class="product-info">
+                <div class="product-tag">職人盆器</div>
+                <h3 class="product-title">墨染手作 柴燒粗陶盆</h3>
+                <div class="product-price">NT$ 1,200</div>
+            </div>
+            <button class="add-to-cart-btn" onclick="addToCart('柴燒粗陶盆', 1200, 'tool-3.jpg')">加入選植清單</button>
+        </div>
+    </div>
+</div>
+
+<script src="cart-system.js"></script>
+<script>
+    // 頁面載入時更新購物車數字
+    document.addEventListener('DOMContentLoaded', updateCartUI);
+</script>
+
+</body>
+</html>

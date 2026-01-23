@@ -4,85 +4,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>會員中心 | Cat Gaze</title>
-    <style>
-        /* --- 延用之前的品牌配色與字體 --- */
-        :root {
-            --brand-main: #7F916A;
-            --brand-cream: #FDFAD9;
-            --bg-light: #fcfcf8;
-            --text-dark: #4a4a4a;
-        }
+<style>
+    :root {
+        --brand-main: #7F916A;
+        --brand-cream: #FDFAD9;
+        --bg-light: #fcfcf8;
+        --text-dark: #4a4a4a;
+    }
 
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); margin: 0; }
-        .container { width: 90%; max-width: 1000px; margin: 0 auto; }
+    body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); margin: 0; color: var(--text-dark); line-height: 1.6; }
+    .container { width: 90%; max-width: 1000px; margin: 0 auto; }
 
-        /* --- Header (請確保與 Index 一致) --- */
-        header { background: white; border-bottom: 1px solid #eee; padding: 1rem 0; }
-        .navbar { display: flex; justify-content: space-between; align-items: center; }
-        .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--brand-main); text-decoration: none; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); margin-left: 2rem; font-weight: 500; }
+    /* --- Header 統一風格 --- */
+    header { background: white; border-bottom: 1px solid #eee; padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
+    .navbar { display: flex; justify-content: space-between; align-items: center; height: 60px; }
+    .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--brand-main); text-decoration: none; }
+    .nav-links { display: flex; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--text-dark); margin-left: 1.5rem; font-weight: 500; font-size: 0.95rem; }
 
-        /* --- 會員佈局 --- */
-        .member-wrapper {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 40px;
-            padding: 4rem 0;
-        }
+    /* --- 會員佈局 (桌面版) --- */
+    .member-wrapper {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 30px;
+        padding: 3rem 0;
+    }
 
-        /* 左側選單 */
+    /* 左側選單 */
+    .member-sidebar {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        height: fit-content;
+    }
+    .sidebar-item {
+        padding: 15px;
+        cursor: pointer;
+        border-radius: 8px;
+        margin-bottom: 5px;
+        color: var(--text-dark);
+        transition: 0.3s;
+        font-size: 0.95rem;
+    }
+    .sidebar-item:hover, .sidebar-item.active { background: #f0f3ed; color: var(--brand-main); font-weight: bold; }
+
+    /* 右側內容 */
+    .member-content {
+        background: white;
+        padding: 35px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    }
+
+    .form-section { margin-bottom: 40px; }
+    .form-section h3 { 
+        font-size: 1.2rem;
+        border-left: 5px solid var(--brand-main); 
+        padding-left: 15px; 
+        margin-bottom: 25px; 
+        color: var(--brand-main); 
+    }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; }
+    .form-group input, .form-group select {
+        width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 10px; 
+        box-sizing: border-box; background: #fafafa; font-size: 1rem;
+    }
+
+    .interest-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+    .tag-checkbox { display: none; }
+    .tag-label {
+        padding: 8px 20px; border: 1px solid #eee; border-radius: 25px; 
+        cursor: pointer; transition: 0.3s; font-size: 0.85rem; background: white;
+    }
+    .tag-checkbox:checked + .tag-label { background: var(--brand-main); color: white; border-color: var(--brand-main); }
+
+    .btn-save {
+        background: var(--brand-main); color: white; border: none; padding: 15px;
+        border-radius: 30px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1rem;
+        box-shadow: 0 5px 15px rgba(127, 145, 106, 0.3); transition: 0.3s;
+    }
+    .btn-save:hover { transform: translateY(-2px); background: #6a7a59; }
+
+    /* --- 手機版 RWD 優化 --- */
+    @media (max-width: 768px) {
+        /* Header 調整 */
+        .navbar { flex-direction: column; height: auto; padding: 15px 0; }
+        .nav-links { margin-top: 15px; flex-wrap: wrap; justify-content: center; width: 100%; }
+        .nav-links a { margin: 5px 10px; font-size: 0.85rem; }
+
+        /* 佈局切換：選單變橫向捲動 */
+        .member-wrapper { grid-template-columns: 1fr; padding: 1.5rem 0; gap: 20px; }
+        
         .member-sidebar {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            height: fit-content;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .sidebar-item {
-            padding: 12px;
-            cursor: pointer;
-            border-bottom: 1px solid #f9f9f9;
-            color: var(--text-dark);
-            transition: 0.3s;
+        
+        /* 側邊欄內的導航項目改為水平排列 */
+        .sidebar-nav-mobile {
+            display: flex;
+            overflow-x: auto;
+            width: 100%;
+            gap: 10px;
+            padding-bottom: 10px;
+            -webkit-overflow-scrolling: touch;
         }
-        .sidebar-item:hover, .sidebar-item.active { color: var(--brand-main); font-weight: bold; }
-
-        /* 右側內容卡片 */
-        .member-content {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .form-section { margin-bottom: 30px; }
-        .form-section h3 { border-left: 4px solid var(--brand-main); padding-left: 15px; margin-bottom: 20px; color: var(--brand-main); }
-
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
-        .form-group input, .form-group select {
-            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box;
+        .sidebar-item { 
+            white-space: nowrap; 
+            margin-bottom: 0; 
+            padding: 8px 15px; 
+            background: #f5f5f5;
+            font-size: 0.85rem;
         }
 
-        /* 興趣標籤 */
-        .interest-tags { display: flex; gap: 10px; flex-wrap: wrap; }
-        .tag-checkbox { display: none; }
-        .tag-label {
-            padding: 8px 18px; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 0.9rem;
-        }
-        .tag-checkbox:checked + .tag-label {
-            background: var(--brand-main); color: white; border-color: var(--brand-main);
-        }
-
-        .btn-save {
-            background: var(--brand-main); color: white; border: none; padding: 12px 30px;
-            border-radius: 25px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .member-wrapper { grid-template-columns: 1fr; }
-        }
-    </style>
+        .member-content { padding: 25px 20px; border-radius: 0; margin: 0 -5%; width: 100vw; box-sizing: border-box; }
+        
+        .form-section h3 { font-size: 1.1rem; }
+    }
+</style>
 
 </head>
 <body>
@@ -104,18 +148,20 @@
 
     <div class="container">
         <div class="member-wrapper">
-            <aside class="member-sidebar">
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div style="width: 80px; height: 80px; background: #eee; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">🐱</div>
-                    <div style="font-weight: bold;" id="display-name">訪客</div>
-                    <div style="font-size: 0.8rem; color: #999;">一般會員</div>
-                </div>
-                <div class="sidebar-item active">個人資料</div>
-                <div class="sidebar-item">訂單查詢</div>
-                <div class="sidebar-item">我的收藏</div>
-                <div class="sidebar-item" style="color: #ff4d4d;">登出</div>
-            </aside>
-
+<aside class="member-sidebar">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <div style="width: 70px; height: 70px; background: var(--brand-cream); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; border: 2px solid white; box-shadow: 0 5px 10px rgba(0,0,0,0.05);">🐱</div>
+        <div style="font-weight: bold; color: var(--brand-main);" id="display-name">訪客</div>
+        <div style="font-size: 0.75rem; color: #aaa; letter-spacing: 1px;">GENERAL MEMBER</div>
+    </div>
+    
+    <div class="sidebar-nav-mobile">
+        <div class="sidebar-item active">個人資料</div>
+        <div class="sidebar-item">訂單查詢</div>
+        <div class="sidebar-item">我的收藏</div>
+        <div class="sidebar-item" style="color: #ff4d4d;">登出</div>
+    </div>
+</aside>
             <main class="member-content">
                 <div class="form-section">
                     <h3>基本資料收集</h3>

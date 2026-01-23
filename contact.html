@@ -4,273 +4,149 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>聯繫我們 | Cat Gaze - 專屬您的植栽諮詢</title>
-    <style>
-        /* --- CSS 樣式設定 (Cat Gaze 品牌規範) --- */
-        :root {
-            --brand-main: #7F916A;      /* 鼠尾草綠 */
-            --brand-accent: #B0C4B8;    /* 淺灰綠 */
-            --brand-cream: #FDFAD9;     /* 奶油米白 */
-            --bg-light: #fcfcf8;        
-            --text-dark: #4a4a4a;       
-        }
+<style>
+    /* --- CSS 基礎與品牌規範 --- */
+    :root {
+        --brand-main: #7F916A;
+        --brand-accent: #B0C4B8;
+        --brand-cream: #FDFAD9;
+        --bg-light: #fcfcf8;
+        --text-dark: #4a4a4a;
+    }
 
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            margin: 0; padding: 0;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            line-height: 1.8;
-        }
+    body {
+        font-family: 'Noto Sans TC', sans-serif;
+        margin: 0; padding: 0;
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+        line-height: 1.8;
+    }
 
-        .container { width: 90%; max-width: 1100px; margin: 0 auto; }
+    .container { width: 90%; max-width: 1100px; margin: 0 auto; }
 
-        /* Header */
-        header { background-color: #ffffff; border-bottom: 1px solid #eeeeee; padding: 1rem 0; }
-        .logo-container { display: flex; align-items: center; text-decoration: none; }
-        .logo-img { height: 45px; width: auto; margin-right: 10px; border-radius: 50%; }
-        .logo-text { font-size: 1.5rem; font-weight: 700; color: var(--brand-main); }
-        .nav-links a { text-decoration: none; color: var(--text-dark); margin-left: 2rem; font-weight: 500; }
+    /* --- Header 導覽列 (桌面版) --- */
+    header {
+        background-color: #ffffff;
+        border-bottom: 1px solid #eeeeee;
+        padding: 10px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
 
-        /* --- Hero Section --- */
-        .contact-hero {
-            padding: 5rem 0;
-            text-align: center;
-            background-color: var(--brand-cream);
-        }
-        .contact-hero h1 { font-size: 2.5rem; color: var(--brand-main); margin-bottom: 1rem; font-weight: 300; }
-        .contact-hero p { color: #666; font-size: 1.1rem; }
-
-        /* --- 聯絡區塊佈局 --- */
-        .contact-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 60px;
-            padding: 5rem 0;
-        }
-
-        /* 左側資訊 */
-        .contact-info h2 { color: var(--brand-main); margin-bottom: 1.5rem; }
-        .info-item { margin-bottom: 2rem; }
-        .info-item h4 { margin: 0 0 5px 0; color: var(--brand-main); font-size: 1.1rem; }
-        .info-item p { margin: 0; color: #777; }
-
-        /* 右側表單 */
-        .contact-form {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-            border: 1px solid #eee;
-        }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--brand-main); }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            color: var(--text-dark);
-            box-sizing: border-box; /* 確保寬度包含 padding */
-        }
-        .form-group textarea { height: 150px; resize: vertical; }
-        .form-group input:focus { border-color: var(--brand-main); outline: none; }
-
-        .btn-submit {
-            background-color: var(--brand-main);
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.3s;
-        }
-        .btn-submit:hover { background-color: #5d7065; transform: translateY(-2px); }
-
-        /* Footer */
-        footer { background-color: var(--brand-main); color: white; text-align: center; padding: 3rem 0; }
-/* --- RWD 響應式優化 --- */
-
-@media (max-width: 768px) {
-    /* 1. 調整導覽列：由橫排改為直排 */
     .navbar {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .nav-links {
-        margin-top: 15px;
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
+        justify-content: space-between;
+        align-items: center;
+        height: 60px;
     }
 
+    .logo-container { display: flex; align-items: center; text-decoration: none; }
+    .logo-img { height: 40px; width: auto; margin-right: 10px; border-radius: 50%; }
+    .logo-text { font-size: 1.3rem; font-weight: 700; color: var(--brand-main); letter-spacing: 1px; }
+
+    .nav-links { display: flex; align-items: center; }
     .nav-links a {
-        margin-left: 10px;
-        margin-right: 10px;
-        font-size: 0.9rem;
+        text-decoration: none;
+        color: var(--text-dark);
+        margin-left: 1.8rem;
+        font-weight: 500;
+        font-size: 0.95rem;
+        letter-spacing: 1px;
+        transition: color 0.3s;
     }
+    .nav-links a:hover { color: var(--brand-main); }
 
-    /* 2. 調整所有兩欄佈局：統一改為單欄 */
-    .product-detail-grid, 
-    .contact-wrapper, 
-    .featured-post,
-    .care-grid {
-        grid-template-columns: 1fr !important;
-        gap: 30px;
-    }
-
-    /* 3. 調整字體大小，適合手機閱讀 */
-    h1 { font-size: 1.8rem !important; }
-    .hero h1 { font-size: 2rem !important; }
-    .price { font-size: 2rem !important; }
-    
-    /* 4. 調整圖片與區塊間距 */
-    .image-gallery img {
-        margin-bottom: 20px;
-    }
-
-    .container {
-        width: 92%; /* 手機版留邊稍微縮窄 */
-    }
-
-    /* 5. 聯絡表單與資訊區塊順序 */
-    .contact-wrapper {
-        display: flex;
-        flex-direction: column-reverse; /* 手機上先看表單，資訊往後放 */
-    }
-    
-    /* 6. 頁尾排版 */
-    .footer-grid {
-        flex-direction: column;
+    /* --- Hero Section --- */
+    .contact-hero {
+        padding: 4rem 0;
         text-align: center;
+        background-color: var(--brand-cream);
     }
-    .footer-col {
-        width: 100%;
-        margin-bottom: 30px;
+    .contact-hero h1 { font-size: 2.2rem; color: var(--brand-main); margin-bottom: 0.5rem; font-weight: 400; }
+    .contact-hero p { color: #888; font-size: 1rem; margin: 0; }
+
+    /* --- 聯絡區塊佈局 --- */
+    .contact-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 60px;
+        padding: 4rem 0;
     }
-}
-/* --- 統一導覽列字體與間距 --- */
-.nav-links {
-    display: flex;
-    align-items: center;
-}
 
-.nav-links a {
-    text-decoration: none;
-    color: #4a4a4a; 
-    /* 關鍵修改：增加間距到 2.2rem，並加上字距 */
-    margin-left: 2.2rem; 
-    letter-spacing: 1px; 
-    
-    font-weight: 500;
-    font-size: 1rem;
-    transition: color 0.3s ease;
-    font-family: 'Noto Sans TC', sans-serif;
-    position: relative; /* 為了讓購物車數字定位準確 */
-}
+    .contact-info h2 { color: var(--brand-main); margin-bottom: 1.5rem; font-weight: 500; }
+    .info-item { margin-bottom: 1.8rem; }
+    .info-item h4 { margin: 0 0 5px 0; color: var(--brand-main); font-size: 1rem; }
+    .info-item p { margin: 0; color: #777; font-size: 0.95rem; }
 
-.nav-links a:hover {
-    color: var(--brand-main);
-}
+    /* --- 表單樣式 --- */
+    .contact-form {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(127, 145, 106, 0.08);
+        border: 1px solid rgba(0,0,0,0.03);
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--brand-main); font-size: 0.9rem; }
+    .form-group input, .form-group select, .form-group textarea {
+        width: 100%; padding: 14px; border: 1px solid #eee; border-radius: 12px;
+        font-size: 1rem; background-color: #fafafa; transition: 0.3s; box-sizing: border-box;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+        background-color: white; border-color: var(--brand-main); outline: none; box-shadow: 0 0 0 4px rgba(127,145,106,0.1);
+    }
+    .form-group textarea { height: 140px; }
 
-/* 確保購物車數字紅點的位置不會跑掉 */
-#cart-count {
-    background: #d14900;
-    color: white;
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 10px;
-    position: absolute;
-    top: -10px;
-    right: -15px; /* 這裡配合 margin-left 調整 */
-    font-weight: bold;
-}
-/* --- Header 導覽列優化 --- */
-header {
-    background-color: #ffffff;
-    border-bottom: 1px solid #eeeeee;
-    padding: 10px 0; /* 縮小垂直內距，讓行高更精緻 */
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
+    .btn-submit {
+        background-color: var(--brand-main);
+        color: white; padding: 16px; border: none; border-radius: 30px;
+        font-size: 1rem; font-weight: 700; cursor: pointer; width: 100%; transition: 0.3s;
+    }
+    .btn-submit:hover { background-color: #5d7065; transform: translateY(-2px); }
 
-.navbar {
-    display: flex;
-    justify-content: space-between; /* Logo 在左，連結在右 */
-    align-items: center;            /* 關鍵：讓所有元素在垂直方向居中對齊 */
-    height: 60px;                   /* 固定高度確保平行度 */
-}
+    /* --- Footer --- */
+    footer { background-color: var(--brand-main); color: white; text-align: center; padding: 3rem 0; font-size: 0.9rem; }
 
-.logo-container {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    flex-shrink: 0; /* 防止 Logo 被壓縮 */
-}
+    /* --- 核心：手機版 (RWD) 修正 --- */
+    @media (max-width: 768px) {
+        /* Header 調整：讓 Logo 跟選單分層 */
+        header { padding: 15px 0; }
+        .navbar { flex-direction: column; height: auto; gap: 15px; }
+        .nav-links { 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            width: 100%;
+            border-top: 1px solid #f5f5f5;
+            padding-top: 15px;
+        }
+        .nav-links a { margin: 5px 10px; font-size: 0.85rem; }
 
-.logo-img {
-    height: 45px;
-    width: auto;
-    margin-right: 12px;
-    border-radius: 50%;
-}
+        /* Hero 縮小 */
+        .contact-hero { padding: 3rem 0; }
+        .contact-hero h1 { font-size: 1.8rem; }
 
-.logo-text {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--brand-main);
-    letter-spacing: 1px;
-    white-space: nowrap; /* 防止文字換行 */
-}
+        /* 內容區塊改為單欄，並調整順序：先表單後資訊 */
+        .contact-wrapper {
+            grid-template-columns: 1fr;
+            padding: 2rem 0;
+            gap: 40px;
+            display: flex;
+            flex-direction: column; /* 讓內容垂直排 */
+        }
+        
+        .contact-form { padding: 25px; order: 1; } /* 表單排在上面 */
+        .contact-info { order: 2; text-align: center; } /* 資訊排在下面並置中 */
+        
+        .info-item { margin-bottom: 1.5rem; }
+    }
 
-.nav-links {
-    display: flex;
-    align-items: center; /* 確保連結文字與 Logo 中線平行 */
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: var(--text-dark);
-    margin-left: 2rem;   /* 設定連結間距 */
-    font-weight: 500;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    transition: color 0.3s ease;
-    white-space: nowrap; /* 確保連結不換行 */
-}
-
-.nav-links a:hover {
-    color: var(--brand-main);
-}
-
-/* 購物車數字定位修正 */
-.cart-link {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-#cart-count {
-    background: #d14900;
-    color: white;
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 10px;
-    position: absolute;
-    top: -8px;   /* 向上微調 */
-    right: -12px; /* 向右微調 */
-    font-weight: bold;
-}
-    </style>
+    /* 購物車紅點修正 */
+    #cart-count {
+        background: #d14900; color: white; border-radius: 50%; padding: 2px 6px;
+        font-size: 10px; position: absolute; top: -10px; right: -15px; font-weight: bold;
+    }
+</style>
 </head>
 <body>
 

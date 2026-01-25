@@ -140,16 +140,17 @@
 .subscribe-section {
     background-color: var(--brand-main);
     color: white;
-    padding: 5rem 0;
+    padding: 5rem 15px; /* 這裡左右留 15px 緩衝，避免觸碰邊緣 */
     border-radius: 15px;
-    margin: 4rem 0 6rem 0;
+    margin: 4rem 15px 6rem 15px; /* 這裡原本是 0，加上 15px 讓它在手機上不會貼牆 */
     text-align: center;
+    box-sizing: border-box; /* 確保 padding 不會撐破寬度 */
+    overflow: hidden; /* 防止內容溢出 */
 }
 
 .subscribe-container {
     max-width: 600px;
     margin: 0 auto;
-    padding: 0 20px;
 }
 
 .subscribe-section h2 {
@@ -168,6 +169,7 @@
     display: flex;
     gap: 10px;
     justify-content: center;
+    width: 100%; /* 確保表單佔滿容器 */
 }
 
 .subscribe-form input {
@@ -200,6 +202,28 @@
     }
     .subscribe-form input {
         width: 100%;
+    }
+}
+/* --- 手機版 RWD 針對性修復 --- */
+@media (max-width: 768px) {
+    .subscribe-section {
+        margin: 2rem 10px; /* 縮小手機版的上下間距 */
+        padding: 3rem 20px; /* 縮小手機版的內距 */
+    }
+
+    .subscribe-form {
+        flex-direction: column;
+        align-items: center; /* 確保輸入框置中 */
+    }
+
+    .subscribe-form input {
+        width: 100% !important; /* 確保手機上寬度 100% */
+        box-sizing: border-box; /* 確保 padding 不撐破輸入框 */
+        margin-bottom: 10px; /* 輸入框與按鈕的間距 */
+    }
+
+    .subscribe-form button {
+        width: 100%; /* 按鈕在手機上也改為全寬，比較好按 */
     }
 }
 /* --- RWD 響應式優化 --- */

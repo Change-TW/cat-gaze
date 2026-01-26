@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cat Gaze 知識中心提供專業的盆景養護教學、寵物友善植栽指南及職人訪談。透過貓的視角，  
+    帶您深入了解室內植栽與盆景美學。">
+    <meta name="keywords" content="盆景養護, 寵物友善植物, 貓無毒植物, 黑松照顧, 知識中心, Cat Gaze">
     <title>知識中心 | Cat Gaze - 透過貓眼凝視植栽之美</title>
     <style>
         /* --- CSS 樣式設定 (與首頁保持一致) --- */
@@ -83,13 +86,16 @@
             padding-bottom: 5rem;
         }
 
-        .article-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
+.article-card {
+    transition: opacity 0.4s ease;
+}
+
+/* 確保 Active 按鈕有明顯顏色 */
+.filter-btn.active {
+    background-color: var(--brand-main);
+    color: white;
+    border-color: var(--brand-main);
+}
         .article-card:hover { transform: translateY(-5px); }
 
         .article-image {
@@ -320,69 +326,77 @@
         </div>
     </section>
 
-    <div class="container">
-        <div class="category-filter">
-            <button class="filter-btn active">全部文章</button>
-            <button class="filter-btn">養護基礎</button>
-            <button class="filter-btn">貓眼專欄</button>
-            <button class="filter-btn">職人訪談</button>
-            <button class="filter-btn">盆景美學</button>
+<div class="category-filter">
+    <button class="filter-btn active" onclick="filterArticles('全部文章', this)">全部文章</button>
+    <button class="filter-btn" onclick="filterArticles('養護基礎', this)">養護基礎</button>
+    <button class="filter-btn" onclick="filterArticles('貓眼專欄', this)">貓眼專欄</button>
+    <button class="filter-btn" onclick="filterArticles('職人訪談', this)">職人訪談</button>
+    <button class="filter-btn" onclick="filterArticles('盆景美學', this)">盆景美學</button>
         </div>
 
         <div class="article-grid">
             
-<div class="article-card featured-post">
-    <div class="article-image">
-        <img src="pine-select.jpg" alt="選松指南" style="width:100%; height:100%; object-fit:cover;">
-    </div>
-    <div class="article-content">
-        <div class="article-meta">2026.01.10 | 貓眼專欄</div>
-        <div class="article-title">透過貓的凝視，選出屬於你的靈魂盆景</div>
-        <div class="article-excerpt">...內容省略...</div>
-        <a href="article-soul-bonsai.html" class="read-more">繼續閱讀 →</a>
-    </div>
-</div>
-
-<div class="article-card">
-    <div class="article-image">
-        <img src="watering-guide.jpg" alt="澆水指南" style="width:100%; height:100%; object-fit:cover;">
-    </div>
-    <div class="article-content">
-        <div class="article-meta">2026.01.05 | 養護基礎</div>
-        <div class="article-title">乾透澆透：別讓你的關愛淹沒了它的呼吸</div>
-        <div class="article-excerpt">...內容省略...</div>
-        <a href="article-watering.html" class="read-more">繼續閱讀 →</a>
-    </div>
-</div>
-
-<div class="article-card">
-    <div class="article-image">
-        <img src="interview-master.jpg" alt="職人訪談" style="width:100%; height:100%; object-fit:cover;">
-    </div>
-    <div class="article-content">
-        <div class="article-meta">2025.12.28 | 職人訪談</div>
-        <div class="article-title">對話大師：台灣盆景藝術的傳承與當代轉化</div>
-        <div class="article-excerpt">
-            本期我們拜訪了隱居於溪頭的職人林先生，探討如何將傳統盆景融入現代居家空間，讓古老的生命藝術在都市水泥森林中找到新家...
+<div class="article-grid">
+    <div class="article-card featured-post" data-category="貓眼專欄">
+        <div class="article-image">
+            <img src="pine-select.jpg" alt="選松指南" style="width:100%; height:100%; object-fit:cover;">
         </div>
-        <a href="article-interview.html" class="read-more">繼續閱讀 →</a>
+        <div class="article-content">
+            <div class="article-meta">2026.01.10 | 貓眼專欄</div>
+            <div class="article-title">透過貓的凝視，選出屬於你的靈魂盆景</div>
+            <div class="article-excerpt">...內容...</div>
+            <a href="article-soul-bonsai.html" class="read-more">繼續閱讀 →</a>
+        </div>
     </div>
-</div>
 
-<div class="article-card">
+    <div class="article-card" data-category="養護基礎">
+        <div class="article-image">
+            <img src="watering-guide.jpg" alt="澆水指南" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div class="article-content">
+            <div class="article-meta">2026.01.05 | 養護基礎</div>
+            <div class="article-title">乾透澆透：別讓你的關愛淹沒了它的呼吸</div>
+            <div class="article-excerpt">...內容...</div>
+            <a href="article-watering.html" class="read-more">繼續閱讀 →</a>
+        </div>
+    </div>
+
+    <div class="article-card" data-category="職人訪談">
+        <div class="article-image">
+            <img src="interview-master.jpg" alt="職人訪談" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div class="article-content">
+            <div class="article-meta">2025.12.28 | 職人訪談</div>
+            <div class="article-title">對話大師：台灣盆景藝術的傳承與當代轉化</div>
+            <div class="article-excerpt">...內容...</div>
+            <a href="article-interview.html" class="read-more">繼續閱讀 →</a>
+        </div>
+    </div>
+
+    <div class="article-card" data-category="養護基礎">
+        <div class="article-image">
+            <img src="pine-bud.jpg" alt="黑松摘芽" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div class="article-content">
+            <div class="article-meta">2025.12.15 | 養護基礎</div>
+            <div class="article-title">春季摘芽：維持松針細緻的關鍵操作</div>
+            <div class="article-excerpt">...內容...</div>
+            <a href="article-pine-bud.html" class="read-more">繼續閱讀 →</a>
+        </div>
+    </div>
+<div class="article-card" data-category="貓眼專欄">
     <div class="article-image">
-        <img src="pine-bud.jpg" alt="黑松摘芽" style="width:100%; height:100%; object-fit:cover;">
+        <img src="pet-safe-plants.jpg" alt="貓咪無毒植物清單" style="width:100%; height:100%; object-fit:cover;">
     </div>
     <div class="article-content">
-        <div class="article-meta">2025.12.15 | 養護基礎</div>
-        <div class="article-title">春季摘芽：維持松針細緻的關鍵操作</div>
+        <div class="article-meta">2026.01.26 | 貓眼專欄</div>
+        <div class="article-title">2026 貓奴必收！10 種對貓無毒的室內植物清單</div>
         <div class="article-excerpt">
-            松柏類盆景的美在於其緊湊的針葉，這一切都取決於清明前後的摘芽時機。我們將詳細解析摘芽的技巧，讓您的黑松不再「亂長」...
+            想打造室內森林卻怕貓咪中毒？我們整理了 10 款 ASPCA 認證的安全植栽，讓您安心享受綠意...
         </div>
-        <a href="article-pine-bud.html" class="read-more">繼續閱讀 →</a>
+        <a href="article-pet-safe.html" class="read-more">繼續閱讀 →</a>
     </div>
 </div>
-
         </div>
     </div>
 <section class="subscribe-section">
@@ -456,6 +470,36 @@
         // (選填) 如果你之後想把資料存到 Firebase，可以寫在這裡
         console.log("新訂閱者:", email);
     }
+function filterArticles(category, btn) {
+    // 1. 更新按鈕樣式 (Active 狀態)
+    document.querySelectorAll('.filter-btn').forEach(button => {
+        button.classList.remove('active');
+    });
+    btn.classList.add('active');
+
+    // 2. 篩選文章內容
+    const articles = document.querySelectorAll('.article-card');
+    
+    articles.forEach(article => {
+        const articleCategory = article.getAttribute('data-category');
+        
+        if (category === '全部文章' || articleCategory === category) {
+            // 顯示文章：取消隱藏，並可加入簡單的淡入動畫
+            article.style.display = 'block';
+            article.style.opacity = '0';
+            setTimeout(() => { article.style.opacity = '1'; }, 10);
+        } else {
+            // 隱藏文章
+            article.style.display = 'none';
+        }
+    });
+}
+if (category === '全部文章' || articleCategory === category) {
+    // 這裡建議改回原本的顯示模式，如果是精選文章就用 grid，普通文章用 block
+    article.style.display = article.classList.contains('featured-post') ? 'grid' : 'block';
+    article.style.opacity = '0';
+    setTimeout(() => { article.style.opacity = '1'; }, 10);
+}
 </script>
 
 </body>

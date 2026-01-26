@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>塊根與多肉植物 | Cat Gaze</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-main: #7F916A;
+            --brand-accent: #B0C4B8;
+            --bg-light: #fcfcf8;
+            --text-dark: #4a4a4a;
+            --price-color: #d14900;
+            --tag-caudex: #6b5e4c; /* 塊根用大地色 */
+            --tag-succulent: #94a684; /* 多肉用較嫩的葉綠色 */
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-light);
+            margin: 0;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+        /* --- Header --- */
+        header { background: white; padding: 15px 0; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; gap: 10px; }
+        .site-logo { height: 40px; }
+        .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--brand-main); }
+        .nav-right a { margin-left: 20px; text-decoration: none; color: var(--text-dark); font-size: 0.9rem; }
+
+        /* --- Hero Section --- */
+        .category-hero {
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?q=80&w=2000&auto=format&fit=crop'); 
+            background-size: cover;
+            background-position: center;
+            padding: 80px 0;
+            text-align: center;
+            color: white;
+        }
+        .category-hero h1 { font-size: 2.8rem; margin: 0; font-weight: 400; letter-spacing: 4px; }
+
+        /* --- Filter Tags (新增分類切換) --- */
+        .filter-container { padding: 40px 0 10px; display: flex; gap: 12px; }
+        .filter-tag {
+            padding: 6px 20px; border: 1px solid #ddd; border-radius: 2px;
+            background: white; cursor: pointer; font-size: 0.85rem; transition: 0.3s;
+        }
+        .filter-tag.active { background: var(--brand-main); color: white; border-color: var(--brand-main); }
+
+        /* --- Product Grid --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 35px;
+            padding-bottom: 80px;
+        }
+
+        .product-card {
+            background: white; border-radius: 4px; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            position: relative; transition: 0.3s;
+            border: 1px solid #eee;
+        }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
+
+        /* 不同類型的標籤顏色區分 */
+        .badge {
+            position: absolute; top: 15px; left: 15px;
+            color: white; padding: 4px 10px; font-size: 0.7rem; font-weight: bold; z-index: 10;
+        }
+        .badge.caudex { background: var(--tag-caudex); }
+        .badge.succulent { background: var(--tag-succulent); }
+
+        .img-box { position: relative; height: 320px; background: #fff; }
+        .img-box img { width: 100%; height: 100%; object-fit: contain; padding: 25px; }
+
+        .product-info { padding: 20px; border-top: 1px solid #f5f5f5; }
+        .product-info h3 { margin: 0; font-size: 1.1rem; color: #333; }
+        .sci-name { font-size: 0.75rem; color: #999; display: block; margin-top: 4px; font-style: italic; }
+        
+        .spec-list {
+            display: flex; gap: 8px; margin: 15px 0; flex-wrap: wrap;
+        }
+        .spec-list span { 
+            font-size: 0.7rem; background: #f8f8f2; color: #777; 
+            padding: 2px 6px; border: 1px solid #eee; 
+        }
+
+        .price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .price { font-size: 1.2rem; font-weight: 700; color: var(--text-dark); }
+        
+        .btn-add {
+            background: var(--brand-main); color: white; border: none;
+            padding: 8px 15px; border-radius: 2px; cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container navbar">
+        <a href="index.html" class="logo-container">
+            <img src="CG_logo w bg_vertica_green.png" alt="Logo" class="site-logo">
+            <span class="logo-text">Cat Gaze</span>
+        </a>
+        <nav class="nav-right">
+            <a href="index.html">返回首頁</a>
+            <a href="categories.html">各類品項</a>
+            <a href="member.html">會員中心</a>
+            <a href="javascript:void(0)" onclick="toggleCart()">🛒 購物車</a>
+        </nav>
+    </div>
+</header>
+
+<section class="category-hero">
+    <div class="container">
+        <h1>塊根、多肉類</h1>
+        <p>異形美學與多樣色彩的生命收藏</p>
+    </div>
+</section>
+
+<div class="container">
+    <div class="filter-container">
+        <button class="filter-tag active" onclick="filterType('all', this)">全部商品</button>
+        <button class="filter-tag" onclick="filterType('caudex', this)">塊根植物</button>
+        <button class="filter-tag" onclick="filterType('succulent', this)">多肉植物</button>
+    </div>
+
+    <div class="product-grid" id="productGrid">
+        
+        <div class="product-card" data-type="caudex">
+            <div class="badge caudex">CAUDEX</div>
+            <div class="img-box">
+                <img src="caudex1.jpg" alt="象牙宮">
+            </div>
+            <div class="product-info">
+                <h3>象牙宮</h3>
+                <span class="sci-name">Pachypodium gracilius</span>
+                <div class="spec-list">
+                    <span>原生地株</span><span>夏型種</span><span>全日照</span>
+                </div>
+                <div class="price-row">
+                    <span class="price">NT$ 12,800</span>
+                    <button class="btn-add" onclick="addToCart('象牙宮', 12800)">加入購物車</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card" data-type="succulent">
+            <div class="badge succulent">SUCCULENT</div>
+            <div class="img-box">
+                <img src="succulent1.jpg" alt="擬石蓮花">
+            </div>
+            <div class="product-info">
+                <h3>霜降擬石蓮</h3>
+                <span class="sci-name">Echeveria 'Lola'</span>
+                <div class="spec-list">
+                    <span>冬型種</span><span>溫差顯色</span><span>忌積水</span>
+                </div>
+                <div class="price-row">
+                    <span class="price">NT$ 450</span>
+                    <button class="btn-add" onclick="addToCart('霜降擬石蓮', 450)">加入購物車</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card" data-type="succulent">
+            <div class="badge succulent">SUCCULENT</div>
+            <div class="img-box">
+                <img src="succulent2.jpg" alt="玉露">
+            </div>
+            <div class="product-info">
+                <h3>OB1 玉露</h3>
+                <span class="sci-name">Haworthia cooperi</span>
+                <div class="spec-list">
+                    <span>極致透窗</span><span>半日照</span><span>高濕度</span>
+                </div>
+                <div class="price-row">
+                    <span class="price">NT$ 1,200</span>
+                    <button class="btn-add" onclick="addToCart('OB1 玉露', 1200)">加入購物車</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function filterType(type, btn) {
+        // 更新按鈕樣式
+        document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+
+        // 過濾商品
+        const cards = document.querySelectorAll('.product-card');
+        cards.forEach(card => {
+            if (type === 'all' || card.getAttribute('data-type') === type) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

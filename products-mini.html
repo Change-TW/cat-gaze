@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>室內觀葉專區 | Cat Gaze</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-main: #7F916A;
+            --brand-accent: #B0C4B8;
+            --brand-cream: #FDFAD9;
+            --bg-light: #fcfcf8;
+            --text-dark: #4a4a4a;
+            --price-color: #d14900;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-light);
+            margin: 0; color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container { width: 92%; max-width: 1300px; margin: 0 auto; }
+
+        /* --- Header (保持品牌一致) --- */
+        header { background: white; padding: 10px 0; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; gap: 12px; }
+        .site-logo { height: 45px; }
+        .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--brand-main); letter-spacing: 1px; }
+        .nav-right a { margin-left: 20px; text-decoration: none; color: var(--text-dark); font-size: 0.95rem; }
+
+        /* --- Hero Section: 森林層次感 --- */
+        .foliage-hero {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #fdfad9 0%, #e8ede3 100%);
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+            border-bottom: 1px solid #eef2eb;
+        }
+        /* 裝飾性大葉子背景符號 */
+        .hero-decor {
+            position: absolute; font-size: 18rem; opacity: 0.05;
+            bottom: -50px; right: 5%; transform: rotate(-15deg);
+        }
+        .foliage-hero h1 { font-size: 3.2rem; margin: 0; font-weight: 300; letter-spacing: 8px; color: var(--brand-main); }
+        .foliage-hero p { font-size: 1.1rem; opacity: 0.8; margin-top: 15px; }
+
+        /* --- 分類快捷欄 (讓頁面有層次感) --- */
+        .quick-filter {
+            display: flex; justify-content: center; gap: 20px; padding: 40px 0;
+        }
+        .filter-btn {
+            background: white; border: 1px solid #eee; padding: 8px 24px;
+            border-radius: 50px; cursor: pointer; color: #888; transition: 0.3s;
+        }
+        .filter-btn.active { background: var(--brand-main); color: white; border-color: var(--brand-main); }
+
+        /* --- 商品網格: 交錯高度排版 (Breaking the Grid) --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 50px 30px;
+            padding-bottom: 100px;
+        }
+
+        .product-card {
+            background: transparent;
+            position: relative;
+            transition: 0.4s ease;
+        }
+
+        /* 圖片容器：加入疊加色塊 */
+        .img-container {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 10px 30px rgba(127, 145, 106, 0.05);
+        }
+        /* 懸浮時的背景色塊裝飾 */
+        .product-card::before {
+            content: ""; position: absolute; top: -10px; left: -10px; width: 40px; height: 40px;
+            background: var(--brand-cream); z-index: -1; transition: 0.4s; opacity: 0;
+        }
+        .product-card:hover::before { opacity: 1; transform: translate(5px, 5px); }
+
+        .img-box { height: 380px; width: 100%; position: relative; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .product-card:hover .img-box img { transform: scale(1.05); }
+
+        /* 環境標籤標籤 (浮動在圖片上) */
+        .env-label {
+            position: absolute; top: 15px; right: 15px;
+            background: rgba(255,255,255,0.9); padding: 4px 12px;
+            border-radius: 4px; font-size: 0.7rem; color: var(--brand-main);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .product-info { padding: 25px 0 0; text-align: center; }
+        .product-info h3 { margin: 0; font-size: 1.3rem; font-weight: 500; color: #333; }
+        .product-desc { font-size: 0.85rem; color: #999; margin: 8px 0 15px; height: 40px; }
+        
+        .price-row { 
+            display: flex; flex-direction: column; align-items: center; gap: 12px;
+        }
+        .price { font-size: 1.25rem; font-weight: 700; color: var(--text-dark); }
+        
+        .btn-add {
+            background: white; border: 1.5px solid var(--brand-main); color: var(--brand-main);
+            padding: 8px 30px; border-radius: 50px; cursor: pointer;
+            font-size: 0.9rem; font-weight: 500; transition: 0.3s;
+        }
+        .btn-add:hover { background: var(--brand-main); color: white; }
+
+        /* 滾動淡入動畫 */
+        .reveal { opacity: 0; transform: translateY(20px); transition: 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container navbar">
+        <a href="index.html" class="logo-container">
+            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="site-logo">
+            <span class="logo-text">Cat Gaze</span>
+        </a>
+        <nav class="nav-right">
+            <a href="index.html">返回首頁</a>
+            <a href="categories.html">各類品項</a>
+            <a href="member.html">會員中心</a>
+            <a href="javascript:void(0)" onclick="toggleCart()">🛒 購物車</a>
+        </nav>
+    </div>
+</header>
+
+<section class="foliage-hero">
+    <div class="hero-decor">🌿</div>
+    <div class="container">
+        <h1>觀葉類</h1>
+        <p>呼吸，在每一片翠綠的脈絡裡</p>
+    </div>
+</section>
+
+<div class="container">
+    <div class="quick-filter">
+        <button class="filter-btn active">全部植物</button>
+        <button class="filter-btn">大型落地</button>
+        <button class="filter-btn">桌面盆栽</button>
+        <button class="filter-btn">珍稀斑葉</button>
+    </div>
+
+    <div class="product-grid">
+        
+        <div class="product-card reveal">
+            <div class="img-container">
+                <div class="env-label">☀️ 散射光</div>
+                <div class="img-box">
+                    <img src="monstera.jpg" alt="龜背芋">
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>斑葉龜背芋</h3>
+                <p class="product-desc">室內植栽的王者，優雅的葉片裂紋與奶油色斑塊。</p>
+                <div class="price-row">
+                    <span class="price">NT$ 2,800</span>
+                    <button class="btn-add" onclick="addToCart('斑葉龜背芋', 2800)">加入收藏</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card reveal" style="margin-top: 40px;"> <div class="img-container">
+                <div class="env-label">☁️ 耐陰</div>
+                <div class="img-box">
+                    <img src="alocasia.jpg" alt="觀音蓮">
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>黑葉觀音蓮</h3>
+                <p class="product-desc">深邃的墨綠色葉面，搭配醒目的白色葉脈。</p>
+                <div class="price-row">
+                    <span class="price">NT$ 980</span>
+                    <button class="btn-add" onclick="addToCart('黑葉觀音蓮', 980)">加入收藏</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card reveal">
+            <div class="img-container">
+                <div class="env-label">💧 喜濕度</div>
+                <div class="img-box">
+                    <img src="calathea.jpg" alt="竹芋">
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>圓葉竹芋</h3>
+                <p class="product-desc">如手繪般的紋路，夜晚葉片會閉合的有趣習性。</p>
+                <div class="price-row">
+                    <span class="price">NT$ 1,200</span>
+                    <button class="btn-add" onclick="addToCart('圓葉竹芋', 1200)">加入收藏</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // 滾動顯示動畫
+    function reveal() {
+        var reveals = document.querySelectorAll(".reveal");
+        for (var i = 0; i < reveals.length; i++) {
+            var windowHeight = window.innerHeight;
+            var elementTop = reveals[i].getBoundingClientRect().top;
+            var elementVisible = 100;
+            if (elementTop < windowHeight - elementVisible) {
+                reveals[i].classList.add("active");
+            }
+        }
+    }
+    window.addEventListener("scroll", reveal);
+    // 初始化執行一次
+    reveal();
+</script>
+
+</body>
+</html>

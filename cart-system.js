@@ -35,15 +35,28 @@ function toggleCart() {
     }
 }
 
-function addToCart(pName, pPrice) {
-    cart.push({ name: pName, price: pPrice });
-    localStorage.setItem('CatGazeCart', JSON.stringify(cart));
-    const userKey = getUserKey();
-    if (userKey) database.ref('carts/' + userKey).set(cart);
-    updateCount();
-    toggleCart();
-}
+function addToFavorites(pName, pPrice, pImage) {
+    const user = firebase.auth().currentUser;
+    if (!user) {
+        alert("請先登入會員才能收藏植物喔！");
+        window.location.href = "member.html";
+        return;
+    }
 
+    const favData = {
+        name: pName,
+        price: pPrice,
+        image: pImage,
+        addedAt: firebase.database.ServerValue.TIMESTAMP
+    };
+
+    // 使用植物名稱作為 Key (或隨機 ID)
+    const favKey = pName.replace(/\s/g, '_'); 
+    
+    firebase.database().ref('favorites/' + user.uid + '/' + favKey).set(favData)
+        .then(() => alert("✨ 已加入收藏清單"))
+        .catch(err => alert("收藏失敗"));
+}
 function updateCount() {
     const countEl = document.getElementById('cart-count');
     if(countEl) countEl.innerText = cart.length;

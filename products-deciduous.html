@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>職人選樹 | Cat Gaze</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-main: #3d4a35; /* 深苔蘚綠 */
+            --brand-gold: #b2955a; /* 枯金 */
+            --paper-bg: #f4f1ea;   /* 和紙色 */
+            --text-dark: #2a2a2a;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--paper-bg);
+            /* 加入微弱的纖維質感背景圖 */
+            background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+            margin: 0;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .serif { font-family: 'Noto Serif TC', serif; }
+
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+
+        /* --- Header --- */
+        header { background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); padding: 15px 0; border-bottom: 1px solid rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; gap: 10px; }
+        .site-logo { height: 40px; }
+        .logo-text { font-size: 1.3rem; font-weight: 700; color: var(--brand-main); letter-spacing: 2px; }
+        .nav-right a { margin-left: 20px; text-decoration: none; color: var(--text-dark); font-size: 0.9rem; }
+
+        /* --- Hero Section (極簡侘寂風) --- */
+        .tree-hero {
+            padding: 100px 0 60px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        .tree-hero h1 { font-size: 3.5rem; color: var(--brand-main); margin: 0; letter-spacing: 12px; font-weight: 500; }
+        .tree-hero p { font-size: 1.1rem; color: #777; margin-top: 20px; letter-spacing: 3px; }
+
+        /* --- 裝飾性印章元素 --- */
+        .seal {
+            width: 50px; height: 50px; border: 2px solid #b22222; color: #b22222;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-family: 'Noto Serif TC'; font-weight: 700; font-size: 1.2rem;
+            margin-bottom: 20px; border-radius: 4px; opacity: 0.8;
+        }
+
+        /* --- Product Grid --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 50px;
+            padding: 80px 0;
+        }
+
+        .product-card {
+            background: transparent;
+            position: relative;
+            transition: 0.5s ease;
+        }
+
+        /* 圖片容器：增加相框感 */
+        .img-wrapper {
+            position: relative;
+            padding: 15px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: 0.5s;
+        }
+        .product-card:hover .img-wrapper { transform: translateY(-10px); box-shadow: 0 30px 50px rgba(0,0,0,0.1); }
+        
+        .img-box { width: 100%; height: 400px; overflow: hidden; position: relative; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 1.2s; }
+        .product-card:hover .img-box img { scale: 1.05; }
+
+        /* 植物規格浮層 */
+        .spec-overlay {
+            position: absolute; top: 20px; left: 20px;
+            writing-mode: vertical-rl; /* 直打文字增加東方美感 */
+            background: rgba(61, 74, 53, 0.8); color: white;
+            padding: 15px 8px; font-size: 0.75rem; letter-spacing: 2px;
+        }
+
+        /* 商品資訊 */
+        .product-info { padding: 30px 10px; text-align: left; }
+        .product-info h3 { margin: 0; font-size: 1.6rem; color: var(--brand-main); border-left: 3px solid var(--brand-gold); padding-left: 15px; }
+        .product-meta { font-size: 0.85rem; color: #888; margin: 15px 0 20px 18px; line-height: 1.8; }
+        
+        .price-box {
+            display: flex; justify-content: space-between; align-items: baseline;
+            margin-top: 20px; padding-left: 18px;
+        }
+        .price { font-size: 1.5rem; font-weight: 500; color: #9a4d2d; }
+        
+        .btn-action-group { display: flex; gap: 10px; margin-top: 25px; }
+        .btn-view { flex: 1; padding: 12px; background: var(--brand-main); color: white; border: none; cursor: pointer; letter-spacing: 2px; }
+        .btn-fav { width: 45px; background: white; border: 1px solid #ddd; cursor: pointer; }
+
+        /* 滾動動畫效果 */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container navbar">
+        <a href="index.html" class="logo-container">
+            <img src="CG_logo w bg_vertica_green.png" alt="Logo" class="site-logo">
+            <span class="logo-text">Cat Gaze</span>
+        </a>
+        <nav class="nav-right">
+            <a href="index.html">返回首頁</a>
+            <a href="categories.html">各類品項</a>
+            <a href="member.html">會員中心</a>
+            <a href="javascript:void(0)" onclick="toggleCart()">🛒 購物車</a>
+        </nav>
+    </div>
+</header>
+
+<section class="tree-hero">
+    <div class="container">
+        <div class="seal">職人</div>
+        <h1>樹木類</h1>
+        <p>每一寸彎曲，都是歲月留下的詩</p>
+    </div>
+</section>
+
+<div class="container">
+    <div class="product-grid">
+        <div class="product-card fade-in">
+            <div class="img-wrapper">
+                <div class="spec-overlay">樹齡 十二年 | 幹徑 五公分</div>
+                <div class="img-box">
+                    <img src="pine.jpg" alt="黑松">
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>三河黑松</h3>
+                <div class="product-meta">
+                    科別：松科<br>
+                    姿態：斜幹式<br>
+                    特點：針葉極短，幹身龜裂感強烈
+                </div>
+                <div class="price-box">
+                    <span class="price">NT$ 12,800</span>
+                </div>
+                <div class="btn-action-group">
+                    <button class="btn-view" onclick="addToCart('三河黑松', 12800)">加入收藏</button>
+                    <button class="btn-fav">❤️</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card fade-in">
+            <div class="img-wrapper">
+                <div class="spec-overlay">樹齡 八年 | 四季紅葉</div>
+                <div class="img-box">
+                    <img src="maple.jpg" alt="楓樹">
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>出猩猩楓</h3>
+                <div class="product-meta">
+                    科別：槭樹科<br>
+                    姿態：叢生式<br>
+                    特點：春季嫩芽紅如火，夏季轉綠
+                </div>
+                <div class="price-box">
+                    <span class="price">NT$ 6,500</span>
+                </div>
+                <div class="btn-action-group">
+                    <button class="btn-view" onclick="addToCart('出猩猩楓', 6500)">加入收藏</button>
+                    <button class="btn-fav">❤️</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 簡單的入場動畫腳本
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(card => observer.observe(card));
+</script>
+
+</body>
+</html>

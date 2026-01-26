@@ -88,6 +88,23 @@
     }
     .btn-save:hover { transform: translateY(-2px); background: #6a7a59; }
 
+/* 讓側邊欄的連結繼承原本的設計 */
+.sidebar-item {
+    display: block; /* 讓 <a> 撐滿寬度 */
+    text-decoration: none;
+    color: var(--text-dark);
+}
+
+.sidebar-nav-mobile {
+    display: flex;
+    flex-direction: column; /* 讓桌面版垂直排列 */
+}
+
+@media (max-width: 768px) {
+    .sidebar-nav-mobile {
+        flex-direction: row; /* 手機版才變橫向 */
+    }
+}
     /* --- 手機版 RWD 優化 --- */
     @media (max-width: 768px) {
         /* Header 調整 */
@@ -156,10 +173,10 @@
     </div>
     
     <div class="sidebar-nav-mobile">
-        <div class="sidebar-item active">個人資料</div>
-        <div class="sidebar-item">訂單查詢</div>
-        <div class="sidebar-item">我的收藏</div>
-        <div class="sidebar-item" style="color: #ff4d4d;">登出</div>
+        <a href="member.html" class="sidebar-item active" style="text-decoration:none;">個人資料</a>
+        <a href="orders.html" class="sidebar-item" style="text-decoration:none;">訂單查詢</a>
+        <a href="favorites.html" class="sidebar-item" style="text-decoration:none;">我的收藏</a>
+        <div class="sidebar-item" id="logout-btn" style="color: #ff4d4d;">登出</div>
     </div>
 </aside>
             <main class="member-content">

@@ -15,6 +15,7 @@
             --brand-cream: #FDFAD9;     /* 米白/奶油色 */
             --bg-light: #fcfcf8;        /* 背景色 */
             --text-dark: #4a4a4a;       /* 文字色 */
+            --price-color: #d14900;
         }
 
         body {
@@ -294,6 +295,21 @@
         margin-bottom: 30px;
     }
 }
+/* 讓連結擴展到整個卡片 */
+.article-card {
+    position: relative; /* 確保絕對定位的連結參考此容器 */
+    cursor: pointer;
+}
+
+.read-more::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* 讓透明連結覆蓋整個卡片區域 */
+}
     </style>
 </head>
 <body>
@@ -329,19 +345,19 @@
 <div class="category-filter">
     <button class="filter-btn active" onclick="filterArticles('全部文章', this)">全部文章</button>
     <button class="filter-btn" onclick="filterArticles('養護基礎', this)">養護基礎</button>
-    <button class="filter-btn" onclick="filterArticles('貓眼專欄', this)">貓眼專欄</button>
+    <button class="filter-btn" onclick="filterArticles('貓凝專欄', this)">貓凝專欄</button>
     <button class="filter-btn" onclick="filterArticles('職人訪談', this)">職人訪談</button>
     <button class="filter-btn" onclick="filterArticles('盆景美學', this)">盆景美學</button>
         </div>
 
         <div class="article-grid">
             
-    <div class="article-card featured-post" data-category="貓眼專欄">
+    <div class="article-card featured-post" data-category="貓凝專欄">
         <div class="article-image">
             <img src="pine-select.jpg" alt="選松指南" style="width:100%; height:100%; object-fit:cover;">
         </div>
         <div class="article-content">
-            <div class="article-meta">2026.01.10 | 貓眼專欄</div>
+            <div class="article-meta">2026.01.10 | 貓凝專欄</div>
             <div class="article-title">透過貓的凝視，選出屬於你的靈魂盆景</div>
             <div class="article-excerpt">...內容...</div>
             <a href="article-soul-bonsai.html" class="read-more">繼續閱讀 →</a>
@@ -383,12 +399,13 @@
             <a href="article-pine-bud.html" class="read-more">繼續閱讀 →</a>
         </div>
     </div>
-<div class="article-card" data-category="貓眼專欄">
-    <div class="article-image">
+    
+    <div class="article-card" data-category="貓凝專欄">
+         <div class="article-image">
         <img src="pet-safe-plants.jpg" alt="貓咪無毒植物清單" style="width:100%; height:100%; object-fit:cover;">
     </div>
     <div class="article-content">
-        <div class="article-meta">2026.01.26 | 貓眼專欄</div>
+        <div class="article-meta">2026.01.26 | 貓凝專欄</div>
         <div class="article-title">2026 貓奴必收！10 種對貓無毒的室內植物清單</div>
         <div class="article-excerpt">
             想打造室內森林卻怕貓咪中毒？我們整理了 10 款 ASPCA 認證的安全植栽，讓您安心享受綠意...
@@ -396,11 +413,23 @@
         <a href="article-pet-safe.html" class="read-more">繼續閱讀 →</a>
     </div>
 </div>
+
+<div class="article-card" data-category="養護基礎">
+        <div class="article-image">
+            <img src="watering-guide.jpg" alt="調配萬用土" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div class="article-content">
+            <div class="article-meta">2026.01.05 | 養護基礎</div>
+            <div class="article-title">如何調配盆景萬用土？赤玉土、鹿沼土比例全攻略</div>
+            <div class="article-excerpt">在盆景的世界裡，有一句話說：「養樹先養根」。而根系能否健康生長，完全取決於你所使用的「介質（土壤）」。很多新手直接使用一般花市的培養土，卻發現植栽容易悶根死亡，原因就在於透氣性不足。</div>
+            <a href="article-soil-mix.html" class="read-more">繼續閱讀 →</a>
+        </div>
+    </div>
         </div>
     </div>
 <section class="subscribe-section">
     <div class="subscribe-container">
-        <h2>訂閱貓眼電子報</h2>
+        <h2>訂閱貓凝電子報</h2>
         <p>每月兩次，我們將最適合當季的養護技巧與職人故事，直接寄送到您的信箱。</p>
         <form class="subscribe-form" onsubmit="handleSubscribe(event)">
             <input type="email" id="subscriber-email" placeholder="輸入您的 Email 地址" required>
@@ -445,8 +474,8 @@
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
 <script src="cart-system.js"></script>
 
 <script>

@@ -129,9 +129,9 @@
                 <p class="product-id">編號: CG-SB002 | 松柏專區</p>
                 <div class="price">NT$ 4,500</div>
                 <div style="color: var(--brand-main); font-weight: 600; margin-bottom: 20px;">
-                    ✦ 貓眼嚴選：葉質細緻，適合居家窗台首選
+                    ✦ 貓凝嚴選：葉質細緻，適合居家窗台首選
                 </div>
-                <button class="btn-buy" onclick="addToCart('系魚川真柏 | 職人手作', 4500)">✦ 加入購物車</button>
+                <button class="btn-buy" onclick="addToCart('系魚川真柏 | 職人手作', 4500, 'shimpaku_main.jpg')">✦ 加入購物車</button>
                 <p style="text-align: center; font-size: 0.8rem; color: #999;">預計 2-3 個工作天內出貨 (不含例假日)</p>
                 
                 <div class="gaze-files">
@@ -176,9 +176,36 @@
     </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
 <script src="cart-system.js"></script>
 
+<div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
+<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
+    </div>
+
+<script>
+    // 確保頁面載入後，CSS 狀態能被 JS 正確讀取
+    window.addEventListener('DOMContentLoaded', () => {
+        const drawer = document.getElementById('cart-drawer');
+        if (drawer) {
+            drawer.style.right = '-400px'; // 強制賦予初始值，讓 addToCart 的 if 判斷能生效
+        }
+    });
+
+    // 產品頁專屬：點擊加入購物車後的回饋
+    // 如果你的 cart-system.js 裡面沒有自動 toggleCart，請在這裡補強：
+    const originalAddToCart = window.addToCart;
+    window.addToCart = function(name, price, img) {
+        if (typeof originalAddToCart === 'function') {
+            originalAddToCart(name, price, img);
+            // 強制開啟側欄
+            const drawer = document.getElementById('cart-drawer');
+            if (drawer && drawer.style.right !== '0px') {
+                toggleCart();
+            }
+        }
+    };
+</script>
 </body>
 </html>

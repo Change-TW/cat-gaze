@@ -11,6 +11,7 @@
             --brand-gold: #A68D5B; /* 增加金色點綴感 */
             --bg-light: #fcfcf8;
             --text-dark: #333;
+            --price-color: #d14900;
         }
 
         body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); margin: 0; color: var(--text-dark); }
@@ -94,6 +95,10 @@
             <a href="knowledge.html">知識中心</a>
             <a href="tools.html">資材用具</a>
             <a href="member.html">👤 會員</a>
+            <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
+    🛒 購物車 <span id="cart-count" style="background: var(--price-color); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -10px; right: -15px;">0</span>
+</a>
+
         </nav>
     </div>
 </header>
@@ -115,7 +120,9 @@
             <h2>靜謐時光：百年紀州真柏</h2>
             <p>來自日本紀州的頂級真柏，擁有極其優美的舍利干線條。經過職人十年以上的耐心培植，展現出與自然對抗後的蒼勁力量。適合作為書房或禪意空間的視覺靈魂。</p>
             <span class="price-tag">NT$ 12,800</span>
-            <button class="btn-luxury" onclick="addToCart('百年紀州真柏', 12800, 'img_url')">將這份靜謐帶回家</button>
+            <button class="btn-luxury" onclick="addToCart('百年紀州真柏', 12800, 'https://images.unsplash.com/photo-1512428813834-c702c7702b78')">
+    將這份靜謐帶回家
+</button>
         </div>
     </div>
 
@@ -127,11 +134,39 @@
             <h2>赤焰：清姬楓 迷你盆景</h2>
             <p>清姬楓以其細緻的葉形與四季分明的顏色變化著稱。這批新品特選了比例完美的陶盆搭配，非常適合放在辦公桌前，在凝視與修剪中找回心靈的平衡。</p>
             <span class="price-tag">NT$ 3,200</span>
-            <button class="btn-luxury" onclick="addToCart('清姬楓 迷你盆景', 3200, 'img_url')">開始您的植感生活</button>
+            <button class="btn-luxury" onclick="addToCart('清姬楓 迷你盆景', 3200, 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688')">
+    開始您的植感生活
+</button>
         </div>
     </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script src="cart-system.js"></script>
+
+<div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
+
+<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
+        <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
+        <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+
+    <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;">
+        <p style="text-align:center; color:#999;">目前沒有選購植物</p>
+    </div>
+
+    <div style="border-top:1px solid #eee; padding-top:20px;">
+        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
+            <span>總計金額</span>
+            <span id="cart-total-price" style="color:#d14900;">NT$ 0</span>
+        </div>
+        <button onclick="checkoutToLine()" style="width:100%; background:#7F916A; color:white; border:none; padding:15px; border-radius:30px; font-weight:bold; cursor:pointer;">
+            帶它們回家 (聯繫 LINE 結帳)
+        </button>
+    </div>
+</div>
 </body>
 </html>

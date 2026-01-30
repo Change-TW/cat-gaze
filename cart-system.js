@@ -35,6 +35,54 @@ function toggleCart() {
     }
 }
 
+function addToCart(pName, pPrice, pImage) {
+    // 1. 建立商品物件
+    const item = {
+        name: pName,
+        price: pPrice,
+        image: pImage
+    };
+
+    // 2. 推入購物車陣列
+    cart.push(item);
+
+    // 3. 儲存到 LocalStorage
+    localStorage.setItem('CatGazeCart', JSON.stringify(cart));
+
+    // 4. 同步到 Firebase (如果有登入)
+    const userKey = getUserKey();
+    if (userKey) {
+        database.ref('carts/' + userKey).set(cart);
+    }
+
+    // 5. 更新 UI 數字
+    updateCount();
+
+    // 6. 給使用者一個動態視覺回饋
+    alert("🌿 " + pName + " 已加入選植清單");
+    
+    // 選項：自動打開購物車側欄
+    // toggleCart(); 
+}
+function addToCart(pName, pPrice, pImage) {
+    const item = { name: pName, price: pPrice, image: pImage };
+    cart.push(item);
+    localStorage.setItem('CatGazeCart', JSON.stringify(cart));
+
+    const userKey = getUserKey();
+    if (userKey) database.ref('carts/' + userKey).set(cart);
+
+    updateCount();
+    renderCart(); // 確保內容即時更新
+
+    // --- 自動側滑邏輯 ---
+    const drawer = document.getElementById('cart-drawer');
+    // 如果購物車目前是收起來的 (右邊距離是 -400px)，就把它打開
+    if (drawer && drawer.style.right !== '0px') {
+        toggleCart();
+    }
+}
+
 function addToFavorites(pName, pPrice, pImage) {
     const user = firebase.auth().currentUser;
     if (!user) {

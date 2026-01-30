@@ -115,8 +115,9 @@
             <a href="about.html">關於我們</a>
             <a href="member.html">👤 會員</a>
             <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
-                🛒 <span id="cart-count">0</span>
-            </a>
+    🛒 購物車 <span id="cart-count" style="background: var(--price-color); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -10px; right: -15px;">0</span>
+</a>
+
         </nav>
     </div>
 </header>
@@ -146,7 +147,9 @@
                 <h3 class="product-title">日本製 職人級黑鋼剪定鋏</h3>
                 <div class="product-price">NT$ 1,880</div>
             </div>
-            <button class="add-to-cart-btn" onclick="addToCart('黑鋼剪定鋏', 1880, 'tool-1.jpg')">加入選植清單</button>
+            <button class="add-to-cart-btn" onclick="addToCart('日本製黑鋼剪定鋏', 1880, 'tool-1.jpg')">
+    加入選植清單
+</button>
         </div>
 
         <div class="product-card">
@@ -158,7 +161,9 @@
                 <h3 class="product-title">三本線 赤玉土 (極硬質 - 5L)</h3>
                 <div class="product-price">NT$ 450</div>
             </div>
-            <button class="add-to-cart-btn" onclick="addToCart('赤玉土', 450, 'tool-2.jpg')">加入選植清單</button>
+            <button class="add-to-cart-btn" onclick="addToCart('三本線赤玉土 5L', 450, 'tool-2.jpg')">
+    加入選植清單
+</button>
         </div>
 
         <div class="product-card">
@@ -170,16 +175,64 @@
                 <h3 class="product-title">墨染手作 柴燒粗陶盆</h3>
                 <div class="product-price">NT$ 1,200</div>
             </div>
-            <button class="add-to-cart-btn" onclick="addToCart('柴燒粗陶盆', 1200, 'tool-3.jpg')">加入選植清單</button>
+            <button class="add-to-cart-btn" onclick="addToCart('墨染手作柴燒陶盆', 1200, 'tool-3.jpg')">
+    加入選植清單
+</button>
         </div>
     </div>
 </div>
 
-<script src="cart-system.js"></script>
-<script>
-    // 頁面載入時更新購物車數字
-    document.addEventListener('DOMContentLoaded', updateCartUI);
-</script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
+<script src="cart-system.js"></script>
+
+<div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
+
+<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
+        <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
+        <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+
+    <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;">
+        <p style="text-align:center; color:#999;">目前沒有選購植物</p>
+    </div>
+
+    <div style="border-top:1px solid #eee; padding-top:20px;">
+        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
+            <span>總計金額</span>
+            <span id="cart-total-price" style="color:#d14900;">NT$ 0</span>
+        </div>
+        <button onclick="checkoutToLine()" style="width:100%; background:#7F916A; color:white; border:none; padding:15px; border-radius:30px; font-weight:bold; cursor:pointer;">
+            帶它們回家 (聯繫 LINE 結帳)
+        </button>
+    </div>
+</div>
+
+<script>
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const productCards = document.querySelectorAll('.product-card');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const selectedTag = btn.textContent.trim();
+            productCards.forEach(card => {
+                const cardTag = card.querySelector('.product-tag').textContent.trim();
+                if (selectedTag === '全部' || cardTag === selectedTag) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // 強制檢查：如果點擊按鈕沒反應，檢查控制台有無錯誤
+    console.log("購物車系統已載入");
+</script>
 </body>
 </html>

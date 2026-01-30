@@ -301,7 +301,84 @@
         margin-bottom: 30px;
     }
 }
+/* --- Header 導覽列修正 --- */
+.navbar {
+    display: flex;
+    justify-content: space-between; /* 讓三區塊均分空間 */
+    align-items: center;
+    height: 60px; /* 統一高度 */
+}
+
+/* 確保中間的 nav-links 能夠置中，且不會擠壓到左右 */
+.nav-links {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center; /* 讓連結在中間 */
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-dark);
+    margin: 0 1.2rem; /* 稍微縮小間距，避免手機版爆開 */
+    font-weight: 500;
+    font-size: 0.95rem; /* 微調字體大小 */
+    transition: color 0.3s;
+    white-space: nowrap; /* 防止文字換行 */
+}
+
+/* 右側功能圖示 */
+.utility-icons {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* 使用 gap 代替 margin-left 更好控制 */
+    min-width: 200px; /* 給右側足夠空間 */
+    justify-content: flex-end;
+}
+@media (max-width: 1024px) {
+    /* 針對平板與小螢幕微調 */
+    .nav-links a {
+        margin: 0 0.8rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem 0;
+    }
+
+    .nav-links {
+        margin-top: 15px;
+        flex-wrap: wrap; /* 讓連結多出時可以換行 */
+    }
+
+    .utility-icons {
+        margin-top: 15px;
+        justify-content: center;
+        min-width: auto;
+    }
+}
     </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Cat Gaze 貓凝植栽",
+  "image": "https://yourdomain.com/CG_logo.png",
+  "description": "專業盆景、植栽與寵物友善植物選物店。提供黑松真柏養護知識、日本製修剪工具及專業介質。",
+  "url": "https://yourdomain.com",
+  "telephone": "0931366195",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "大安區忠孝東路4段231號10樓之2",
+    "addressLocality": "台北市",
+    "addressRegion": "TW"
+  },
+  "priceRange": "NT$300 - NT$50000"
+}
+</script>
 </head>
 <body>
 
@@ -466,7 +543,7 @@
         
         <div class="product-grid" style="gap: 30px;">
             <div class="knowledge-card">
-                <h4>【貓眼專欄】黑松摘芽的黃金時機</h4>
+                <h4>【貓凝專欄】黑松摘芽的黃金時機</h4>
                 <p>詳細圖解如何正確摘除新芽，維持松針的短密與美觀姿態，是黑松養護的關鍵步驟...</p>
                 <a href="article-pine-bud.html" style="color: var(--brand-main); text-decoration: none; font-weight: bold;">閱讀全文</a>
             </div>
@@ -483,6 +560,46 @@
         </div>
     </section>
 
+<section class="seo-keyword-section" style="background: #f4f4f0; padding: 4rem 0; border-top: 1px solid #eee;">
+    <div class="container">
+        <h2 style="font-size: 1.5rem; color: var(--brand-main); margin-bottom: 2rem; font-weight: 500;">
+            探索植感生活：專業盆景養護與寵物友善指南
+        </h2>
+        
+        <div class="seo-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+            <div class="seo-group">
+                <h3 style="font-size: 1rem; color: #333;">寵物友善室內植物</h3>
+                <ul style="list-style: none; padding: 0; font-size: 0.9rem; color: #666;">
+                    <li><a href="article-pet-safe.html" style="text-decoration: none; color: inherit;">10種對貓無毒植物清單</a></li>
+                    <li><a href="categories.html" style="text-decoration: none; color: inherit;">ASPCA 認證安全植栽</a></li>
+                    <li><a href="article-pet-safe.html" style="text-decoration: none; color: inherit;">室內貓咪友善盆栽推薦</a></li>
+                </ul>
+            </div>
+
+            <div class="seo-group">
+                <h3 style="font-size: 1rem; color: #333;">專業盆景養護教學</h3>
+                <ul style="list-style: none; padding: 0; font-size: 0.9rem; color: #666;">
+                    <li><a href="article-soil-mix.html" style="text-decoration: none; color: inherit;">赤玉土與鹿沼土調配比例</a></li>
+                    <li><a href="knowledge.html" style="text-decoration: none; color: inherit;">黑松、真柏避坑養護指南</a></li>
+                    <li><a href="article-watering.html" style="text-decoration: none; color: inherit;">盆景乾透澆透正確時機</a></li>
+                </ul>
+            </div>
+
+            <div class="seo-group">
+                <h3 style="font-size: 1rem; color: #333;">職人選物與資材</h3>
+                <ul style="list-style: none; padding: 0; font-size: 0.9rem; color: #666;">
+                    <li><a href="tools.html" style="text-decoration: none; color: inherit;">日本製黑鋼剪定鋏推薦</a></li>
+                    <li><a href="tools.html" style="text-decoration: none; color: inherit;">柴燒手作陶盆選購</a></li>
+                    <li><a href="new-arrivals.html" style="text-decoration: none; color: inherit;">本月稀有系真柏新品</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="margin-top: 3rem; font-size: 0.85rem; color: #999; line-height: 1.6;">
+            <p><strong>Cat Gaze (貓凝)</strong> 致力於提供高品質的盆景藝術與室內植栽體驗。我們嚴選<strong>寵物友善</strong>植栽，讓愛毛孩的您也能安心享受綠意生活。透過專業的<strong>赤玉土配方</strong>與<strong>修剪工具</strong>，我們陪伴每一位植人跨越季節，凝視自然之美。</p>
+        </div>
+    </div>
+</section>
 
     <footer>
         <div class="container footer-grid">
@@ -503,7 +620,7 @@
             <div class="footer-col">
                 <h4>品牌故事</h4>
                 <a href="#">關於 Cat Gaze</a>
-                <a href="#">貓眼嚴選理念</a>
+                <a href="#">貓凝嚴選理念</a>
                 <a href="#">職人合作</a>
                 <a href="#">媒體報導</a>
             </div>
@@ -542,9 +659,8 @@
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
 <script src="cart-system.js"></script>
-
 </body>
 </html>

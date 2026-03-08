@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小葉羅漢松 | Cat Gaze 寵物友善植栽</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-main: #7F916A;
+            --brand-accent: #B0C4B8;
+            --brand-cream: #FDFAD9;
+            --bg-light: #fcfcf8;
+            --text-dark: #4a4a4a;
+            --price-color: #d14900;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-light);
+            margin: 0; color: var(--text-dark); line-height: 1.8;
+        }
+
+        .container { width: 90%; max-width: 1100px; margin: 0 auto; }
+
+        /* --- Header --- */
+        header { background: white; padding: 10px 0; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; gap: 12px; }
+        .site-logo { height: 40px; width: auto; }
+        .logo-text { font-size: 1.2rem; font-weight: 700; color: var(--brand-main); }
+        .nav-right a { margin-left: 20px; text-decoration: none; color: var(--text-dark); font-size: 0.9rem; }
+
+        /* --- Product Layout --- */
+        .product-container { display: flex; gap: 50px; padding: 60px 0; flex-wrap: wrap; }
+        .product-image-section { flex: 1.2; min-width: 350px; }
+        .product-image-section img { width: 100%; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); }
+
+        .product-info-section { flex: 1; min-width: 350px; }
+        .breadcrumb { font-size: 0.85rem; color: #aaa; margin-bottom: 10px; }
+        .product-title { font-size: 2.2rem; margin: 0 0 15px; color: var(--text-dark); }
+        .price-tag { font-size: 1.8rem; font-weight: 700; color: var(--price-color); margin-bottom: 25px; }
+
+        /* --- 養護標籤 --- */
+        .care-tags { display: flex; gap: 15px; margin-bottom: 30px; }
+        .care-tag { 
+            background: white; border: 1px solid #eee; padding: 10px 20px; 
+            border-radius: 12px; text-align: center; flex: 1;
+        }
+        .care-tag span { display: block; font-size: 0.75rem; color: #999; }
+        .care-tag strong { display: block; font-size: 0.95rem; color: var(--brand-main); }
+
+        /* --- 巧遇店長建議 --- */
+        .qiaoyu-box {
+            background: var(--brand-cream); padding: 25px; border-radius: 20px;
+            position: relative; margin: 40px 0; border-left: 5px solid var(--brand-main);
+        }
+        .qiaoyu-avatar {
+            width: 60px; height: 60px; border-radius: 50%; border: 3px solid white;
+            position: absolute; top: -30px; right: 20px; background: #eee; overflow: hidden;
+        }
+        .qiaoyu-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .qiaoyu-title { font-weight: 700; color: var(--brand-main); margin-bottom: 10px; display: block; }
+        .qiaoyu-text { font-size: 0.95rem; font-style: italic; }
+
+        .buy-actions { display: flex; gap: 15px; margin-top: 30px; }
+        .btn-main { 
+            flex: 2; background: var(--brand-main); color: white; border: none; 
+            padding: 18px; border-radius: 35px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-main:hover { background: #6a7a59; transform: translateY(-3px); }
+        .btn-outline { 
+            flex: 1; background: white; color: var(--brand-main); border: 2px solid var(--brand-main); 
+            padding: 18px; border-radius: 35px; font-weight: 700; cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .product-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container navbar">
+        <a href="index.html" class="logo-container">
+            <img src="CG_logo w bg_vertica_green.png" alt="Logo" class="site-logo">
+            <span class="logo-text">Cat Gaze</span>
+        </a>
+        <nav class="nav-right">
+            <a href="categories.html">返回商店</a>
+            <a href="javascript:history.back()">上一頁</a>
+        </nav>
+    </div>
+</header>
+
+<main class="container product-container">
+    <section class="product-image-section">
+        <img src="luohan.jpg" alt="小葉羅漢松">
+        <div style="margin-top: 20px; color: #888; font-size: 0.9rem; text-align: center;">
+            * 植株均包含手工陶盆與天然赤玉土介質
+        </div>
+    </section>
+
+    <section class="product-info-section">
+        <div class="breadcrumb">首頁 / 陽台喜光 / 小葉羅漢松</div>
+        <h1 class="product-title">小葉羅漢松</h1>
+        <div class="price-tag">NT$ 2,200</div>
+
+        <p>羅漢松在傳統中象徵長壽與守護，而「小葉品種」更適合精緻的室內與陽台空間。其葉片常綠且層次分明，是微型盆景愛好者的首選。最重要的是，它對貓咪與狗狗完全無毒，是家中有毛小孩的您最安心的綠意選擇。</p>
+
+        <div class="care-tags">
+            <div class="care-tag"><span>光照要求</span><strong>半日照 / 通風</strong></div>
+            <div class="care-tag"><span>澆水頻率</span><strong>每週 2-3 次</strong></div>
+            <div class="care-tag"><span>安全評級</span><strong>100% 寵物無害</strong></div>
+        </div>
+
+        <div class="qiaoyu-box">
+            <div class="qiaoyu-avatar">
+                <img src="qiaoyu.jpg" alt="巧遇店長">
+            </div>
+            <span class="qiaoyu-title">🐈 店長「巧遇」的悄悄話：</span>
+            <p class="qiaoyu-text">「這棵樹的葉子尖尖的，但我咬過之後發現一點也不好吃（而且沒毒），本店長批准它進駐客廳！不過要記得放在陽光充足的地方，羅漢松才不會垂頭喪氣喔～」</p>
+        </div>
+
+        <div class="buy-actions">
+            <button class="btn-main" onclick="addToCart('小葉羅漢松', 2200)">加入購物清單</button>
+            <button class="btn-outline">收藏植物</button>
+        </div>
+
+        <div style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+            <details>
+                <summary style="cursor: pointer; font-weight: 500;">📦 運送與售後說明</summary>
+                <p style="font-size: 0.85rem; color: #666; padding: 10px;">
+                    為確保植物健康，我們僅提供專車配送或黑貓低溫宅配。收到植物後 7 天內若有非人為損傷，Cat Gaze 提供全額換植服務。
+                </p>
+            </details>
+        </div>
+    </section>
+</main>
+
+<footer style="background: white; padding: 40px 0; text-align: center; border-top: 1px solid #eee; margin-top: 60px;">
+    <p style="color: #aaa; font-size: 0.8rem;">© 2026 Cat Gaze. 每一株植物都經過安全複審。</p>
+</footer>
+
+<script src="cart-system.js"></script>
+
+</body>
+</html>

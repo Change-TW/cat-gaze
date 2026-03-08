@@ -3,110 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>職人選樹 | Cat Gaze</title>
+    <title>桌面山林：辦公室療癒系列 | Cat Gaze</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --brand-main: #3d4a35; /* 深苔蘚綠 */
-            --brand-gold: #b2955a; /* 枯金 */
-            --paper-bg: #f4f1ea;   /* 和紙色 */
-            --text-dark: #2a2a2a;
+            --brand-main: #7F916A;    /* 鼠尾草綠 (你的主色) */
+            --brand-accent: #B0C4B8;  /* 淺灰綠 */
+            --brand-cream: #FDFAD9;   /* 奶油色 */
+            --bg-light: #fcfcf8;      /* 背景色 */
+            --text-dark: #4a4a4a;     /* 文字色 */
+            --price-color: #d14900;   /* 價格色 */
         }
 
         body {
             font-family: 'Noto Sans TC', sans-serif;
-            background-color: var(--paper-bg);
-            /* 加入微弱的纖維質感背景圖 */
-            background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
-            margin: 0;
-            color: var(--text-dark);
-            overflow-x: hidden;
+            background-color: var(--bg-light);
+            margin: 0; color: var(--text-dark);
+            line-height: 1.8;
         }
 
-        h1, h2, h3, .serif { font-family: 'Noto Serif TC', serif; }
-
+        .serif { font-family: 'Noto Serif TC', serif; }
         .container { width: 90%; max-width: 1200px; margin: 0 auto; }
 
-        /* --- Header --- */
-        header { background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); padding: 15px 0; border-bottom: 1px solid rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        /* --- Header (完全統一) --- */
+        header { background: white; border-bottom: 1px solid #eee; padding: 15px 0; position: sticky; top: 0; z-index: 1000; }
         .navbar { display: flex; justify-content: space-between; align-items: center; }
-        .logo-container { display: flex; align-items: center; text-decoration: none; gap: 10px; }
-        .site-logo { height: 40px; }
-        .logo-text { font-size: 1.3rem; font-weight: 700; color: var(--brand-main); letter-spacing: 2px; }
+        .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--brand-main); text-decoration: none; letter-spacing: 1px; }
         .nav-right a { margin-left: 20px; text-decoration: none; color: var(--text-dark); font-size: 0.9rem; }
 
-        /* --- Hero Section (極簡侘寂風) --- */
-        .tree-hero {
-            padding: 100px 0 60px;
+        /* --- Hero Section (侘寂療癒風) --- */
+        .office-hero {
+            padding: 80px 0;
             text-align: center;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
+            background-color: var(--brand-cream);
+            border-bottom: 1px solid #eee;
         }
-        .tree-hero h1 { font-size: 3.5rem; color: var(--brand-main); margin: 0; letter-spacing: 12px; font-weight: 500; }
-        .tree-hero p { font-size: 1.1rem; color: #777; margin-top: 20px; letter-spacing: 3px; }
-
-        /* --- 裝飾性印章元素 --- */
-        .seal {
-            width: 50px; height: 50px; border: 2px solid #b22222; color: #b22222;
-            display: inline-flex; align-items: center; justify-content: center;
-            font-family: 'Noto Serif TC'; font-weight: 700; font-size: 1.2rem;
-            margin-bottom: 20px; border-radius: 4px; opacity: 0.8;
-        }
+        .office-hero h1 { font-size: 2.8rem; color: var(--brand-main); margin: 0; font-weight: 500; letter-spacing: 4px; }
+        .office-hero p { font-size: 1.1rem; color: #777; margin-top: 15px; letter-spacing: 2px; }
 
         /* --- Product Grid --- */
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 50px;
-            padding: 80px 0;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 40px;
+            padding: 60px 0;
         }
 
         .product-card {
-            background: transparent;
-            position: relative;
-            transition: 0.5s ease;
-        }
-
-        /* 圖片容器：增加相框感 */
-        .img-wrapper {
-            position: relative;
-            padding: 15px;
             background: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: 0.5s;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: 0.4s ease;
+            border: 1px solid #eee;
+            cursor: pointer;
         }
-        .product-card:hover .img-wrapper { transform: translateY(-10px); box-shadow: 0 30px 50px rgba(0,0,0,0.1); }
-        
-        .img-box { width: 100%; height: 400px; overflow: hidden; position: relative; }
-        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 1.2s; }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+
+        .img-box { width: 100%; height: 320px; position: relative; overflow: hidden; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 1s; }
         .product-card:hover .img-box img { scale: 1.05; }
 
-        /* 植物規格浮層 */
-        .spec-overlay {
-            position: absolute; top: 20px; left: 20px;
-            writing-mode: vertical-rl; /* 直打文字增加東方美感 */
-            background: rgba(61, 74, 53, 0.8); color: white;
-            padding: 15px 8px; font-size: 0.75rem; letter-spacing: 2px;
+        /* 標籤：維持你的設計語彙 */
+        .status-badge {
+            position: absolute; top: 15px; left: 15px;
+            background: var(--brand-main); color: white;
+            padding: 5px 12px; border-radius: 20px; font-size: 0.75rem;
+            font-weight: bold; letter-spacing: 1px;
         }
 
-        /* 商品資訊 */
-        .product-info { padding: 30px 10px; text-align: left; }
-        .product-info h3 { margin: 0; font-size: 1.6rem; color: var(--brand-main); border-left: 3px solid var(--brand-gold); padding-left: 15px; }
-        .product-meta { font-size: 0.85rem; color: #888; margin: 15px 0 20px 18px; line-height: 1.8; }
+        .product-info { padding: 25px; }
+        .product-info h3 { margin: 0; font-size: 1.4rem; color: var(--brand-main); font-weight: 600; }
+        .healing-meta { font-size: 0.85rem; color: #888; margin: 10px 0; border-left: 2px solid var(--brand-accent); padding-left: 10px; }
         
-        .price-box {
-            display: flex; justify-content: space-between; align-items: baseline;
-            margin-top: 20px; padding-left: 18px;
+        /* 巧遇店長的減壓碎碎念 (品牌專屬特色) */
+        .qiaoyu-bubble {
+            background: var(--brand-cream); padding: 15px; border-radius: 12px;
+            font-size: 0.9rem; color: #666; margin: 20px 0;
+            position: relative;
         }
-        .price { font-size: 1.5rem; font-weight: 500; color: #9a4d2d; }
+        .qiaoyu-bubble::after {
+            content: "🐈 店長悄悄話";
+            display: block; font-weight: bold; color: var(--brand-main); margin-bottom: 5px;
+        }
+
+        .price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+        .price { font-size: 1.5rem; font-weight: 700; color: var(--price-color); }
         
-        .btn-action-group { display: flex; gap: 10px; margin-top: 25px; }
-        .btn-view { flex: 1; padding: 12px; background: var(--brand-main); color: white; border: none; cursor: pointer; letter-spacing: 2px; }
-        .btn-fav { width: 45px; background: white; border: 1px solid #ddd; cursor: pointer; }
+        .btn-add {
+            background: var(--brand-main); color: white; border: none;
+            padding: 12px 25px; border-radius: 25px; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+        }
+        .btn-add:hover { background: #6a7a59; }
 
-        /* 滾動動畫效果 */
-        .fade-in { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
-        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        @media (max-width: 768px) {
+            .office-hero h1 { font-size: 2rem; }
+            .product-grid { grid-template-columns: 1fr; }
+        }
+.navbar a {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
 
+.logo-text {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--brand-main);
+    letter-spacing: 1px;
+}
+/* --- Header 導覽列修正 --- */
+header { 
+    background: white; 
+    border-bottom: 1px solid #eee; 
+    padding: 10px 0; 
+    position: sticky; 
+    top: 0; 
+    z-index: 1000; 
+}
+
+.navbar { 
+    display: flex; 
+    justify-content: space-between; /* 關鍵：將空間分配在左右兩端 */
+    align-items: center; 
+    height: 60px;
+}
+
+.logo-container { 
+    display: flex; 
+    align-items: center; 
+    text-decoration: none; 
+    gap: 12px;
+}
+
+.site-logo { 
+    height: 45px; 
+    width: auto; 
+    border-radius: 50%; 
+}
+
+.logo-text { 
+    font-size: 1.4rem; 
+    font-weight: 700; 
+    color: var(--brand-main); 
+    letter-spacing: 1px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.nav-right a { 
+    margin-left: 25px; /* 增加間距 */
+    text-decoration: none; 
+    color: var(--text-dark); 
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: 0.3s;
+    white-space: nowrap; /* 預防文字換行 */
+}
+
+.nav-right a:hover { 
+    color: var(--brand-main); 
+}
+
+/* 手機版適配 */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* 手機版改為上下排列 */
+        height: auto;
+        padding: 10px 0;
+    }
+    .nav-right {
+        margin-top: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .nav-right a {
+        margin: 5px 10px;
+        font-size: 0.85rem;
+    }
+}
     </style>
 </head>
 <body>
@@ -114,90 +193,73 @@
 <header>
     <div class="container navbar">
         <a href="index.html" class="logo-container">
-            <img src="CG_logo w bg_vertica_green.png" alt="Logo" class="site-logo">
+            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="site-logo">
             <span class="logo-text">Cat Gaze</span>
         </a>
+        
         <nav class="nav-right">
             <a href="index.html">返回首頁</a>
             <a href="categories.html">各類品項</a>
             <a href="member.html">會員中心</a>
-            <a href="javascript:void(0)" onclick="toggleCart()">🛒 購物車</a>
+            <a href="javascript:void(0)" onclick="toggleCart()" class="cart-link">🛒 購物車</a>
         </nav>
     </div>
 </header>
 
-<section class="tree-hero">
+<section class="office-hero">
     <div class="container">
-        <div class="seal">職人</div>
-        <h1>樹木類</h1>
-        <p>每一寸彎曲，都是歲月留下的詩</p>
+        <h1 class="serif">桌面上的山林</h1>
+        <p>每一株植物，都是寫給生活的短詩</p>
     </div>
 </section>
 
 <div class="container">
     <div class="product-grid">
-        <div class="product-card fade-in">
-            <div class="img-wrapper">
-                <div class="spec-overlay">樹齡 十二年 | 幹徑 五公分</div>
-                <div class="img-box">
-                    <img src="pine.jpg" alt="黑松">
-                </div>
+        <div class="product-card" onclick="location.href='luohan-detail.html'">
+            <div class="img-box">
+                <div class="status-badge">CAT SAFE</div>
+                <img src="luohan.jpg" alt="小葉羅漢松">
             </div>
             <div class="product-info">
-                <h3>三河黑松</h3>
-                <div class="product-meta">
-                    科別：松科<br>
-                    姿態：斜幹式<br>
-                    特點：針葉極短，幹身龜裂感強烈
+                <h3 class="serif">小葉羅漢松 | 窗台上的雲朵</h3>
+                <div class="healing-meta">
+                    養護：低難度<br>
+                    特色：四季常青、空氣淨化
                 </div>
-                <div class="price-box">
-                    <span class="price">NT$ 12,800</span>
+                <div class="qiaoyu-bubble">
+                    「這盆跟我一樣毛茸茸的，放在螢幕旁心情會變好喵～」
                 </div>
-                <div class="btn-action-group">
-                    <button class="btn-view" onclick="addToCart('三河黑松', 12800)">加入收藏</button>
-                    <button class="btn-fav">❤️</button>
+                <div class="price-row">
+                    <span class="price">NT$ 2,200</span>
+                    <button class="btn-add" onclick="event.stopPropagation(); addToCart('小葉羅漢松', 2200, 'luohan.jpg')">帶回家</button>
                 </div>
             </div>
         </div>
 
-        <div class="product-card fade-in">
-            <div class="img-wrapper">
-                <div class="spec-overlay">樹齡 八年 | 四季紅葉</div>
-                <div class="img-box">
-                    <img src="maple.jpg" alt="楓樹">
-                </div>
+        <div class="product-card" onclick="location.href='fern-detail.html'">
+            <div class="img-box">
+                <div class="status-badge">PET FRIENDLY</div>
+                <img src="fern.jpg" alt="銀脈鳳尾蕨">
             </div>
             <div class="product-info">
-                <h3>出猩猩楓</h3>
-                <div class="product-meta">
-                    科別：槭樹科<br>
-                    姿態：叢生式<br>
-                    特點：春季嫩芽紅如火，夏季轉綠
+                <h3 class="serif">銀脈鳳尾蕨 | 辦公室保濕機</h3>
+                <div class="healing-meta">
+                    養護：耐陰喜濕<br>
+                    特色：銀白脈絡、視覺降溫
                 </div>
-                <div class="price-box">
-                    <span class="price">NT$ 6,500</span>
+                <div class="qiaoyu-bubble">
+                    「冷氣房太乾了？這盆能幫你的皮毛保濕喵！」
                 </div>
-                <div class="btn-action-group">
-                    <button class="btn-view" onclick="addToCart('出猩猩楓', 6500)">加入收藏</button>
-                    <button class="btn-fav">❤️</button>
+                <div class="price-row">
+                    <span class="price">NT$ 980</span>
+                    <button class="btn-add" onclick="event.stopPropagation(); addToCart('銀脈鳳尾蕨', 980, 'fern.jpg')">帶回家</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    // 簡單的入場動畫腳本
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.fade-in').forEach(card => observer.observe(card));
-</script>
+<script src="cart-system.js"></script>
 
 </body>
 </html>

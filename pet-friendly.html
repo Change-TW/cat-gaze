@@ -232,12 +232,14 @@ header {
         <button class="filter-tag">陽台喜光</button>
     </div>
 
-    <div class="product-grid">
-    <div class="product-card" data-category="陽台喜光">
+<div class="product-grid">
+    <div class="product-card" data-category="陽台喜光" onclick="location.href='luohan-detail.html'" style="cursor: pointer;">
         <div class="pet-badge">CAT SAFE</div>
+        
         <button class="btn-fav-float" onclick="event.stopPropagation(); addToFavorites('小葉羅漢松 | 友善首選', 2200, 'luohan.jpg')">
             <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
         </button>
+
         <div class="img-box">
             <img src="luohan.jpg" alt="羅漢松">
             <div class="env-bar">
@@ -246,19 +248,22 @@ header {
                 <span>📏 20cm</span>
             </div>
         </div>
+
         <div class="product-info">
             <h3>小葉羅漢松</h3>
             <p class="product-desc">蒼勁姿態卻擁有溫柔心腸，對貓狗完全無害的松柏替代首選。</p>
             <div class="price-row">
                 <span class="price">NT$ 2,200</span>
-                <button class="btn-add" onclick="addToCart('小葉羅漢松', 2200)">+</button>
+                <button class="btn-add" onclick="event.stopPropagation(); addToCart('小葉羅漢松', 2200)">+</button>
             </div>
         </div>
-    </div> <div class="product-card" data-category="耐陰室內">
+    </div> <div class="product-card" data-category="耐陰室內" onclick="location.href='fern-detail.html'" style="cursor: pointer;">
         <div class="pet-badge">DOG SAFE</div>
+        
         <button class="btn-fav-float" onclick="event.stopPropagation(); addToFavorites('銀脈鳳尾蕨', 980, 'fern.jpg')">
             <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
         </button>
+
         <div class="img-box">
             <img src="fern.jpg" alt="鳳尾蕨">
             <div class="env-bar">
@@ -267,12 +272,13 @@ header {
                 <span>📏 15cm</span>
             </div>
         </div>
+
         <div class="product-info">
             <h3>銀脈鳳尾蕨</h3>
             <p class="product-desc">優雅的銀色脈絡，適合擺放在光線較弱的室內角落。</p>
             <div class="price-row">
                 <span class="price">NT$ 980</span>
-                <button class="btn-add" onclick="addToCart('銀脈鳳尾蕨', 980)">+</button>
+                <button class="btn-add" onclick="event.stopPropagation(); addToCart('銀脈鳳尾蕨', 980)">+</button>
             </div>
         </div>
     </div> </div>

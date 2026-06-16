@@ -5,143 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <title>關於我們 | Cat Gaze - 透過貓眼凝視植栽之美</title>
+    
     <style>
         /* --- CSS 樣式設定 (保持 Cat Gaze 一貫的高質感) --- */
         :root {
             --brand-main: #7F916A;      /* 鼠尾草綠 */
             --brand-accent: #B0C4B8;    /* 淺灰綠 */
             --brand-cream: #FDFAD9;     /* 奶油米白 */
-            --bg-light: #fcfcf8;        
-            --text-dark: #4a4a4a;       
+            --bg-light: #fcfcf8;                    
+            --text-dark: #4a4a4a;               
         }
 
         body {
             font-family: 'Noto Sans TC', sans-serif;
-            margin: 0; padding: 0;
+            margin: 0; 
+            padding: 0;
             background-color: var(--bg-light);
             color: var(--text-dark);
             line-height: 2;
         }
 
-        .container { width: 90%; max-width: 1000px; margin: 0 auto; }
-
+        .container { 
+            width: 90%; 
+            max-width: 1000px; 
+            margin: 0 auto; 
+        }
+        
         /* --- Header --- */
- /* --- 完全同步：導覽列樣式 --- */
-header {
-    background-color: #ffffff;
-    border-bottom: 1px solid #eeeeee;
-    padding: 0.8rem 0; /* 稍微縮小高度，看起來更洗鍊 */
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #eeeeee;
+            padding: 0.8rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.logo-container {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-}
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
 
-.logo-img {
-    height: 42px; /* 統一 Logo 高度 */
-    width: auto;
-    margin-right: 12px;
-    border-radius: 50%;
-}
+        .logo-img {
+            height: 42px;
+            width: auto;
+            margin-right: 12px;
+            border-radius: 50%;
+        }
 
-.logo-text {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #7F916A; /* 品牌綠 */
-    letter-spacing: 1px;
-    font-family: 'Noto Sans TC', sans-serif;
-}
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #7F916A;
+            letter-spacing: 1px;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
 
-.nav-links {
-    display: flex;
-    align-items: center;
-}
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
 
-.nav-links a {
-    text-decoration: none;
-    color: #4a4a4a; /* 深灰色字體 */
-    margin-left: 2.2rem; /* 增加間距，更有高級感 */
-    font-weight: 500;
-    font-size: 1rem;
-    transition: color 0.3s ease;
-    font-family: 'Noto Sans TC', sans-serif;
-}
+        .nav-links a {
+            text-decoration: none;
+            color: #4a4a4a;
+            margin-left: 2.2rem;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
 
-.nav-links a:hover {
-    color: #7F916A;
-}
+        .nav-links a:hover {
+            color: #7F916A;
+        }
 
-/* 購物車小數字樣式 */
-#cart-count {
-    background: #d14900;
-    color: white;
-    border-radius: 10px;
-    padding: 1px 6px;
-    font-size: 11px;
-    position: absolute;
-    top: -8px;
-    right: -15px;
-    font-weight: bold;
-}
+        #cart-count {
+            background: #d14900;
+            color: white;
+            border-radius: 10px;
+            padding: 1px 6px;
+            font-size: 11px;
+            position: absolute;
+            top: -8px;
+            right: -15px;
+            font-weight: bold;
+        }
 
         /* --- Hero Section --- */
-.about-hero {
-    padding: 8rem 0; /* 增加上下間距，讓呼吸感更足 */
-    text-align: center;
-    background: linear-gradient(rgba(253, 250, 217, 0.85), rgba(253, 250, 217, 0.85)), 
-                url('brand-story-bg.jpg'); /* 這裡換上你的故事背景圖 */
-    background-size: cover;
-    background-position: center;
-    margin-bottom: 4rem;
-}
         .about-hero {
-            padding: 6rem 0;
+            padding: 8rem 0;
             text-align: center;
-            background-color: var(--brand-cream);
+            background: linear-gradient(rgba(253, 250, 217, 0.85), rgba(253, 250, 217, 0.85)), url('brand-story-bg.jpg');
+            background-size: cover;
+            background-position: center;
             margin-bottom: 4rem;
         }
+
         .about-hero h1 {
             font-size: 2.8rem;
             color: var(--brand-main);
             margin-bottom: 1rem;
-            font-weight: 300;
+            font-weight: 700;
         }
+
         .about-hero p {
             font-size: 1.2rem;
             letter-spacing: 3px;
             color: var(--brand-main);
-            opacity: 0.8;
+            opacity: 0.9;
+            font-weight: 500;
         }
 
         /* --- 故事內文區 --- */
-        .story-section { padding-bottom: 5rem; }
-        .story-content { max-width: 700px; margin: 0 auto; text-align: justify; }
-        
+        .story-section { 
+            padding-bottom: 5rem; 
+        }
+
+        .story-content { 
+            max-width: 700px; 
+            margin: 0 auto; 
+            text-align: justify; 
+        }
+                
         .story-content h2 {
             color: var(--brand-main);
             font-size: 1.8rem;
-            margin-top: 3rem;
+            margin-top: 4rem;
             text-align: center;
-            font-weight: 500;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .story-content p {
+            margin-bottom: 1.8rem;
+            font-size: 1.05rem;
         }
 
         .highlight-box {
             background-color: white;
             border-left: 5px solid var(--brand-main);
-            padding: 2rem;
-            margin: 3rem 0;
+            padding: 2.2rem;
+            margin: 3.5rem 0;
             box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--brand-main);
+            text-align: center;
+            line-height: 1.8;
         }
 
         /* --- 核心理念 (三欄式) --- */
@@ -149,8 +167,9 @@ header {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
-            margin-top: 4rem;
+            margin-top: 3rem;
         }
+
         .value-card {
             text-align: center;
             padding: 2rem;
@@ -158,9 +177,24 @@ header {
             border-radius: 12px;
             border: 1px solid var(--brand-accent);
         }
-        .value-card .icon { font-size: 2.5rem; margin-bottom: 15px; display: block; }
-        .value-card h3 { color: var(--brand-main); margin-bottom: 15px; }
-        .value-card p { font-size: 0.95rem; color: #666; line-height: 1.6; }
+
+        .value-card .icon { 
+            font-size: 2.5rem; 
+            margin-bottom: 15px; 
+            display: block; 
+        }
+
+        .value-card h3 { 
+            color: var(--brand-main); 
+            margin-bottom: 15px; 
+            font-weight: 700; 
+        }
+
+        .value-card p { 
+            font-size: 0.95rem; 
+            color: #666; 
+            line-height: 1.6; 
+        }
 
         /* --- Footer --- */
         footer {
@@ -170,69 +204,63 @@ header {
             padding: 4rem 0;
             margin-top: 4rem;
         }
-        .footer-logo { font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; display: block; }
-/* --- RWD 響應式優化 --- */
 
-@media (max-width: 768px) {
-    /* 1. 調整導覽列：由橫排改為直排 */
-    .navbar {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .nav-links {
-        margin-top: 15px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-    }
+        .footer-logo { 
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            margin-bottom: 10px; 
+            display: block; 
+        }
 
-    .nav-links a {
-        margin-left: 10px;
-        margin-right: 10px;
-        font-size: 0.9rem;
-    }
+        .footer-grid { 
+            display: flex; 
+            justify-content: center; 
+            margin-top: 20px; 
+        }
 
-    /* 2. 調整所有兩欄佈局：統一改為單欄 */
-    .product-detail-grid, 
-    .contact-wrapper, 
-    .featured-post,
-    .care-grid {
-        grid-template-columns: 1fr !important;
-        gap: 30px;
-    }
+        .footer-col a { 
+            color: rgba(255,255,255,0.8); 
+            text-decoration: none; 
+            margin: 0 10px; 
+            font-size: 0.9rem; 
+        }
 
-    /* 3. 調整字體大小，適合手機閱讀 */
-    h1 { font-size: 1.8rem !important; }
-    .hero h1 { font-size: 2rem !important; }
-    .price { font-size: 2rem !important; }
-    
-    /* 4. 調整圖片與區塊間距 */
-    .image-gallery img {
-        margin-bottom: 20px;
-    }
+        .footer-col a:hover { 
+            color: white; 
+        }
 
-    .container {
-        width: 92%; /* 手機版留邊稍微縮窄 */
-    }
-
-    /* 5. 聯絡表單與資訊區塊順序 */
-    .contact-wrapper {
-        display: flex;
-        flex-direction: column-reverse; /* 手機上先看表單，資訊往後放 */
-    }
-    
-    /* 6. 頁尾排版 */
-    .footer-grid {
-        flex-direction: column;
-        text-align: center;
-    }
-    .footer-col {
-        width: 100%;
-        margin-bottom: 30px;
-    }
-}
+        /* --- RWD 響應式優化 --- */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+            }
+            .nav-links {
+                margin-top: 15px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+            .nav-links a {
+                margin-left: 10px;
+                margin-right: 10px;
+                font-size: 0.9rem;
+            }
+            .values-grid {
+                grid-template-columns: 1fr !important;
+                gap: 30px;
+            }
+            h1 { font-size: 2rem !important; }
+            .about-hero h1 { font-size: 2.2rem !important; }
+            .container {
+                width: 92%;
+            }
+            .footer-grid {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -256,80 +284,74 @@ header {
         </nav>
     </div>
 </header>
-    <section class="about-hero">
-        <div class="container">
-            <h1>關於 Cat Gaze</h1>
-            <p>透過貓眼，重新發現時間的形狀</p>
-        </div>
-    </section>
 
-    <section class="story-section">
-        <div class="container">
-            <div class="story-content">
-                <h2>為什麼是貓的凝視？</h2>
-                <p>
-                    貓，是天生的觀察家。當牠們定睛凝視某一處時，周遭的世界彷彿靜止了。那種專注、安靜，且不放過任何微小細節的神情，正是我們對盆景與植栽的態度。
-                </p>
-                <p>
-                    在 Cat Gaze，每一棵盆景的入選，都經歷了如同貓般挑剔且細膩的審核過程。我們觀察葉片的厚實度、樹幹隨歲月扭轉的肌理、以及盆器與植物之間那份微妙的比例平衡。
-                </p>
+<section class="about-hero">
+    <div class="container">
+        <h1>關於 Cat Gaze</h1>
+        <p>靜下心，與一盆植栽，過一種貓一樣慢的生活</p>
+    </div>
+</section>
 
-                <div class="highlight-box">
-                    「我們不只是在販售植物，我們是在幫您挑選一個能與您對話、隨時光緩慢成長的生命伴侶。」
+<section class="story-section">
+    <div class="container">
+        <div class="story-content">
+            <h2>我們的故事</h2>
+            <p>歡迎來到這座數位植物園。我是 Henry，這裡的創辦人。</p>
+            <p>很多人常問我，為什麼在步伐這麼快的數位時代，卻偏偏著迷於需要耐心對待的植栽世界？</p>
+            <p>這一切，要從我的貓兒子「巧遇」說起。</p>
+            <p>作為這座植物園的「一日店長」，巧遇每天最喜歡做的事，就是趴在陽台的盆栽旁，用最放鬆、最優雅的姿態看著葉片在微風中輕輕擺動。看著牠，我突然意識到：<strong>我們太習慣追逐快速度，卻忘了生活最舒適的節奏，其實就藏在自然裡。</strong></p>
+
+            <div class="highlight-box">
+                「讓植物的療癒綠意，成為你生活中最溫柔的陪伴。」
+            </div>
+
+            <h2>照顧植栽，是一門關於「時間與生活」的藝術</h2>
+            <p>不管是一株充滿生命力的觀葉植物、姿態蒼勁的盆景，還是一盆新添的綠意，它們都不是一蹴可幾的。它們需要陽光、需要水份，更需要我們在日常中，靜下心去觀察、去修剪、去等待。每一次的澆水與修護，都是一次與自己的對話。</p>
+            <p>於是我創立了這個空間。我們不只是販售一盆植物，而是想把這份「像貓一樣優雅、像植栽一樣沉穩」的生活態度，送到你的日常案頭。</p>
+            <p>無論你是剛接觸綠意的新手，還是資深的綠手指，邀請你跟著巧遇店長一起，在每一次的澆水儀式中，找回屬於自己的慢節奏。</p>
+
+            <div class="values-grid">
+                <div class="value-card">
+                    <span class="icon">🔍</span>
+                    <h3>極致嚴選</h3>
+                    <p>僅與理念相合的台灣與日本專業職人園區合作，確保每一棵植栽皆健康、具生命力且姿態優美。</p>
                 </div>
-
-                <h2>我們眼中的盆景</h2>
-                <p>
-                    傳統盆景常讓人覺得遙遠、嚴肅，但我們認為，盆景是「方寸之間的自然宇宙」。它是忙碌現代生活中的一個呼吸口。
-                    透過 Cat Gaze 的嚴選，我們希望將這份經過職人多年淬鍊的美學，以更親近、更溫潤的方式帶入您的居家生活。
-                </p>
-
-                <div class="values-grid">
-                    <div class="value-card">
-                        <span class="icon">🔍</span>
-                        <h3>極致嚴選</h3>
-                        <p>僅與理念相合的台灣與日本專業職人園區合作，確保每一棵樹皆健康、具生命力且姿態優美。</p>
-                    </div>
-                    <div class="value-card">
-                        <span class="icon">🪴</span>
-                        <h3>當代美學</h3>
-                        <p>打破陳規，挑選適合現代居家空間的造型與盆器，讓盆景藝術不再受限於傳統茶室。</p>
-                    </div>
-                    <div class="value-card">
-                        <span class="icon">🤝</span>
-                        <h3>終身陪伴</h3>
-                        <p>提供詳盡的養護指南與專業諮詢。我們在乎的不止是售出，更是植物在您家中的每一次發芽。</p>
-                    </div>
+                <div class="value-card">
+                    <span class="icon">🪴</span>
+                    <h3>當代美學</h3>
+                    <p>打破陳規，挑選適合現代居家空間的造型與盆器，讓綠意美學完美融入當代生活場域。</p>
                 </div>
+                <div class="value-card">
+                    <span class="icon">🤝</span>
+                    <h3>終身陪伴</h3>
+                    <p>提供詳盡的養護指南與專業諮詢。我們在乎的不止是售出，更是植物在您家中的每一次發芽。</p>
+                </div>
+            </div>
 
-                <h2 style="margin-top: 5rem;">我們與您的約定</h2>
-                <p>
-                    Cat Gaze 承諾，您在網站上看見的每一張照片，都是該株植物最真實的樣子。
-                    我們用最緩慢的腳步挑選，用最嚴謹的眼光審核，
-                    只為了讓您在收到植物的那一刻，能與我們一樣，露出貓咪般滿足的凝視。
-                </p>
-            </div>
+            <h2 style="margin-top: 5rem;">我們與您的約定</h2>
+            <p>Cat Gaze 承諾，您在網站上看見的每一張照片，都是該株植物最真實的樣子。我們用最緩慢的腳步挑選，用最嚴謹的眼光審核，只為了讓您在收到植物的那一刻，能與我們一樣，露出貓咪般滿足的凝視。</p>
         </div>
-    </section>
+    </div>
+</section>
 
-    <footer>
-        <div class="container">
-            <span class="footer-logo">Cat Gaze</span>
-            <p>透過貓的視角，與自然共處</p>
-            <div style="margin-top: 20px; font-size: 0.8rem; opacity: 0.6;">
-                © 2026 Cat Gaze Bonsai Selection. All Rights Reserved.
-            </div>
+<footer>
+    <div class="container">
+        <span class="footer-logo">Cat Gaze</span>
+        <p>透過貓的視角，與自然共處</p>
+        <div style="margin-top: 20px; font-size: 0.8rem; opacity: 0.6;">
+            © 2026 Cat Gaze Bonsai Selection. All Rights Reserved.
         </div>
-        <div class="container footer-grid">
-            <div class="footer-col">
-                <h4>快速連結</h4>
-                <a href="index.html">首頁</a>
-                <a href="knowledge.html">知識中心</a>
-                <a href="about.html">關於我們</a>
-                <a href="contact.html">聯繫我們</a>
-            </div>
-            </div>
-    </footer>
+    </div>
+    <div class="container footer-grid">
+        <div class="footer-col">
+            <a href="index.html">首頁</a>
+            <a href="knowledge.html">知識中心</a>
+            <a href="about.html">關於我們</a>
+            <a href="contact.html">聯繫我們</a>
+        </div>
+    </div>
+</footer>
+
 <div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
 
 <div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
@@ -337,11 +359,9 @@ header {
         <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
         <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
     </div>
-
     <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;">
         <p style="text-align:center; color:#999;">目前沒有選購植物</p>
     </div>
-
     <div style="border-top:1px solid #eee; padding-top:20px;">
         <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
             <span>總計金額</span>
@@ -358,19 +378,17 @@ header {
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script src="cart-system.js"></script>
 
-
 <script>
-    // 當頁面載入時，更新購物車數字
     document.addEventListener('DOMContentLoaded', function() {
         if (typeof updateCartUI === 'function') {
             updateCartUI(); 
         } else {
-            // 如果 cart-system.js 還沒載入完，從 localStorage 抓
             const cart = JSON.parse(localStorage.getItem('bonsaiCart')) || [];
             const count = cart.reduce((sum, item) => sum + item.quantity, 0);
             document.getElementById('cart-count').innerText = count;
         }
     });
 </script>
+
 </body>
 </html>

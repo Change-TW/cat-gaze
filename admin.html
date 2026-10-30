@@ -8,77 +8,522 @@
     <style>
         :root {
             --brand-main: #7F916A;
+            --brand-dark: #5d7065;
+            --brand-accent: #B0C4B8;
+            --brand-cream: #FDFAD9;
             --bg-light: #fcfcf8;
             --text-dark: #4a4a4a;
+            --price-color: #d14900;
         }
-        body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg-light); color: var(--text-dark); margin: 0; padding: 20px; }
-        .container { max-width: 1000px; margin: 0 auto; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--brand-main); padding-bottom: 12px; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
-        h1 { color: var(--brand-main); margin: 0; font-size: 1.8rem; }
-        .back-home { text-decoration: none; color: var(--brand-main); font-weight: bold; font-size: 0.95rem; }
-        
-        .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-top: 3px solid var(--brand-main); }
-        .stat-label { font-size: 0.85rem; color: #888; }
-        .stat-val { font-size: 1.5rem; font-weight: bold; color: var(--text-dark); margin-top: 4px; }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 24px 16px 60px;
+            line-height: 1.6;
+        }
+        .container { max-width: 1120px; margin: 0 auto; }
 
-        .order-card {
-            background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 5px solid var(--brand-main);
+        /* =========================================================
+           管理員專屬登入防護閘門 (#admin-auth-gate)
+           ========================================================= */
+        #admin-auth-gate {
+            max-width: 440px;
+            margin: 60px auto;
+            background: white;
+            padding: 40px 32px;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+            border-top: 5px solid var(--brand-main);
+            text-align: center;
         }
-        .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
-        .order-id { font-weight: bold; color: #555; font-size: 1rem; }
-        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
-        .status-pending { background: #fff3cd; color: #856404; }
-        .status-done { background: #d4edda; color: #155724; }
-        
-        .customer-info { background: #f9f9f9; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 0.9rem; line-height: 1.6; }
-        .item-list { border-top: 1px solid #eee; padding-top: 10px; }
-        .item-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.95rem; }
-        
-        .total-row { text-align: right; font-weight: bold; color: #d14900; font-size: 1.25rem; margin-top: 15px; }
-        .actions { margin-top: 15px; display: flex; gap: 10px; }
-        
-        button { cursor: pointer; border: none; padding: 8px 16px; border-radius: 5px; font-weight: bold; font-family: inherit; transition: 0.2s; }
+        .lock-icon {
+            width: 64px;
+            height: 64px;
+            background: #f0f4ec;
+            color: var(--brand-main);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 16px;
+        }
+        #admin-auth-gate h2 {
+            margin: 0 0 8px;
+            color: var(--brand-main);
+            font-size: 1.5rem;
+        }
+        #admin-auth-gate p {
+            color: #777;
+            font-size: 0.9rem;
+            margin: 0 0 24px;
+        }
+        .btn-google-admin {
+            width: 100%;
+            background: white;
+            color: #333;
+            border: 1.5px solid #ddd;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+        .btn-google-admin:hover {
+            border-color: var(--brand-main);
+            background: #fafcf9;
+        }
+        .divider {
+            margin: 20px 0;
+            color: #bbb;
+            font-size: 0.82rem;
+            position: relative;
+        }
+        .auth-input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        .auth-input:focus { border-color: var(--brand-main); }
+        .btn-email-admin {
+            width: 100%;
+            background: var(--brand-main);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-email-admin:hover { background: var(--brand-dark); }
+        #auth-error-msg {
+            display: none;
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
+            color: #c53030;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .gate-footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .gate-home-link {
+            color: var(--brand-main);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 700;
+            padding: 8px 18px;
+            border: 1.5px solid var(--brand-main);
+            border-radius: 20px;
+            transition: 0.2s;
+        }
+        .gate-home-link:hover {
+            background: var(--brand-main);
+            color: white;
+        }
+
+        /* =========================================================
+           後台主控台 (#admin-dashboard-main) - 預設隱藏，驗證通過才顯示
+           ========================================================= */
+        #admin-dashboard-main {
+            display: none;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--brand-main);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        h1 { color: var(--brand-main); margin: 0; font-size: 1.7rem; display: flex; align-items: center; gap: 10px; }
+        .admin-badge {
+            background: #e6f4ea;
+            color: #137333;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 6px;
+        }
+        .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .back-home {
+            text-decoration: none;
+            color: var(--brand-main);
+            border: 1.5px solid var(--brand-main);
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            transition: 0.2s;
+        }
+        .back-home:hover { background: var(--brand-main); color: white; }
+
+        /* 頂部統計儀表板 */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .stat-card {
+            background: white;
+            padding: 16px 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+            border-top: 4px solid var(--brand-main);
+        }
+        .stat-label { font-size: 0.85rem; color: #888; font-weight: 500; }
+        .stat-val { font-size: 1.6rem; font-weight: 700; color: var(--text-dark); margin-top: 4px; }
+
+        /* 分頁切換籤 (Tabs) */
+        .tabs-header {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 22px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 12px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tab-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .tab-btn {
+            background: white;
+            color: #666;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--brand-main);
+            color: white;
+            border-color: var(--brand-main);
+            box-shadow: 0 4px 12px rgba(127,145,106,0.25);
+        }
+        .tab-count {
+            background: rgba(0,0,0,0.12);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+        }
+        .tab-btn.active .tab-count { background: rgba(255,255,255,0.25); color: white; }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* 共用按鈕 */
+        button {
+            cursor: pointer;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        .btn-refresh { background: #e2e8f0; color: #333; }
+        .btn-refresh:hover { background: #cbd5e1; }
+        .btn-export { background: #2c5282; color: white; }
+        .btn-export:hover { background: #1a365d; }
         .btn-done { background: var(--brand-main); color: white; }
-        .btn-done:hover { background: #5d7065; }
+        .btn-done:hover { background: var(--brand-dark); }
         .btn-del { background: #ffeded; color: #d9534f; }
         .btn-del:hover { background: #f8d7da; }
-        .btn-refresh { background: #e2e8f0; color: #333; margin-bottom: 20px; }
-        .btn-refresh:hover { background: #cbd5e1; }
+
+        /* 訂單卡片 */
+        .order-card, .member-card, .cart-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            border-left: 5px solid var(--brand-main);
+        }
+        .order-header, .member-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .order-id { font-weight: 700; color: #444; font-size: 1.05rem; }
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-done { background: #d4edda; color: #155724; }
+        .customer-info {
+            background: #f9faf8;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            font-size: 0.92rem;
+            border: 1px solid #f0f2ee;
+        }
+        .item-list { border-top: 1px solid #eee; padding-top: 10px; }
+        .item-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.95rem; }
+        .total-row { text-align: right; font-weight: 700; color: var(--price-color); font-size: 1.25rem; margin-top: 12px; }
+        .actions { margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+        /* 會員偏好統計區塊 */
+        .persona-summary {
+            background: white;
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            border: 1px solid #eef0ec;
+        }
+        .persona-summary h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.05rem;
+            color: var(--brand-main);
+        }
+        .persona-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+        .persona-chip {
+            background: #f4f7f2;
+            border: 1px solid #dce5d5;
+            color: #4a5a40;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* 會員搜尋與工具列 */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .search-input {
+            flex: 1;
+            min-width: 240px;
+            padding: 10px 16px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 0.92rem;
+            outline: none;
+        }
+        .search-input:focus { border-color: var(--brand-main); }
+
+        /* 會員卡片細節 */
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 18px;
+        }
+        .member-card { margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; }
+        .member-name { font-size: 1.15rem; font-weight: 700; color: var(--brand-main); }
+        .exp-badge {
+            background: var(--brand-cream);
+            color: #5a6b47;
+            border: 1px solid #e2dec0;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .interest-tag {
+            background: #eef3eb;
+            color: var(--brand-main);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .fav-box {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px dashed #eee;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .empty-box {
+            background: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 10px;
+            color: #888;
+            border: 1px dashed #ddd;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
+<!-- =======================================================================
+     第一道防線：管理員專屬身分驗證閘門
+     ======================================================================= -->
+<div id="admin-auth-gate">
+    <div class="lock-icon">🔒</div>
+    <h2>Cat Gaze 後台安全驗證</h2>
+    <p>此區域僅限授權管理員（<strong>change2020810@gmail.com</strong>）存取。<br>請先完成身分驗證以載入雲端訂單與會員資料。</p>
+
+    <button class="btn-google-admin" onclick="loginAdminWithGoogle()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
+        使用 Google 管理員帳號登入
+    </button>
+
+    <div class="divider">─── 或使用管理員信箱密碼登入 ───</div>
+
+    <form onsubmit="loginAdminWithEmail(event)">
+        <input type="email" id="admin-email-input" class="auth-input" placeholder="管理員 Email (change2020810@gmail.com)" required>
+        <input type="password" id="admin-pw-input" class="auth-input" placeholder="管理員密碼" required>
+        <button type="submit" class="btn-email-admin">驗證並進入後台</button>
+    </form>
+
+    <div id="auth-error-msg"></div>
+
+    <div class="gate-footer">
+        <a href="index.html" class="gate-home-link" onclick="return goBackToHome(event)">← 返回 Cat Gaze 官網首頁</a>
+    </div>
+</div>
+
+<!-- =======================================================================
+     第二道防線：後台管理主畫面 (僅在管理員白名單通過後解鎖並載入資料)
+     ======================================================================= -->
+<div class="container" id="admin-dashboard-main">
     <div class="top-bar">
-        <h1>Cat Gaze 訂單後台管理系統</h1>
-        <a href="index.html" class="back-home">← 返回官網首頁</a>
+        <div>
+            <h1>🐾 Cat Gaze 老闆後台管理系統</h1>
+            <span class="admin-badge" id="verified-admin-email">🔒 已驗證管理員</span>
+        </div>
+        <div class="top-actions">
+            <button class="btn-refresh" onclick="loadAllAdminData()">🔄 同步最新雲端資料</button>
+            <button class="btn-del" onclick="logoutAdmin()">登出後台</button>
+            <a href="index.html" class="back-home" onclick="return goBackToHome(event)">← 返回 Cat Gaze 官網首頁</a>
+        </div>
     </div>
 
+    <!-- 頂部核心指標 -->
     <div class="stats-bar">
         <div class="stat-card">
-            <div class="stat-label">總訂單數</div>
+            <div class="stat-label">📦 總訂單數</div>
             <div class="stat-val" id="stat-total-count">0</div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">待處理訂單</div>
+            <div class="stat-label">⏳ 待處理訂單</div>
             <div class="stat-val" id="stat-pending-count" style="color:#d14900;">0</div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">累計訂單總額</div>
+            <div class="stat-label">💰 累計訂單總額</div>
             <div class="stat-val" id="stat-total-rev" style="color:#7F916A;">NT$ 0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">👥 已收集會員檔案</div>
+            <div class="stat-val" id="stat-users-count" style="color:#2b6cb0;">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">🛒 未結帳購物車</div>
+            <div class="stat-val" id="stat-carts-count" style="color:#805ad5;">0</div>
         </div>
     </div>
 
-    <button class="btn-refresh" onclick="fetchOrders()">🔄 重新整理訂單</button>
-    <div id="orders-container">讀取中...</div>
+    <!-- 分頁切換按鈕 -->
+    <div class="tabs-header">
+        <div class="tab-group">
+            <button class="tab-btn active" onclick="switchTab('orders', this)">
+                📦 訂單管理 <span class="tab-count" id="tab-badge-orders">0</span>
+            </button>
+            <button class="tab-btn" onclick="switchTab('members', this)">
+                👥 會員名單與植栽偏好 <span class="tab-count" id="tab-badge-members">0</span>
+            </button>
+            <button class="tab-btn" onclick="switchTab('carts', this)">
+                🛒 潛在客戶購物車 (未結帳) <span class="tab-count" id="tab-badge-carts">0</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 分頁 1：訂單管理 -->
+    <div id="panel-orders" class="tab-panel active">
+        <div id="orders-container">讀取訂單資料中...</div>
+    </div>
+
+    <!-- 分頁 2：會員名單與植栽偏好調查 -->
+    <div id="panel-members" class="tab-panel">
+        <div class="persona-summary">
+            <h3>📊 會員植栽經驗與興趣偏好分佈統計（即時計算自 Firebase `users` 節點）</h3>
+            <div class="persona-chips" id="persona-stats-chips">
+                <span class="persona-chip">統計載入中...</span>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <input type="text" id="member-search" class="search-input" placeholder="🔍 搜尋會員姓名、Email、電話或興趣標籤（例如：松柏、新手）..." oninput="renderMembersList()">
+            <button class="btn-export" onclick="exportMembersCSV()">📥 匯出會員名單 CSV (Excel)</button>
+        </div>
+
+        <div id="members-container" class="member-grid">讀取會員資料中...</div>
+    </div>
+
+    <!-- 分頁 3：未結帳購物車與收藏動態 -->
+    <div id="panel-carts" class="tab-panel">
+        <div id="carts-container">讀取未結帳購物車資料中...</div>
+    </div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
+    // =========================================================================
+    // 🚩 授權管理員白名單設定 (僅允許此清單內的信箱進入後台)
+    // =========================================================================
+    const ALLOWED_ADMIN_EMAILS = [
+        "change2020810@gmail.com"
+    ];
+
+    // 智慧返回首頁：在 GitHub Pages 或本機資料夾直接跳轉同目錄 index.html；若在單頁沙盒預覽中則開啟線上官網首頁
+    function goBackToHome(e) {
+        const host = window.location.hostname || '';
+        const proto = window.location.protocol || '';
+        if (proto === 'file:' || host.includes('github.io') || host === 'localhost' || host === '127.0.0.1') {
+            return true; // 走原生 <a href="index.html"> 跳轉同目錄下的 index.html
+        }
+        e.preventDefault();
+        window.open('https://change-tw.github.io/cat-gaze/index.html', '_blank');
+        return false;
+    }
+
     const firebaseConfig = {
         apiKey: "AIzaSyCe9jsOgigX1Ok4sMbr1P2o4RcSM15BI_U",
         authDomain: "cat-gaze-bonsai.firebaseapp.com",
@@ -93,29 +538,118 @@
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
+    const auth = firebase.auth();
     const database = firebase.database();
+    const googleProvider = new firebase.auth.GoogleAuthProvider();
 
+    let cachedMembers = [];
+    let cachedFavorites = {};
+
+    // =========================================================================
+    // 管理員身分驗證邏輯
+    // =========================================================================
+    function showAuthError(msg) {
+        const errBox = document.getElementById('auth-error-msg');
+        errBox.innerText = msg;
+        errBox.style.display = 'block';
+    }
+
+    auth.onAuthStateChanged((user) => {
+        const gate = document.getElementById('admin-auth-gate');
+        const dashboard = document.getElementById('admin-dashboard-main');
+        const errBox = document.getElementById('auth-error-msg');
+
+        if (!user) {
+            gate.style.display = 'block';
+            dashboard.style.display = 'none';
+            return;
+        }
+
+        const userEmail = (user.email || '').toLowerCase().trim();
+        if (ALLOWED_ADMIN_EMAILS.includes(userEmail)) {
+            errBox.style.display = 'none';
+            gate.style.display = 'none';
+            dashboard.style.display = 'block';
+            document.getElementById('verified-admin-email').innerText = "🔒 已驗證管理員：" + user.email;
+            loadAllAdminData();
+        } else {
+            gate.style.display = 'block';
+            dashboard.style.display = 'none';
+            showAuthError(`⛔ 存取被拒：帳號「${user.email}」並非授權的管理員信箱！`);
+            auth.signOut();
+        }
+    });
+
+    function loginAdminWithGoogle() {
+        document.getElementById('auth-error-msg').style.display = 'none';
+        auth.signInWithPopup(googleProvider).catch((err) => {
+            showAuthError("Google 登入失敗：" + err.message);
+        });
+    }
+
+    function loginAdminWithEmail(e) {
+        e.preventDefault();
+        document.getElementById('auth-error-msg').style.display = 'none';
+        const email = document.getElementById('admin-email-input').value.trim();
+        const pw = document.getElementById('admin-pw-input').value;
+        if (!ALLOWED_ADMIN_EMAILS.includes(email.toLowerCase())) {
+            showAuthError(`⛔ 拒絕登入：「${email}」非授權管理員信箱！`);
+            return;
+        }
+        auth.signInWithEmailAndPassword(email, pw).catch((err) => {
+            showAuthError("登入失敗：" + err.message);
+        });
+    }
+
+    function logoutAdmin() {
+        if (confirm("確定要登出管理員後台嗎？")) {
+            auth.signOut();
+        }
+    }
+
+    function switchTab(tabName, btnEl) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btnEl.classList.add('active');
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('panel-' + tabName).classList.add('active');
+    }
+
+    function loadAllAdminData() {
+        const currentUser = auth.currentUser;
+        if (!currentUser || !ALLOWED_ADMIN_EMAILS.includes((currentUser.email || '').toLowerCase())) {
+            return;
+        }
+        fetchOrders();
+        fetchMembersAndFavorites();
+        fetchActiveCarts();
+    }
+
+    // =========================================================================
+    // 1. 讀取與管理訂單 (orders)
+    // =========================================================================
     function fetchOrders() {
         const container = document.getElementById('orders-container');
-        container.innerHTML = "讀取中...";
+        container.innerHTML = "<div class='empty-box'>正在從雲端讀取訂單...</div>";
 
         database.ref('orders').once('value', (snapshot) => {
             const orders = snapshot.val();
             if (!orders) {
-                container.innerHTML = "<p>目前沒有任何訂單。</p>";
+                container.innerHTML = "<div class='empty-box'>目前尚無任何訂單記錄。</div>";
                 document.getElementById('stat-total-count').innerText = "0";
                 document.getElementById('stat-pending-count').innerText = "0";
                 document.getElementById('stat-total-rev').innerText = "NT$ 0";
+                document.getElementById('tab-badge-orders').innerText = "0";
                 return;
             }
 
             let html = "";
-            const orderList = Object.values(orders).reverse();
+            const orderEntries = Object.entries(orders).reverse();
             let pendingCount = 0;
             let totalRev = 0;
 
-            orderList.forEach(order => {
+            orderEntries.forEach(([key, order]) => {
                 if (!order) return;
+                const orderId = order.order_id || key;
                 const statusStr = order.status || '待處理';
                 if (statusStr !== '已完成') pendingCount++;
                 const orderTotal = Number(order.total_price !== undefined ? order.total_price : order.totalPrice) || 0;
@@ -125,26 +659,26 @@
                 const itemsArr = Array.isArray(order.items) ? order.items : [];
                 itemsArr.forEach(item => {
                     const priceVal = Number(item.price) || 0;
-                    itemsHtml += `<div class="item-row"><span>${item.name || '植栽商品'}</span><span>NT$ ${priceVal.toLocaleString()}</span></div>`;
+                    itemsHtml += `<div class="item-row"><span>🌱 ${item.name || '植栽商品'}</span><span>NT$ ${priceVal.toLocaleString()}</span></div>`;
                 });
 
                 const cust = order.customer || {};
                 const badgeClass = statusStr === '已完成' ? 'status-done' : 'status-pending';
 
                 html += `
-                <div class="order-card" id="card-${order.order_id}">
+                <div class="order-card" id="card-${orderId}">
                     <div class="order-header">
                         <div>
-                            <div class="order-id">${order.order_id || '無編號'}</div>
-                            <div style="font-size:0.8rem; color:#aaa;">下單時間：${order.created_at || order.orderDate || '--'}</div>
+                            <div class="order-id">訂單編號：${orderId}</div>
+                            <div style="font-size:0.82rem; color:#888;">下單時間：${order.created_at || order.orderDate || '--'}</div>
                         </div>
                         <div class="status-badge ${badgeClass}">${statusStr}</div>
                     </div>
                     
                     <div class="customer-info">
-                        <strong>👤 客戶：${cust.name || '未填寫'}</strong><br>
-                        📧 Email: ${cust.email || '未提供'}<br>
-                        📞 電話: ${cust.phone || '未提供'}
+                        <strong>👤 客戶姓名：${cust.name || '未填寫'}</strong><br>
+                        📧 電子郵件：${cust.email || '未提供'}<br>
+                        📞 聯絡電話：${cust.phone || '未提供'}
                     </div>
 
                     <div class="item-list">
@@ -154,39 +688,270 @@
                     <div class="total-row">總計：NT$ ${orderTotal.toLocaleString()}</div>
                     
                     <div class="actions">
-                        <button class="btn-done" onclick="updateStatus('${order.order_id}', '已完成')">標記為已完成</button>
-                        <button class="btn-del" onclick="deleteOrder('${order.order_id}')">刪除訂單記錄</button>
+                        <button class="btn-done" onclick="updateStatus('${key}', '已完成')">✓ 標記為已完成</button>
+                        <button class="btn-refresh" onclick="updateStatus('${key}', '待處理')">↺ 設為待處理</button>
+                        <button class="btn-del" onclick="deleteOrder('${key}')">🗑️ 刪除訂單</button>
                     </div>
                 </div>
                 `;
             });
 
             container.innerHTML = html;
-            document.getElementById('stat-total-count').innerText = orderList.length;
+            document.getElementById('stat-total-count').innerText = orderEntries.length;
             document.getElementById('stat-pending-count').innerText = pendingCount;
             document.getElementById('stat-total-rev').innerText = "NT$ " + totalRev.toLocaleString();
+            document.getElementById('tab-badge-orders').innerText = orderEntries.length;
         });
     }
 
-    function updateStatus(orderId, newStatus) {
-        database.ref('orders/' + orderId).update({ status: newStatus })
-            .then(() => {
-                alert("狀態已更新！");
-                fetchOrders();
-            });
+    function updateStatus(orderKey, newStatus) {
+        database.ref('orders/' + orderKey).update({ status: newStatus })
+            .then(() => fetchOrders());
     }
 
-    function deleteOrder(orderId) {
+    function deleteOrder(orderKey) {
         if (confirm("確定要刪除這筆訂單記錄嗎？此動作無法復原。")) {
-            database.ref('orders/' + orderId).remove()
-                .then(() => {
-                    alert("訂單已刪除！");
-                    fetchOrders();
-                });
+            database.ref('orders/' + orderKey).remove()
+                .then(() => fetchOrders());
         }
     }
 
-    window.onload = fetchOrders;
+    // =========================================================================
+    // 2. 讀取與管理會員檔案 + 植栽偏好調查 (users + favorites)
+    // =========================================================================
+    function formatExperience(exp) {
+        const map = {
+            'beginner': '🌱 我是新手 (剛開始凝視植物)',
+            'intermediate': '🌿 略有經驗 (養過幾盆且存活)',
+            'expert': '🌲 植栽達人 (對修剪與換盆有心得)'
+        };
+        return map[exp] || (exp ? exp : '未填寫經驗');
+    }
+
+    function formatTime(isoStr) {
+        if (!isoStr) return '--';
+        try {
+            const d = new Date(isoStr);
+            if (isNaN(d.getTime())) return isoStr;
+            return d.toLocaleString('zh-TW');
+        } catch (e) {
+            return isoStr;
+        }
+    }
+
+    function fetchMembersAndFavorites() {
+        const container = document.getElementById('members-container');
+        container.innerHTML = "<div class='empty-box' style='grid-column:1/-1;'>正在讀取會員與偏好資料...</div>";
+
+        Promise.all([
+            database.ref('users').once('value'),
+            database.ref('favorites').once('value')
+        ]).then(([usersSnap, favsSnap]) => {
+            const usersObj = usersSnap.val() || {};
+            cachedFavorites = favsSnap.val() || {};
+
+            cachedMembers = Object.entries(usersObj).map(([uid, data]) => ({
+                uid: uid,
+                name: (data && data.name) || '未填寫姓名',
+                email: (data && data.email) || '未提供 Email',
+                phone: (data && data.phone) || '未填寫電話',
+                experience: (data && data.experience) || '',
+                interests: Array.isArray(data && data.interests) ? data.interests : [],
+                lastUpdate: (data && (data.lastUpdate || data.lastLogin || data.createdAt)) || ''
+            })).sort((a, b) => (b.lastUpdate || '').localeCompare(a.lastUpdate || ''));
+
+            document.getElementById('stat-users-count').innerText = cachedMembers.length;
+            document.getElementById('tab-badge-members').innerText = cachedMembers.length;
+
+            renderPersonaStats();
+            renderMembersList();
+        });
+    }
+
+    function renderPersonaStats() {
+        const chipsBox = document.getElementById('persona-stats-chips');
+        if (cachedMembers.length === 0) {
+            chipsBox.innerHTML = `<span class="persona-chip">尚無會員填寫偏好調查（當客人於 member.html 登入或點「儲存個人檔案」後即會自動匯入）</span>`;
+            return;
+        }
+
+        const expCounts = { beginner: 0, intermediate: 0, expert: 0 };
+        const tagCounts = {};
+
+        cachedMembers.forEach(m => {
+            if (expCounts[m.experience] !== undefined) expCounts[m.experience]++;
+            m.interests.forEach(t => {
+                tagCounts[t] = (tagCounts[t] || 0) + 1;
+            });
+        });
+
+        let html = `
+            <span class="persona-chip">🌱 新手：${expCounts.beginner} 人</span>
+            <span class="persona-chip">🌿 略有經驗：${expCounts.intermediate} 人</span>
+            <span class="persona-chip">🌲 植栽達人：${expCounts.expert} 人</span>
+        `;
+        Object.entries(tagCounts).forEach(([tag, count]) => {
+            html += `<span class="persona-chip" style="background:#FDFAD9; border-color:#e2dec0;">🏷️ 偏好「${tag}」：${count} 人</span>`;
+        });
+        chipsBox.innerHTML = html;
+    }
+
+    function renderMembersList() {
+        const container = document.getElementById('members-container');
+        const q = (document.getElementById('member-search').value || '').trim().toLowerCase();
+
+        const filtered = cachedMembers.filter(m => {
+            if (!q) return true;
+            const text = `${m.name} ${m.email} ${m.phone} ${formatExperience(m.experience)} ${m.interests.join(' ')}`.toLowerCase();
+            return text.includes(q);
+        });
+
+        if (filtered.length === 0) {
+            container.innerHTML = `<div class="empty-box" style="grid-column:1/-1;">目前沒有符合條件的會員資料。</div>`;
+            return;
+        }
+
+        let html = "";
+        filtered.forEach(m => {
+            const tagsHtml = m.interests.length > 0
+                ? m.interests.map(t => `<span class="interest-tag"># ${t}</span>`).join('')
+                : `<span style="color:#aaa; font-size:0.85rem;">尚未勾選興趣類別</span>`;
+
+            const userFavsObj = cachedFavorites[m.uid] || {};
+            const favNames = Object.values(userFavsObj).map(f => f && f.name).filter(Boolean);
+            const favHtml = favNames.length > 0
+                ? `❤️ 收藏植物：<strong>${favNames.join('、')}</strong>`
+                : `🤍 尚無收藏植物`;
+
+            html += `
+            <div class="member-card">
+                <div>
+                    <div class="member-header">
+                        <div>
+                            <div class="member-name">👤 ${m.name}</div>
+                            <div style="font-size:0.78rem; color:#999;">UID: ${m.uid.substring(0, 14)}...</div>
+                        </div>
+                        <span class="exp-badge">${formatExperience(m.experience)}</span>
+                    </div>
+
+                    <div class="customer-info" style="margin-bottom:10px;">
+                        📧 <strong>Email：</strong>${m.email}<br>
+                        📞 <strong>電話：</strong>${m.phone}<br>
+                        🕒 <strong>最後更新：</strong>${formatTime(m.lastUpdate)}
+                    </div>
+
+                    <div>
+                        <div style="font-size:0.82rem; color:#666; font-weight:600;">感興趣的植栽類別：</div>
+                        <div class="tag-list">${tagsHtml}</div>
+                    </div>
+
+                    <div class="fav-box">${favHtml}</div>
+                </div>
+
+                <div class="actions" style="justify-content:flex-end; margin-top:16px;">
+                    <button class="btn-del" onclick="deleteMember('${m.uid}', '${m.name}')">刪除紀錄</button>
+                </div>
+            </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function deleteMember(uid, name) {
+        if (confirm(`確定要刪除會員「${name}」的個人偏好檔案嗎？`)) {
+            database.ref('users/' + uid).remove()
+                .then(() => fetchMembersAndFavorites());
+        }
+    }
+
+    function exportMembersCSV() {
+        if (cachedMembers.length === 0) {
+            alert("目前尚無會員資料可匯出！");
+            return;
+        }
+        const headers = ["會員UID", "姓名", "Email", "聯絡電話", "植栽經驗", "感興趣類別", "收藏植物", "最後更新時間"];
+        const rows = cachedMembers.map(m => {
+            const userFavsObj = cachedFavorites[m.uid] || {};
+            const favNames = Object.values(userFavsObj).map(f => f && f.name).filter(Boolean).join(" / ");
+            return [
+                m.uid,
+                m.name,
+                m.email,
+                m.phone,
+                formatExperience(m.experience),
+                m.interests.join(" / "),
+                favNames,
+                formatTime(m.lastUpdate)
+            ].map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(",");
+        });
+
+        const csvContent = "\uFEFF" + headers.join(",") + "\n" + rows.join("\n");
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `CatGaze_會員與植栽偏好名單_${new Date().toISOString().slice(0,10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    // =========================================================================
+    // 3. 讀取未結帳雲端購物車 (carts)
+    // =========================================================================
+    function fetchActiveCarts() {
+        const container = document.getElementById('carts-container');
+        container.innerHTML = "<div class='empty-box'>正在讀取雲端購物車...</div>";
+
+        database.ref('carts').once('value', (snapshot) => {
+            const cartsObj = snapshot.val();
+            if (!cartsObj) {
+                container.innerHTML = "<div class='empty-box'>目前沒有未結帳的雲端購物車。</div>";
+                document.getElementById('stat-carts-count').innerText = "0";
+                document.getElementById('tab-badge-carts').innerText = "0";
+                return;
+            }
+
+            const entries = Object.entries(cartsObj).filter(([k, v]) => Array.isArray(v) && v.length > 0);
+            document.getElementById('stat-carts-count').innerText = entries.length;
+            document.getElementById('tab-badge-carts').innerText = entries.length;
+
+            if (entries.length === 0) {
+                container.innerHTML = "<div class='empty-box'>目前沒有未結帳的雲端購物車。</div>";
+                return;
+            }
+
+            let html = "";
+            entries.forEach(([userKey, items]) => {
+                const emailGuess = userKey.replace(/_/g, '.');
+                let sum = 0;
+                let itemsHtml = "";
+                items.forEach(item => {
+                    const p = Number(item.price) || 0;
+                    sum += p;
+                    itemsHtml += `<div class="item-row"><span>🪴 ${item.name}</span><span>NT$ ${p.toLocaleString()}</span></div>`;
+                });
+
+                html += `
+                <div class="cart-card">
+                    <div class="order-header">
+                        <div>
+                            <div class="order-id">👤 潛在客戶帳號索引：${emailGuess}</div>
+                            <div style="font-size:0.82rem; color:#888;">購物車內共有 ${items.length} 件商品尚未結帳</div>
+                        </div>
+                        <span class="status-badge status-pending">🛒 選購中未結帳</span>
+                    </div>
+                    <div class="item-list">${itemsHtml}</div>
+                    <div class="total-row">購物車潛在總額：NT$ ${sum.toLocaleString()}</div>
+                </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        });
+    }
 </script>
+
 </body>
 </html>

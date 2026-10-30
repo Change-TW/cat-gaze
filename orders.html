@@ -6,7 +6,6 @@
     <title>訂單查詢 | Cat Gaze 會員中心</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        /* ... 你原本的 CSS 保持不變 ... */
         :root {
             --brand-main: #7F916A;
             --brand-accent: #B0C4B8;
@@ -17,11 +16,92 @@
         }
         body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); margin: 0; color: var(--text-dark); }
         .container { width: 90%; max-width: 800px; margin: 0 auto; padding-bottom: 5rem; }
-        header { background: white; border-bottom: 1px solid #eee; padding: 10px 0; }
-        .navbar { display: flex; justify-content: space-between; align-items: center; }
-        .logo-container { display: flex; align-items: center; text-decoration: none; }
-        .logo-img { height: 40px; margin-right: 10px; border-radius: 50%; }
-        .logo-text { font-size: 1.2rem; font-weight: 700; color: var(--brand-main); }
+        
+        /* --- 全站統一 Header 導覽列 --- */
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #eeeeee;
+            padding: 0.8rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 55px;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
+        .logo-img, .site-logo {
+            height: 42px;
+            width: auto;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #7F916A;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            margin: 0;
+        }
+        .nav-links a:hover, .nav-links a.active-nav {
+            color: #7F916A;
+            font-weight: 700;
+        }
+        #cart-count {
+            background: #d14900;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            position: absolute;
+            top: -10px;
+            right: -15px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 0;
+                gap: 12px;
+            }
+            .nav-links {
+                justify-content: center;
+                gap: 12px;
+                width: 100%;
+            }
+            .nav-links a {
+                font-size: 0.88rem;
+            }
+        }
+
         .page-title { margin: 3rem 0 2rem; text-align: center; }
         .page-title h1 { font-size: 1.8rem; color: var(--brand-main); font-weight: 500; }
         .order-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid #f0f0f0; }
@@ -49,14 +129,29 @@
 <header>
     <div class="container navbar">
         <a href="index.html" class="logo-container">
-            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze" class="logo-img">
+            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="logo-img">
             <span class="logo-text">Cat Gaze</span>
         </a>
-        <a href="member.html" style="text-decoration:none; color:var(--text-dark); font-size: 0.9rem;">返回會員中心</a>
+        <nav class="nav-links">
+            <a href="index.html">首頁</a>
+            <a href="new-arrivals.html">嚴選新品</a>
+            <a href="categories.html">各類品項</a>
+            <a href="tools.html">資材用具</a>
+            <a href="knowledge.html">知識中心</a>
+            <a href="about.html">關於我們</a>
+            <a href="contact.html">聯繫我們</a>
+            <a href="member.html" class="active-nav" style="color: #7F916A; font-weight: 700;">👤 會員</a>
+            <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
+                🛒 購物車 <span id="cart-count">0</span>
+            </a>
+        </nav>
     </div>
 </header>
 
 <div class="container">
+    <div style="margin-top: 20px;">
+        <a href="member.html" style="text-decoration:none; color:var(--brand-main); font-weight:500; font-size: 0.9rem;">← 返回會員中心</a>
+    </div>
     <div class="page-title">
         <h1>訂單查詢</h1>
         <p>追蹤您的植物歸途</p>
@@ -67,45 +162,74 @@
     </div>
 </div>
 
+
+<div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
+
+<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; max-width:90vw; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
+        <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
+        <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+
+    <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;">
+        <p style="text-align:center; color:#999;">目前沒有選購植物</p>
+    </div>
+
+    <div style="border-top:1px solid #eee; padding-top:20px;">
+        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
+            <span>總計金額</span>
+            <span id="cart-total-price" style="color:#d14900;">NT$ 0</span>
+        </div>
+        <button onclick="checkoutToLine()" style="width:100%; background:#7F916A; color:white; border:none; padding:15px; border-radius:30px; font-weight:bold; cursor:pointer;">
+            帶它們回家 (聯繫 LINE 結帳)
+        </button>
+    </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
 <script src="cart-system.js"></script>
 
+
 <script>
-    // 確保 Firebase 已初始化 (假設你的 cart-system.js 裡有 firebase.initializeApp)
-    const database = firebase.database();
     const auth = firebase.auth();
 
     auth.onAuthStateChanged((user) => {
+        let localProfile = null;
+        try { localProfile = JSON.parse(localStorage.getItem('CatGazeProfile')); } catch(e) {}
         if (user) {
-            fetchUserOrders(user.uid);
+            fetchUserOrders(user.uid, user.email);
+        } else if (localProfile && localProfile.email) {
+            fetchUserOrders(localProfile.uid, localProfile.email);
         } else {
-            // 如果沒登入，跳轉回登入頁
             window.location.href = "member.html";
         }
     });
 
-    function fetchUserOrders(uid) {
+    function fetchUserOrders(uid, email) {
         const orderListContainer = document.getElementById('order-list');
 
-        database.ref('orders')
-            .orderByChild('uid')
-            .equalTo(uid)
-            .once('value')
+        firebase.database().ref('orders').once('value')
             .then((snapshot) => {
-                orderListContainer.innerHTML = ""; 
+                orderListContainer.innerHTML = "";
+                const allOrders = snapshot.val();
+                const matchedOrders = [];
 
-                if (snapshot.exists()) {
-                    const orders = [];
-                    snapshot.forEach((childSnapshot) => {
-                        orders.push({ id: childSnapshot.key, ...childSnapshot.val() });
+                if (allOrders) {
+                    Object.keys(allOrders).forEach(key => {
+                        const o = allOrders[key];
+                        if (!o) return;
+                        const matchUid = uid && o.uid === uid;
+                        const matchEmail = email && o.customer && o.customer.email === email;
+                        if (matchUid || matchEmail) {
+                            matchedOrders.push({ id: key, ...o });
+                        }
                     });
+                }
 
-                    orders.reverse().forEach(order => {
-                        renderOrderCard(order);
-                    });
+                if (matchedOrders.length > 0) {
+                    matchedOrders.reverse().forEach(order => renderOrderCard(order));
                 } else {
                     orderListContainer.innerHTML = `
                         <div class="empty-orders">
@@ -122,39 +246,42 @@
 
     function renderOrderCard(order) {
         const orderListContainer = document.getElementById('order-list');
-        const statusClass = order.status === "已配送" ? "status-shipped" : "status-pending";
+        const statusStr = order.status || '處理中';
+        const statusClass = (statusStr === "已配送" || statusStr === "已完成") ? "status-shipped" : "status-pending";
         
-        // 確保 items 存在
         const items = order.items || [];
         let itemsHTML = items.map(item => `
             <div class="order-item">
-                <img src="${item.image}" alt="${item.name}" class="item-img">
+                <img src="${item.image || 'CG_logo w bg_vertica_green.png'}" alt="${item.name}" class="item-img">
                 <div class="item-info">
                     <div class="item-name">${item.name}</div>
-                    <div class="item-price">NT$ ${Number(item.price).toLocaleString()} x ${item.quantity || 1}</div>
+                    <div class="item-price">NT$ ${Number(item.price || 0).toLocaleString()} x ${item.quantity || 1}</div>
                 </div>
             </div>
         `).join('');
+
+        const orderNo = (order.order_id || order.id || '').substring(0, 14).toUpperCase();
+        const orderDateStr = order.orderDate || order.created_at || '--';
+        const totalAmt = Number(order.totalPrice !== undefined ? order.totalPrice : (order.total_price || 0));
 
         const cardHTML = `
             <div class="order-card">
                 <div class="order-header">
                     <div>
-                        <span class="order-number">訂單編號：#${order.id.substring(0, 10).toUpperCase()}</span>
-                        <div class="order-date">下單日期：${order.orderDate}</div>
+                        <span class="order-number">訂單編號：#${orderNo}</span>
+                        <div class="order-date">下單日期：${orderDateStr}</div>
                     </div>
-                    <span class="status-badge ${statusClass}">${order.status || '處理中'}</span>
+                    <span class="status-badge ${statusClass}">${statusStr}</span>
                 </div>
                 ${itemsHTML}
                 <div class="order-footer">
-                    <div class="total-info">總計：<span class="total-amount">NT$ ${Number(order.totalPrice).toLocaleString()}</span></div>
-                    <a href="https://line.me/ti/p/YourLINEID" class="btn-detail">詢問客服</a>
+                    <div class="total-info">總計：<span class="total-amount">NT$ ${totalAmt.toLocaleString()}</span></div>
+                    <a href="contact.html" class="btn-detail">詢問客服</a>
                 </div>
             </div>
         `;
         orderListContainer.insertAdjacentHTML('beforeend', cardHTML);
     }
 </script>
-
 </body>
 </html>

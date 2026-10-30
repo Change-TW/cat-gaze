@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="meta-title">產品詳情 - Cat Gaze</title>
+    <title id="meta-title">日本紅楓 | 季節色彩首選 - Cat Gaze</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* --- 延用你的品牌規範 CSS --- */
         :root {
             --brand-main: #7F916A;
             --brand-accent: #B0C4B8;
@@ -14,7 +14,6 @@
             --text-dark: #4a4a4a;
             --price-color: #d14900;
         }
-
         body {
             font-family: 'Noto Sans TC', sans-serif;
             margin: 0; padding: 0;
@@ -22,153 +21,328 @@
             color: var(--text-dark);
             line-height: 1.7;
         }
-
         .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+        
+        /* --- 全站統一 Header 導覽列 --- */
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #eeeeee;
+            padding: 0.8rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 55px;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
+        .logo-img, .site-logo {
+            height: 42px;
+            width: auto;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #7F916A;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            margin: 0;
+        }
+        .nav-links a:hover, .nav-links a.active-nav {
+            color: #7F916A;
+            font-weight: 700;
+        }
+        #cart-count {
+            background: #d14900;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            position: absolute;
+            top: -10px;
+            right: -15px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 0;
+                gap: 12px;
+            }
+            .nav-links {
+                justify-content: center;
+                gap: 12px;
+                width: 100%;
+            }
+            .nav-links a {
+                font-size: 0.88rem;
+            }
+        }
 
-        header { background-color: #ffffff; border-bottom: 1px solid #eeeeee; padding: 1rem 0; }
-        .logo-text { font-size: 1.5rem; font-weight: 700; color: var(--brand-main); text-decoration: none; }
-        .back-link { color: #888; text-decoration: none; font-size: 0.9rem; margin-top: 20px; display: inline-block; }
-        
-        /* 佈局 */
-        .product-detail-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; padding: 3rem 0; }
-        .image-gallery img { width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        
+        .back-link { color: #888; text-decoration: none; font-size: 0.9rem; margin-top: 25px; display: inline-block; transition: 0.2s; }
+        .back-link:hover { color: var(--brand-main); }
+        .product-detail-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; padding: 2.5rem 0; }
+        .image-gallery img { width: 100%; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        .thumbnail-placeholder { display: flex; gap: 10px; }
+        .thumbnail-placeholder div {
+            flex: 1; height: 75px; background-color: #eee; border-radius: 6px;
+            display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: #888;
+        }
         .info-section h1 { font-size: 2.2rem; color: var(--brand-main); margin: 0 0 10px 0; font-weight: 500; }
-        .product-id { color: #aaa; font-size: 0.9rem; margin-bottom: 20px; }
+        .product-id { color: #aaa; font-size: 0.9rem; margin-bottom: 20px; letter-spacing: 1px; }
         .price { font-size: 2.5rem; color: var(--price-color); font-weight: bold; margin-bottom: 20px; }
-        
         .btn-buy {
             display: block; width: 100%; background-color: var(--brand-main); color: white;
             padding: 16px; text-align: center; border: none; border-radius: 30px;
             font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s;
-            text-decoration: none;
+            margin-bottom: 10px; text-decoration: none;
         }
         .btn-buy:hover { background-color: #5d7065; transform: translateY(-2px); }
-
-        .gaze-files { margin-top: 40px; background: white; padding: 25px; border-radius: 12px; border: 1px solid #eee; }
-        .gaze-files h3 { color: var(--brand-main); margin-top: 0; border-bottom: 1px solid var(--brand-accent); padding-bottom: 10px; }
-        .gaze-list div { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #f0f0f0; }
-
+        .btn-fav {
+            display: block; width: 100%; background-color: white; color: var(--brand-main);
+            padding: 12px; text-align: center; border: 1.5px solid var(--brand-main); border-radius: 30px;
+            font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s;
+            margin-bottom: 10px;
+        }
+        .btn-fav:hover { background-color: #f0f3ed; }
+        .gaze-files { margin-top: 35px; background: white; padding: 25px; border-radius: 12px; border: 1px solid #eee; }
+        .gaze-files h3 { color: var(--brand-main); margin-top: 0; font-size: 1.1rem; border-bottom: 1px solid var(--brand-accent); padding-bottom: 10px; }
+        .gaze-list div { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #f0f0f0; font-size: 0.95rem; }
+        .gaze-list span:first-child { color: #888; }
+        .content-section { padding: 3rem 0; border-top: 1px solid #eee; }
+        .section-heading { font-size: 1.6rem; color: var(--brand-main); margin-bottom: 25px; position: relative; }
+        .section-heading::after { content: ''; display: block; width: 50px; height: 3px; background: var(--brand-accent); margin-top: 8px; }
+        .care-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .care-item { display: flex; gap: 15px; }
+        .care-icon { font-size: 1.8rem; }
+        .care-text h4 { margin: 0; color: var(--brand-main); }
+        .care-text p { margin: 5px 0 0 0; font-size: 0.9rem; color: #666; }
+        .related-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 15px; }
+        .related-links a {
+            padding: 7px 16px; background: white; border: 1px solid #ddd; border-radius: 20px;
+            text-decoration: none; color: var(--brand-main); font-size: 0.88rem; font-weight: 500; transition: 0.2s;
+        }
+        .related-links a:hover { background: var(--brand-main); color: white; border-color: var(--brand-main); }
         footer { background-color: var(--brand-main); color: white; text-align: center; padding: 3rem 0; margin-top: 4rem; }
-
-        /* 購物車 Drawer 樣式 (延用) */
-        #cart-drawer { position:fixed; top:0; right:-400px; width:350px; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box; }
-        #cart-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999; }
-
-        @media (max-width: 768px) { .product-detail-grid { grid-template-columns: 1fr !important; } }
+        @media (max-width: 768px) {
+            .product-detail-grid, .care-grid { grid-template-columns: 1fr !important; gap: 30px; }
+            h1 { font-size: 1.8rem !important; }
+            .price { font-size: 2rem !important; }
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="container">
-            <a href="index.html" class="logo-text">Cat Gaze</a>
-        </div>
-    </header>
-
-    <div class="container">
-        <a href="index.html" class="back-link">← 返回首頁</a>
-        <nav style="margin-top: 10px; display: flex; align-items: center; gap: 15px;">
-            <a href="knowledge.html" style="text-decoration:none; color:var(--brand-main);">知識中心</a>
-            <a href="about.html" style="text-decoration:none; color:var(--brand-main);">關於我們</a>
-            <a href="member.html" style="text-decoration:none; color:var(--brand-main);">會員中心</a>
-            <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative; text-decoration:none; color:var(--brand-main);">
-                🛒 購物車 <span id="cart-count" style="background: var(--price-color); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -10px; right: -15px;">0</span>
+<header>
+    <div class="container navbar">
+        <a href="index.html" class="logo-container">
+            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="logo-img">
+            <span class="logo-text">Cat Gaze</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">首頁</a>
+            <a href="new-arrivals.html">嚴選新品</a>
+            <a href="categories.html" class="active-nav" style="color: #7F916A; font-weight: 700;">各類品項</a>
+            <a href="tools.html">資材用具</a>
+            <a href="knowledge.html">知識中心</a>
+            <a href="about.html">關於我們</a>
+            <a href="contact.html">聯繫我們</a>
+            <a href="member.html">👤 會員</a>
+            <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
+                🛒 購物車 <span id="cart-count">0</span>
             </a>
         </nav>
-
-        <div class="product-detail-grid">
-            <div class="image-gallery">
-                <img id="display-img" src="" alt="產品圖片">
-                <div style="margin-top: 20px; color: #888; font-size: 0.9rem;">✦ 實際拍攝，僅此一盆</div>
-            </div>
-
-            <div class="info-section">
-                <h1 id="display-title">載入中...</h1>
-                <p class="product-id" id="display-id">編號: --</p>
-                <div class="price" id="display-price">NT$ --</div>
-                
-                <div style="color: var(--brand-main); font-weight: 600; margin-bottom: 20px;" id="display-tagline">
-                    ✦ 貓眼嚴選
-                </div>
-
-                <button class="btn-buy" id="add-btn">✦ 加入購物車</button>
-                
-                <div class="gaze-files">
-                    <h3>【Cat Gaze 嚴選檔案】</h3>
-                    <div class="gaze-list">
-                        <div><span>✦ 樹種</span><span id="file-species">--</span></div>
-                        <div><span>✦ 樹齡</span><span id="file-age">--</span></div>
-                        <div><span>✦ 尺寸</span><span id="file-size">--</span></div>
-                        <div><span>✦ 盆器</span><span id="file-pot">--</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
+</header>
 
-    <footer>
-        <div class="container"><p>© 2026 Cat Gaze | 透過貓眼凝視，發掘植栽的靈魂</p></div>
-    </footer>
+<div class="container">
+    <a href="index.html" class="back-link">← 返回首頁</a>
 
-    <div id="cart-overlay" onclick="toggleCart()"></div>
-    <div id="cart-drawer">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
-            <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
-            <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
-        </div>
-        <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;"></div>
-        <div style="border-top:1px solid #eee; padding-top:20px;">
-            <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
-                <span>總計金額</span><span id="cart-total-price" style="color:#d14900;">NT$ 0</span>
+    <div class="product-detail-grid">
+        <div class="image-gallery">
+            <img id="display-img" src="" alt="產品圖片">
+            <div class="thumbnail-placeholder">
+                <div>葉團細節</div>
+                <div>樹幹扭轉美</div>
+                <div>比例對照</div>
+                <div>盆器底部</div>
             </div>
-            <button onclick="checkoutToLine()" style="width:100%; background:#7F916A; color:white; border:none; padding:15px; border-radius:30px; font-weight:bold; cursor:pointer;">確認下單並結帳</button>
+            <div style="margin-top: 15px; color: #888; font-size: 0.9rem;">✦ 實際拍攝，僅此一盆</div>
         </div>
-    </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <script src="cart-system.js"></script>
-
-    <script>
-        // ==========================================
-        // 🚩 兄弟，你只需要修改這裡的內容就好 🚩
-        // ==========================================
-        const ProductConfig = {
-            title: "日本紅楓 | 季節色彩首選",
-            id: "CG-RM003",
-            price: 1200,
-            image: "red-maple.jpg",
-            tagline: "✦ 貓眼嚴選：春季新芽火紅，適合居家陽台點綴",
-            files: {
-                species: "日本紅楓",
-                age: "約 2 年",
-                size: "含盆高約 32 公分",
-                pot: "造型陶盆"
-            }
-        };
-
-        // 自動渲染頁面資訊
-        function initPage() {
-            document.getElementById('meta-title').innerText = ProductConfig.title + " - Cat Gaze";
-            document.getElementById('display-title').innerText = ProductConfig.title;
-            document.getElementById('display-id').innerText = "編號: " + ProductConfig.id;
-            document.getElementById('display-price').innerText = "NT$ " + ProductConfig.price.toLocaleString();
-            document.getElementById('display-img').src = ProductConfig.image;
-            document.getElementById('display-tagline').innerText = ProductConfig.tagline;
+        <div class="info-section">
+            <h1 id="display-title">載入中...</h1>
+            <p class="product-id" id="display-id">編號: --</p>
+            <div class="price" id="display-price">NT$ --</div>
             
-            document.getElementById('file-species').innerText = ProductConfig.files.species;
-            document.getElementById('file-age').innerText = ProductConfig.files.age;
-            document.getElementById('file-size').innerText = ProductConfig.files.size;
-            document.getElementById('file-pot').innerText = ProductConfig.files.pot;
+            <div style="color: var(--brand-main); font-weight: 600; margin-bottom: 20px;" id="display-tagline">
+                ✦ 貓眼嚴選
+            </div>
 
-            // 綁定購物車按鈕
-            document.getElementById('add-btn').onclick = function() {
-                addToCart(ProductConfig.title, ProductConfig.price, ProductConfig.image);
-            };
+            <button class="btn-buy" id="add-btn">✦ 加入購物車</button>
+            <button class="btn-fav" id="fav-btn">♡ 加入我的收藏</button>
+            <p style="text-align: center; font-size: 0.8rem; color: #999;">預計 2-3 個工作天內出貨 (不含例假日)</p>
+            
+            <div class="gaze-files">
+                <h3>【Cat Gaze 嚴選檔案】</h3>
+                <div class="gaze-list">
+                    <div><span>✦ 樹種</span><span id="file-species">--</span></div>
+                    <div><span>✦ 樹齡</span><span id="file-age">--</span></div>
+                    <div><span>✦ 尺寸</span><span id="file-size">--</span></div>
+                    <div><span>✦ 盆器</span><span id="file-pot">--</span></div>
+                </div>
+            </div>
+
+            <div style="margin-top: 25px;">
+                <div style="font-size: 0.85rem; color: #888; margin-bottom: 8px;">✦ 快速切換瀏覽其他嚴選植栽：</div>
+                <div class="related-links">
+                    <a href="shimpaku.html">系魚川真柏</a>
+                    <a href="black-pine.html">黑松・文人風</a>
+                    <a href="red-maple.html">日本紅楓</a>
+                    <a href="luohan-detail.html">小葉羅漢松</a>
+                    <a href="new-arrivals.html">嚴選新品</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <h2 class="section-heading">日常養護指南</h2>
+        <div class="care-grid">
+            <div class="care-item">
+                <div class="care-icon">☀️</div>
+                <div class="care-text">
+                    <h4>日照需求</h4>
+                    <p>喜全日照或半日照環境，擺放於通風良好的陽台或窗台最佳。</p>
+                </div>
+            </div>
+            <div class="care-item">
+                <div class="care-icon">💧</div>
+                <div class="care-text">
+                    <h4>澆水原則</h4>
+                    <p>「乾透澆透」，觀察表土變淺微乾時全盆澆透至盆底出水。</p>
+                </div>
+            </div>
+            <div class="care-item">
+                <div class="care-icon">🌬️</div>
+                <div class="care-text">
+                    <h4>通風環境</h4>
+                    <p>保持空氣流通，良好的微風能強健枝葉並預防悶根。</p>
+                </div>
+            </div>
+            <div class="care-item">
+                <div class="care-icon">✂️</div>
+                <div class="care-text">
+                    <h4>修剪摘芽</h4>
+                    <p>生長期適度摘除徒長頂芽，維持緊密優雅的樹冠輪廓。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container"><p>© 2026 Cat Gaze | 透過貓眼凝視，發掘植栽的靈魂</p></div>
+</footer>
+
+
+<div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
+
+<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; max-width:90vw; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
+        <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
+        <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+
+    <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;">
+        <p style="text-align:center; color:#999;">目前沒有選購植物</p>
+    </div>
+
+    <div style="border-top:1px solid #eee; padding-top:20px;">
+        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
+            <span>總計金額</span>
+            <span id="cart-total-price" style="color:#d14900;">NT$ 0</span>
+        </div>
+        <button onclick="checkoutToLine()" style="width:100%; background:#7F916A; color:white; border:none; padding:15px; border-radius:30px; font-weight:bold; cursor:pointer;">
+            帶它們回家 (聯繫 LINE 結帳)
+        </button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="cart-system.js"></script>
+
+
+<script>
+
+    const ProductConfig = {
+        title: "日本紅楓 | 季節色彩首選",
+        id: "CG-RM003",
+        price: 1200,
+        image: "red-maple.jpg",
+        tagline: "✦ 貓眼嚴選：春季新芽火紅，適合居家陽台點綴",
+        files: {
+            species: "日本紅楓",
+            age: "約 2 年",
+            size: "含盆高約 32 公分",
+            pot: "造型陶盆"
         }
+    };
 
-        window.onload = initPage;
-    </script>
+
+    function initPage() {
+        document.getElementById('meta-title').innerText = ProductConfig.title + " - Cat Gaze";
+        document.getElementById('display-title').innerText = ProductConfig.title;
+        document.getElementById('display-id').innerText = "編號: " + ProductConfig.id;
+        document.getElementById('display-price').innerText = "NT$ " + ProductConfig.price.toLocaleString();
+        document.getElementById('display-img').src = ProductConfig.image;
+        document.getElementById('display-tagline').innerText = ProductConfig.tagline;
+        
+        document.getElementById('file-species').innerText = ProductConfig.files.species;
+        document.getElementById('file-age').innerText = ProductConfig.files.age;
+        document.getElementById('file-size').innerText = ProductConfig.files.size;
+        document.getElementById('file-pot').innerText = ProductConfig.files.pot;
+
+        document.getElementById('add-btn').onclick = function() {
+            addToCart(ProductConfig.title, ProductConfig.price, ProductConfig.image);
+        };
+        document.getElementById('fav-btn').onclick = function() {
+            addToFavorites(ProductConfig.title, ProductConfig.price, ProductConfig.image);
+        };
+    }
+
+    window.addEventListener('DOMContentLoaded', initPage);
+</script>
 </body>
 </html>

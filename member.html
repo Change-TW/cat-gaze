@@ -4,257 +4,318 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>會員中心 | Cat Gaze</title>
-<style>
-    :root {
-        --brand-main: #7F916A;
-        --brand-cream: #FDFAD9;
-        --bg-light: #fcfcf8;
-        --text-dark: #4a4a4a;
-    }
-
-    body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); margin: 0; color: var(--text-dark); line-height: 1.6; }
-    .container { width: 90%; max-width: 1000px; margin: 0 auto; }
-
-    /* --- Header 統一風格 --- */
-    header { background: white; border-bottom: 1px solid #eee; padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
-    .navbar { display: flex; justify-content: space-between; align-items: center; height: 60px; }
-    .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--brand-main); text-decoration: none; }
-    .nav-links { display: flex; align-items: center; }
-    .nav-links a { text-decoration: none; color: var(--text-dark); margin-left: 1.5rem; font-weight: 500; font-size: 0.95rem; }
-
-    /* --- 會員佈局 (桌面版) --- */
-    .member-wrapper {
-        display: grid;
-        grid-template-columns: 240px 1fr;
-        gap: 30px;
-        padding: 3rem 0;
-    }
-
-    /* 左側選單 */
-    .member-sidebar {
-        background: white;
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-        height: fit-content;
-    }
-    .sidebar-item {
-        padding: 15px;
-        cursor: pointer;
-        border-radius: 8px;
-        margin-bottom: 5px;
-        color: var(--text-dark);
-        transition: 0.3s;
-        font-size: 0.95rem;
-    }
-    .sidebar-item:hover, .sidebar-item.active { background: #f0f3ed; color: var(--brand-main); font-weight: bold; }
-
-    /* 右側內容 */
-    .member-content {
-        background: white;
-        padding: 35px;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-    }
-
-    .form-section { margin-bottom: 40px; }
-    .form-section h3 { 
-        font-size: 1.2rem;
-        border-left: 5px solid var(--brand-main); 
-        padding-left: 15px; 
-        margin-bottom: 25px; 
-        color: var(--brand-main); 
-    }
-
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; }
-    .form-group input, .form-group select {
-        width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 10px; 
-        box-sizing: border-box; background: #fafafa; font-size: 1rem;
-    }
-
-    .interest-tags { display: flex; gap: 10px; flex-wrap: wrap; }
-    .tag-checkbox { display: none; }
-    .tag-label {
-        padding: 8px 20px; border: 1px solid #eee; border-radius: 25px; 
-        cursor: pointer; transition: 0.3s; font-size: 0.85rem; background: white;
-    }
-    .tag-checkbox:checked + .tag-label { background: var(--brand-main); color: white; border-color: var(--brand-main); }
-
-    .btn-save {
-        background: var(--brand-main); color: white; border: none; padding: 15px;
-        border-radius: 30px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1rem;
-        box-shadow: 0 5px 15px rgba(127, 145, 106, 0.3); transition: 0.3s;
-    }
-    .btn-save:hover { transform: translateY(-2px); background: #6a7a59; }
-
-/* 讓側邊欄的連結繼承原本的設計 */
-.sidebar-item {
-    display: block; /* 讓 <a> 撐滿寬度 */
-    text-decoration: none;
-    color: var(--text-dark);
-}
-
-.sidebar-nav-mobile {
-    display: flex;
-    flex-direction: column; /* 讓桌面版垂直排列 */
-}
-
-@media (max-width: 768px) {
-    .sidebar-nav-mobile {
-        flex-direction: row; /* 手機版才變橫向 */
-    }
-}
-    /* --- 手機版 RWD 優化 --- */
-    @media (max-width: 768px) {
-        /* Header 調整 */
-        .navbar { flex-direction: column; height: auto; padding: 15px 0; }
-        .nav-links { margin-top: 15px; flex-wrap: wrap; justify-content: center; width: 100%; }
-        .nav-links a { margin: 5px 10px; font-size: 0.85rem; }
-
-        /* 佈局切換：選單變橫向捲動 */
-        .member-wrapper { grid-template-columns: 1fr; padding: 1.5rem 0; gap: 20px; }
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-main: #7F916A;
+            --brand-cream: #FDFAD9;
+            --bg-light: #fcfcf8;
+            --text-dark: #4a4a4a;
+        }
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); margin: 0; color: var(--text-dark); line-height: 1.6; }
+        .container { width: 90%; max-width: 1000px; margin: 0 auto; }
         
-        .member-sidebar {
-            padding: 15px;
+        /* --- 全站統一 Header 導覽列 --- */
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #eeeeee;
+            padding: 0.8rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 55px;
         }
-        
-        /* 側邊欄內的導航項目改為水平排列 */
-        .sidebar-nav-mobile {
+        .logo-container {
             display: flex;
-            overflow-x: auto;
-            width: 100%;
+            align-items: center;
+            text-decoration: none;
             gap: 10px;
-            padding-bottom: 10px;
-            -webkit-overflow-scrolling: touch;
         }
-        .sidebar-item { 
-            white-space: nowrap; 
-            margin-bottom: 0; 
-            padding: 8px 15px; 
-            background: #f5f5f5;
-            font-size: 0.85rem;
+        .logo-img, .site-logo {
+            height: 42px;
+            width: auto;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #7F916A;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            margin: 0;
+        }
+        .nav-links a:hover, .nav-links a.active-nav {
+            color: #7F916A;
+            font-weight: 700;
+        }
+        #cart-count {
+            background: #d14900;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            position: absolute;
+            top: -10px;
+            right: -15px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 0;
+                gap: 12px;
+            }
+            .nav-links {
+                justify-content: center;
+                gap: 12px;
+                width: 100%;
+            }
+            .nav-links a {
+                font-size: 0.88rem;
+            }
         }
 
-        .member-content { padding: 25px 20px; border-radius: 0; margin: 0 -5%; width: 100vw; box-sizing: border-box; }
-        
-        .form-section h3 { font-size: 1.1rem; }
-    }
-</style>
-
+        .member-wrapper {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 30px;
+            padding: 3rem 0;
+        }
+        .member-sidebar {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            height: fit-content;
+        }
+        .sidebar-item {
+            display: block;
+            text-decoration: none;
+            padding: 15px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
+        .sidebar-item:hover, .sidebar-item.active { background: #f0f3ed; color: var(--brand-main); font-weight: bold; }
+        .sidebar-nav-mobile { display: flex; flex-direction: column; }
+        .member-content {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+        .form-section { margin-bottom: 40px; }
+        .form-section h3 { 
+            font-size: 1.2rem;
+            border-left: 5px solid var(--brand-main); 
+            padding-left: 15px; 
+            margin-bottom: 25px; 
+            color: var(--brand-main); 
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 10px; 
+            box-sizing: border-box; background: #fafafa; font-size: 1rem;
+        }
+        .interest-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+        .tag-checkbox { display: none; }
+        .tag-label {
+            padding: 8px 20px; border: 1px solid #eee; border-radius: 25px; 
+            cursor: pointer; transition: 0.3s; font-size: 0.85rem; background: white;
+        }
+        .tag-checkbox:checked + .tag-label { background: var(--brand-main); color: white; border-color: var(--brand-main); }
+        .btn-save {
+            background: var(--brand-main); color: white; border: none; padding: 15px;
+            border-radius: 30px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(127, 145, 106, 0.3); transition: 0.3s;
+        }
+        .btn-save:hover { transform: translateY(-2px); background: #6a7a59; }
+        @media (max-width: 768px) {
+            .member-wrapper { grid-template-columns: 1fr; padding: 1.5rem 0; gap: 20px; }
+            .member-sidebar { padding: 15px; display: flex; flex-direction: column; align-items: center; }
+            .sidebar-nav-mobile {
+                flex-direction: row; overflow-x: auto; width: 100%; gap: 10px; padding-bottom: 10px;
+            }
+            .sidebar-item { white-space: nowrap; margin-bottom: 0; padding: 8px 15px; background: #f5f5f5; font-size: 0.85rem; }
+            .member-content { padding: 25px 20px; }
+            .form-section h3 { font-size: 1.1rem; }
+        }
+    </style>
 </head>
 <body>
 
-    <header>
-        <div class="container navbar">
-            <a href="index.html" class="logo-text">Cat Gaze</a>
-            <nav class="nav-links">
-                <a href="index.html">首頁</a>
-                <a href="index.html">全部商品</a>
-                <a href="knowledge.html">知識中心</a>
-                <a href="about.html">關於我們</a>
-                <a href="contact.html">聯繫我們</a>
-                <a href="member.html" style="color: var(--brand-main);">會員中心</a>
-               
-            </nav>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="member-wrapper">
-<aside class="member-sidebar">
-    <div style="text-align: center; margin-bottom: 20px;">
-        <div style="width: 70px; height: 70px; background: var(--brand-cream); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; border: 2px solid white; box-shadow: 0 5px 10px rgba(0,0,0,0.05);">🐱</div>
-        <div style="font-weight: bold; color: var(--brand-main);" id="display-name">訪客</div>
-        <div style="font-size: 0.75rem; color: #aaa; letter-spacing: 1px;">GENERAL MEMBER</div>
+<header>
+    <div class="container navbar">
+        <a href="index.html" class="logo-container">
+            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="logo-img">
+            <span class="logo-text">Cat Gaze</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">首頁</a>
+            <a href="new-arrivals.html">嚴選新品</a>
+            <a href="categories.html">各類品項</a>
+            <a href="tools.html">資材用具</a>
+            <a href="knowledge.html">知識中心</a>
+            <a href="about.html">關於我們</a>
+            <a href="contact.html">聯繫我們</a>
+            <a href="member.html" class="active-nav" style="color: #7F916A; font-weight: 700;">👤 會員</a>
+            <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
+                🛒 購物車 <span id="cart-count">0</span>
+            </a>
+        </nav>
     </div>
-    
-    <div class="sidebar-nav-mobile">
-        <a href="member.html" class="sidebar-item active" style="text-decoration:none;">個人資料</a>
-        <a href="orders.html" class="sidebar-item" style="text-decoration:none;">訂單查詢</a>
-        <a href="favorites.html" class="sidebar-item" style="text-decoration:none;">我的收藏</a>
-        <div class="sidebar-item" id="logout-btn" style="color: #ff4d4d;">登出</div>
-    </div>
-</aside>
-            <main class="member-content">
-                <div class="form-section">
-                    <h3>基本資料收集</h3>
-                    <div class="form-group">
-                        <label>真實姓名</label>
-                        <input type="text" id="member-name" placeholder="請輸入姓名">
-                    </div>
-                    <div id="login-section" style="text-align: center; margin-bottom: 30px;">
-    <p>登入後即可同步您的雲端購物車與收藏</p>
-    
-    <button onclick="handleGoogleLogin()" style="background: white; color: #444; border: 1px solid #ddd; padding: 10px 20px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-weight: bold; width: 100%; max-width: 300px;">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" style="margin-right: 10px;">
-        使用 Google 登入
-    </button>
+</header>
 
-    <div style="margin: 20px 0; color: #ccc;">─── 或使用帳號密碼 ───</div>
+<div class="container">
+    <div class="member-wrapper">
+        <aside class="member-sidebar">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="width: 70px; height: 70px; background: var(--brand-cream); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; border: 2px solid white; box-shadow: 0 5px 10px rgba(0,0,0,0.05);">🐱</div>
+                <div style="font-weight: bold; color: var(--brand-main);" id="display-name">訪客</div>
+                <div style="font-size: 0.75rem; color: #aaa; letter-spacing: 1px;">GENERAL MEMBER</div>
+            </div>
+            
+            <div class="sidebar-nav-mobile">
+                <a href="member.html" class="sidebar-item active">個人資料</a>
+                <a href="orders.html" class="sidebar-item">訂單查詢</a>
+                <a href="favorites.html" class="sidebar-item">我的收藏</a>
+                <div class="sidebar-item" id="logout-btn" style="color: #ff4d4d;">登出</div>
+            </div>
+        </aside>
 
-    <div style="max-width: 300px; margin: 0 auto;">
-        <input type="email" id="login-email" placeholder="電子郵件" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px;">
-        <input type="password" id="login-pw" placeholder="密碼 (至少 6 位)" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px;">
-        
-        <div style="display: flex; gap: 10px;">
-            <button onclick="handleEmailLogin()" style="flex: 1; background: var(--brand-main); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">登入</button>
-            <button onclick="handleEmailSignUp()" style="flex: 1; background: white; color: var(--brand-main); border: 1px solid var(--brand-main); padding: 10px; border-radius: 5px; cursor: pointer;">註冊</button>
-        </div>
-    </div>
-</div>
-
-<div id="profile-fields" style="display:none;">
-    <div class="form-group">
-        <label>電子郵件 (由 Google 提供)</label>
-        <input type="email" id="member-email" readonly style="background: #f0f0f0;">
-    
-    </div>
+        <main class="member-content">
+            <div class="form-section">
+                <h3>基本資料收集</h3>
+                <div class="form-group">
+                    <label>真實姓名</label>
+                    <input type="text" id="member-name" placeholder="請輸入姓名">
+                </div>
+                <div class="form-group">
+                    <label>聯絡電話 (供訂單配送聯繫)</label>
+                    <input type="tel" id="member-phone" placeholder="例如：0912-345-678">
                 </div>
 
-                <div class="form-section">
-                    <h3>植栽偏好調查 (數據收集重點)</h3>
-                    <p style="font-size: 0.9rem; color: #777;">這些資訊能幫助我們為您挑選更適合您的植物。</p>
+                <div id="login-section" style="text-align: center; margin-bottom: 30px;">
+                    <p>登入後即可同步您的雲端購物車與收藏</p>
                     
-                    <div class="form-group">
-                        <label>您的植栽經驗</label>
-                        <select id="experience">
-                            <option value="beginner">我是新手 (剛開始凝視植物)</option>
-                            <option value="intermediate">略有經驗 (養過幾盆且存活)</option>
-                            <option value="expert">植栽達人 (對修剪與換盆有心得)</option>
-                        </select>
-                    </div>
+                    <button onclick="handleGoogleLogin()" style="background: white; color: #444; border: 1px solid #ddd; padding: 10px 20px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-weight: bold; width: 100%; max-width: 300px;">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" style="margin-right: 10px;" alt="Google">
+                        使用 Google 登入
+                    </button>
 
-                    <div class="form-group">
-                        <label>感興趣的類別</label>
-                        <div class="interest-tags">
-                            <input type="checkbox" id="tag1" class="tag-checkbox" value="松柏"><label for="tag1" class="tag-label">松柏類</label>
-                            <input type="checkbox" id="tag2" class="tag-checkbox" value="雜木"><label for="tag2" class="tag-label">雜木類</label>
-                            <input type="checkbox" id="tag3" class="tag-checkbox" value="迷你盆景"><label for="tag3" class="tag-label">迷你盆景</label>
-                            <input type="checkbox" id="tag4" class="tag-checkbox" value="開花類"><label for="tag4" class="tag-label">開花類</label>
+                    <div style="margin: 20px 0; color: #ccc;">─── 或使用帳號密碼 ───</div>
+
+                    <div style="max-width: 300px; margin: 0 auto;">
+                        <input type="email" id="login-email" placeholder="電子郵件" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                        <input type="password" id="login-pw" placeholder="密碼 (至少 6 位)" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                        
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="handleEmailLogin()" style="flex: 1; background: var(--brand-main); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">登入</button>
+                            <button onclick="handleEmailSignUp()" style="flex: 1; background: white; color: var(--brand-main); border: 1px solid var(--brand-main); padding: 10px; border-radius: 5px; cursor: pointer;">註冊</button>
                         </div>
                     </div>
                 </div>
 
-                <button class="btn-save" onclick="saveProfile()">儲存個人檔案</button>
-            </main>
+                <div id="profile-fields" style="display:none;">
+                    <div class="form-group">
+                        <label>電子郵件 (已綁定帳號)</label>
+                        <input type="email" id="member-email" readonly style="background: #f0f0f0;">
+                    </div>
+                </div>
+            </div>
 
+            <div class="form-section">
+                <h3>植栽偏好調查 (數據收集重點)</h3>
+                <p style="font-size: 0.9rem; color: #777;">這些資訊能幫助我們為您挑選更適合您的植物。</p>
+                
+                <div class="form-group">
+                    <label>您的植栽經驗</label>
+                    <select id="experience">
+                        <option value="beginner">我是新手 (剛開始凝視植物)</option>
+                        <option value="intermediate">略有經驗 (養過幾盆且存活)</option>
+                        <option value="expert">植栽達人 (對修剪與換盆有心得)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>感興趣的類別</label>
+                    <div class="interest-tags">
+                        <input type="checkbox" id="tag1" class="tag-checkbox" value="松柏"><label for="tag1" class="tag-label">松柏類</label>
+                        <input type="checkbox" id="tag2" class="tag-checkbox" value="雜木"><label for="tag2" class="tag-label">雜木類</label>
+                        <input type="checkbox" id="tag3" class="tag-checkbox" value="迷你盆景"><label for="tag3" class="tag-label">迷你盆景</label>
+                        <input type="checkbox" id="tag4" class="tag-checkbox" value="開花類"><label for="tag4" class="tag-label">開花類</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-save" onclick="saveProfile()">儲存個人檔案</button>
+        </main>
+    </div>
+</div>
+
+
+<div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
+
+<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; max-width:90vw; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
+        <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
+        <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+
+    <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;">
+        <p style="text-align:center; color:#999;">目前沒有選購植物</p>
+    </div>
+
+    <div style="border-top:1px solid #eee; padding-top:20px;">
+        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
+            <span>總計金額</span>
+            <span id="cart-total-price" style="color:#d14900;">NT$ 0</span>
+        </div>
+        <button onclick="checkoutToLine()" style="width:100%; background:#7F916A; color:white; border:none; padding:15px; border-radius:30px; font-weight:bold; cursor:pointer;">
+            帶它們回家 (聯繫 LINE 結帳)
+        </button>
+    </div>
+</div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
 <script src="cart-system.js"></script>
 
+
 <script>
-    // 初始化驗證工具 (只需定義一次)
     const auth = firebase.auth();
     const provider = new firebase.auth.GoogleAuthProvider();
 
-    // 更新介面 UI
     function updateUI(user) {
         const profileFields = document.getElementById('profile-fields');
         const loginSection = document.getElementById('login-section');
@@ -268,31 +329,34 @@
             document.getElementById('member-name').value = user.displayName || "";
             document.getElementById('member-email').value = user.email;
 
-            // 同步到 LocalStorage 給購物車用
+            let savedPhone = "";
+            try {
+                const existing = JSON.parse(localStorage.getItem('CatGazeProfile'));
+                if (existing && existing.phone) savedPhone = existing.phone;
+            } catch(e) {}
+            if (savedPhone) document.getElementById('member-phone').value = savedPhone;
+
             localStorage.setItem('CatGazeProfile', JSON.stringify({
-                name: user.displayName,
+                name: user.displayName || user.email.split('@')[0],
                 email: user.email,
+                phone: savedPhone,
                 uid: user.uid
             }));
         } else {
             profileFields.style.display = 'none';
             loginSection.style.display = 'block';
             displayName.innerText = "訪客";
-            localStorage.removeItem('CatGazeProfile');
         }
     }
 
-    // 監聽登入狀態
     auth.onAuthStateChanged(updateUI);
 
-    // Google 登入
     function handleGoogleLogin() {
         auth.signInWithPopup(provider)
             .then((result) => alert("歡迎回來，" + result.user.displayName))
             .catch((error) => alert("Google 登入失敗: " + error.message));
     }
 
-    // Email 註冊
     function handleEmailSignUp() {
         const email = document.getElementById('login-email').value;
         const pw = document.getElementById('login-pw').value;
@@ -306,7 +370,6 @@
             .catch((error) => alert("註冊失敗: " + error.message));
     }
 
-    // Email 登入
     function handleEmailLogin() {
         const email = document.getElementById('login-email').value;
         const pw = document.getElementById('login-pw').value;
@@ -317,16 +380,33 @@
             .catch((error) => alert("登入失敗: " + error.message));
     }
 
-    // 儲存偏好資料
     function saveProfile() {
         const user = auth.currentUser;
-        if (!user) return alert("請先登入！");
-
+        const nameVal = document.getElementById('member-name').value.trim();
+        const phoneVal = document.getElementById('member-phone').value.trim();
+        const emailVal = user ? user.email : (document.getElementById('login-email').value.trim() || 'guest@catgaze.com');
         const experience = document.getElementById('experience').value;
         const interests = Array.from(document.querySelectorAll('.tag-checkbox:checked')).map(cb => cb.value);
 
+        if (!nameVal) return alert("請輸入您的姓名！");
+
+        const localProfile = {
+            name: nameVal,
+            email: emailVal,
+            phone: phoneVal,
+            uid: user ? user.uid : emailVal.replace(/\./g, '_')
+        };
+        localStorage.setItem('CatGazeProfile', JSON.stringify(localProfile));
+        document.getElementById('display-name').innerText = nameVal;
+
+        if (!user) {
+            alert("✨ 個人聯繫資料已儲存於本機，現在可直接進行購物車下單！");
+            return;
+        }
+
         const profileData = {
-            name: document.getElementById('member-name').value || user.displayName,
+            name: nameVal,
+            phone: phoneVal,
             email: user.email,
             experience: experience,
             interests: interests,
@@ -334,13 +414,13 @@
         };
 
         firebase.database().ref('users/' + user.uid).set(profileData)
-            .then(() => alert("✨ 個人偏好已儲存！"))
+            .then(() => alert("✨ 個人偏好與聯繫資料已同步儲存至雲端！"))
             .catch(err => alert("儲存失敗: " + err));
     }
 
-    // 登出功能
-    document.querySelector('.sidebar-item[style*="color: #ff4d4d"]').onclick = function() {
+    document.getElementById('logout-btn').onclick = function() {
         if(confirm("確定要登出嗎？")) {
+            localStorage.removeItem('CatGazeProfile');
             auth.signOut().then(() => window.location.reload());
         }
     };

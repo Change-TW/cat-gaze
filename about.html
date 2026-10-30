@@ -5,33 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <title>關於我們 | Cat Gaze - 透過貓眼凝視植栽之美</title>
-    
     <style>
-        /* --- CSS 樣式設定 (保持 Cat Gaze 一貫的高質感) --- */
         :root {
-            --brand-main: #7F916A;      /* 鼠尾草綠 */
-            --brand-accent: #B0C4B8;    /* 淺灰綠 */
-            --brand-cream: #FDFAD9;     /* 奶油米白 */
-            --bg-light: #fcfcf8;                    
-            --text-dark: #4a4a4a;               
+            --brand-main: #7F916A;
+            --brand-accent: #B0C4B8;
+            --brand-cream: #FDFAD9;
+            --bg-light: #fcfcf8;
+            --text-dark: #4a4a4a;
+            --price-color: #d14900;
         }
-
         body {
             font-family: 'Noto Sans TC', sans-serif;
-            margin: 0; 
-            padding: 0;
+            margin: 0; padding: 0;
             background-color: var(--bg-light);
             color: var(--text-dark);
             line-height: 2;
         }
-
-        .container { 
-            width: 90%; 
-            max-width: 1000px; 
-            margin: 0 auto; 
-        }
+        .container { width: 90%; max-width: 1000px; margin: 0 auto; }
         
-        /* --- Header --- */
+        /* --- 全站統一 Header 導覽列 --- */
         header {
             background-color: #ffffff;
             border-bottom: 1px solid #eeeeee;
@@ -40,226 +32,120 @@
             top: 0;
             z-index: 1000;
         }
-
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 55px;
         }
-
         .logo-container {
             display: flex;
             align-items: center;
             text-decoration: none;
+            gap: 10px;
         }
-
-        .logo-img {
+        .logo-img, .site-logo {
             height: 42px;
             width: auto;
-            margin-right: 12px;
             border-radius: 50%;
+            margin-right: 4px;
         }
-
         .logo-text {
             font-size: 1.4rem;
             font-weight: 700;
             color: #7F916A;
             letter-spacing: 1px;
-            font-family: 'Noto Sans TC', sans-serif;
+            text-decoration: none;
         }
-
         .nav-links {
             display: flex;
             align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
         }
-
         .nav-links a {
             text-decoration: none;
             color: #4a4a4a;
-            margin-left: 2.2rem;
             font-weight: 500;
-            font-size: 1rem;
+            font-size: 0.95rem;
             transition: color 0.3s ease;
-            font-family: 'Noto Sans TC', sans-serif;
+            white-space: nowrap;
+            margin: 0;
         }
-
-        .nav-links a:hover {
+        .nav-links a:hover, .nav-links a.active-nav {
             color: #7F916A;
+            font-weight: 700;
         }
-
         #cart-count {
             background: #d14900;
             color: white;
-            border-radius: 10px;
-            padding: 1px 6px;
-            font-size: 11px;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
             position: absolute;
-            top: -8px;
+            top: -10px;
             right: -15px;
             font-weight: bold;
+            line-height: 1.2;
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 0;
+                gap: 12px;
+            }
+            .nav-links {
+                justify-content: center;
+                gap: 12px;
+                width: 100%;
+            }
+            .nav-links a {
+                font-size: 0.88rem;
+            }
         }
 
-        /* --- Hero Section --- */
         .about-hero {
-            padding: 8rem 0;
+            padding: 7rem 0;
             text-align: center;
             background: linear-gradient(rgba(253, 250, 217, 0.85), rgba(253, 250, 217, 0.85)), url('brand-story-bg.jpg');
             background-size: cover;
             background-position: center;
             margin-bottom: 4rem;
         }
-
-        .about-hero h1 {
-            font-size: 2.8rem;
-            color: var(--brand-main);
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        .about-hero p {
-            font-size: 1.2rem;
-            letter-spacing: 3px;
-            color: var(--brand-main);
-            opacity: 0.9;
-            font-weight: 500;
-        }
-
-        /* --- 故事內文區 --- */
-        .story-section { 
-            padding-bottom: 5rem; 
-        }
-
-        .story-content { 
-            max-width: 700px; 
-            margin: 0 auto; 
-            text-align: justify; 
-        }
-                
-        .story-content h2 {
-            color: var(--brand-main);
-            font-size: 1.8rem;
-            margin-top: 4rem;
-            text-align: center;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .story-content p {
-            margin-bottom: 1.8rem;
-            font-size: 1.05rem;
-        }
-
+        .about-hero h1 { font-size: 2.8rem; color: var(--brand-main); margin-bottom: 1rem; font-weight: 700; }
+        .about-hero p { font-size: 1.2rem; letter-spacing: 3px; color: var(--brand-main); opacity: 0.9; font-weight: 500; }
+        .story-section { padding-bottom: 5rem; }
+        .story-content { max-width: 700px; margin: 0 auto; text-align: justify; }
+        .story-content h2 { color: var(--brand-main); font-size: 1.8rem; margin-top: 4rem; text-align: center; font-weight: 700; letter-spacing: 1px; }
+        .story-content p { margin-bottom: 1.8rem; font-size: 1.05rem; }
         .highlight-box {
-            background-color: white;
-            border-left: 5px solid var(--brand-main);
-            padding: 2.2rem;
-            margin: 3.5rem 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: var(--brand-main);
-            text-align: center;
-            line-height: 1.8;
+            background-color: white; border-left: 5px solid var(--brand-main);
+            padding: 2.2rem; margin: 3.5rem 0; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            font-size: 1.1rem; font-weight: 500; color: var(--brand-main); text-align: center; line-height: 1.8;
         }
-
-        /* --- 核心理念 (三欄式) --- */
         .values-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 3rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px; margin-top: 3rem;
         }
-
         .value-card {
-            text-align: center;
-            padding: 2rem;
-            background: white;
-            border-radius: 12px;
-            border: 1px solid var(--brand-accent);
+            text-align: center; padding: 2rem; background: white;
+            border-radius: 12px; border: 1px solid var(--brand-accent);
         }
-
-        .value-card .icon { 
-            font-size: 2.5rem; 
-            margin-bottom: 15px; 
-            display: block; 
-        }
-
-        .value-card h3 { 
-            color: var(--brand-main); 
-            margin-bottom: 15px; 
-            font-weight: 700; 
-        }
-
-        .value-card p { 
-            font-size: 0.95rem; 
-            color: #666; 
-            line-height: 1.6; 
-        }
-
-        /* --- Footer --- */
+        .value-card .icon { font-size: 2.5rem; margin-bottom: 15px; display: block; }
+        .value-card h3 { color: var(--brand-main); margin-bottom: 15px; font-weight: 700; }
+        .value-card p { font-size: 0.95rem; color: #666; line-height: 1.6; }
         footer {
-            background-color: var(--brand-main);
-            color: white;
-            text-align: center;
-            padding: 4rem 0;
-            margin-top: 4rem;
+            background-color: var(--brand-main); color: white; text-align: center;
+            padding: 4rem 0; margin-top: 4rem;
         }
-
-        .footer-logo { 
-            font-size: 1.5rem; 
-            font-weight: bold; 
-            margin-bottom: 10px; 
-            display: block; 
-        }
-
-        .footer-grid { 
-            display: flex; 
-            justify-content: center; 
-            margin-top: 20px; 
-        }
-
-        .footer-col a { 
-            color: rgba(255,255,255,0.8); 
-            text-decoration: none; 
-            margin: 0 10px; 
-            font-size: 0.9rem; 
-        }
-
-        .footer-col a:hover { 
-            color: white; 
-        }
-
-        /* --- RWD 響應式優化 --- */
+        .footer-logo { font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; display: block; }
         @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                text-align: center;
-            }
-            .nav-links {
-                margin-top: 15px;
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 10px;
-            }
-            .nav-links a {
-                margin-left: 10px;
-                margin-right: 10px;
-                font-size: 0.9rem;
-            }
-            .values-grid {
-                grid-template-columns: 1fr !important;
-                gap: 30px;
-            }
-            h1 { font-size: 2rem !important; }
+            .values-grid { grid-template-columns: 1fr !important; gap: 25px; }
             .about-hero h1 { font-size: 2.2rem !important; }
-            .container {
-                width: 92%;
-            }
-            .footer-grid {
-                flex-direction: column;
-                text-align: center;
-            }
         }
     </style>
 </head>
@@ -271,11 +157,13 @@
             <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="logo-img">
             <span class="logo-text">Cat Gaze</span>
         </a>
-
         <nav class="nav-links">
             <a href="index.html">首頁</a>
+            <a href="new-arrivals.html">嚴選新品</a>
+            <a href="categories.html">各類品項</a>
+            <a href="tools.html">資材用具</a>
             <a href="knowledge.html">知識中心</a>
-            <a href="about.html" style="color: #7F916A;">關於我們</a> 
+            <a href="about.html" class="active-nav" style="color: #7F916A; font-weight: 700;">關於我們</a>
             <a href="contact.html">聯繫我們</a>
             <a href="member.html">👤 會員</a>
             <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
@@ -342,26 +230,21 @@
             © 2026 Cat Gaze Bonsai Selection. All Rights Reserved.
         </div>
     </div>
-    <div class="container footer-grid">
-        <div class="footer-col">
-            <a href="index.html">首頁</a>
-            <a href="knowledge.html">知識中心</a>
-            <a href="about.html">關於我們</a>
-            <a href="contact.html">聯繫我們</a>
-        </div>
-    </div>
 </footer>
+
 
 <div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
 
-<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
+<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; max-width:90vw; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
         <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
         <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
     </div>
+
     <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;">
         <p style="text-align:center; color:#999;">目前沒有選購植物</p>
     </div>
+
     <div style="border-top:1px solid #eee; padding-top:20px;">
         <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
             <span>總計金額</span>
@@ -377,18 +260,6 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script src="cart-system.js"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof updateCartUI === 'function') {
-            updateCartUI(); 
-        } else {
-            const cart = JSON.parse(localStorage.getItem('bonsaiCart')) || [];
-            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cart-count').innerText = count;
-        }
-    });
-</script>
 
 </body>
 </html>

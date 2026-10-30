@@ -14,89 +14,131 @@
             --text-dark: #4a4a4a;
             --price-color: #d14900;
         }
-
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); margin: 0; color: var(--text-dark); }
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); margin: 0; color: var(--text-dark); line-height: 1.6; }
         .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+        
+        /* --- 全站統一 Header 導覽列 --- */
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #eeeeee;
+            padding: 0.8rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 55px;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
+        .logo-img, .site-logo {
+            height: 42px;
+            width: auto;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #7F916A;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            margin: 0;
+        }
+        .nav-links a:hover, .nav-links a.active-nav {
+            color: #7F916A;
+            font-weight: 700;
+        }
+        #cart-count {
+            background: #d14900;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            position: absolute;
+            top: -10px;
+            right: -15px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 0;
+                gap: 12px;
+            }
+            .nav-links {
+                justify-content: center;
+                gap: 12px;
+                width: 100%;
+            }
+            .nav-links a {
+                font-size: 0.88rem;
+            }
+        }
 
-        /* --- Header (與其他頁面完全統一) --- */
-        header { background: white; border-bottom: 1px solid #eee; padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
-        .navbar { display: flex; justify-content: space-between; align-items: center; height: 60px; }
-        .logo-container { display: flex; align-items: center; text-decoration: none; }
-        .logo-img { height: 40px; margin-right: 12px; border-radius: 50%; }
-        .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--brand-main); }
-        .nav-links { display: flex; align-items: center; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); margin-left: 2.2rem; font-weight: 500; letter-spacing: 1px; transition: 0.3s; }
-        .nav-links a:hover { color: var(--brand-main); }
-
-        /* --- 頁面標題區 --- */
         .page-header { padding: 4rem 0 2rem; text-align: center; }
-        .page-header h1 { font-size: 2rem; color: var(--brand-main); font-weight: 400; margin-bottom: 10px; }
+        .page-header h1 { font-size: 2.2rem; color: var(--brand-main); font-weight: 500; margin-bottom: 10px; }
         .category-filter { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
         .filter-btn { 
             padding: 8px 20px; border: 1px solid var(--brand-main); background: transparent; 
             color: var(--brand-main); border-radius: 20px; cursor: pointer; transition: 0.3s;
         }
         .filter-btn.active, .filter-btn:hover { background: var(--brand-main); color: white; }
-
-        /* --- 產品網格佈局 --- */
         .product-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 30px; 
-            padding: 3rem 0; 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 30px; padding: 3rem 0; 
         }
-
         .product-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            transition: 0.3s;
-            border: 1px solid #f0f0f0;
-            position: relative;
+            background: white; border-radius: 15px; overflow: hidden;
+            transition: 0.3s; border: 1px solid #f0f0f0; position: relative;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
-        .product-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
-
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.06); }
         .product-image {
-            width: 100%;
-            height: 250px;
-            background-color: #f9f9f9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+            width: 100%; height: 250px; background-color: #f9f9f9;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
         .product-image img { width: 100%; height: 100%; object-fit: cover; }
-
         .product-info { padding: 20px; text-align: center; }
-        .product-tag { font-size: 0.75rem; color: var(--brand-accent); letter-spacing: 1px; text-transform: uppercase; }
+        .product-tag { font-size: 0.75rem; color: var(--brand-accent); letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
         .product-title { font-size: 1.1rem; margin: 10px 0; color: var(--text-dark); }
         .product-price { color: var(--price-color); font-weight: bold; font-size: 1.2rem; }
-
         .add-to-cart-btn {
-            width: 100%;
-            padding: 12px;
-            background: var(--brand-main);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
+            width: 100%; padding: 12px; background: var(--brand-main); color: white;
+            border: none; cursor: pointer; font-weight: bold; transition: 0.3s;
         }
         .add-to-cart-btn:hover { background: #5d7065; }
-
-        /* --- 手機版優化 --- */
+        footer { background-color: var(--brand-main); color: white; text-align: center; padding: 3rem 0; margin-top: 4rem; }
         @media (max-width: 768px) {
-            .navbar { flex-direction: column; height: auto; padding: 15px 0; }
-            .nav-links { margin-top: 15px; flex-wrap: wrap; justify-content: center; width: 100%; }
-            .nav-links a { margin: 5px 10px; font-size: 0.85rem; margin-left: 0; }
-            .product-grid { grid-template-columns: 1fr 1fr; gap: 15px; } /* 手機版一排兩個 */
+            .product-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
             .product-image { height: 180px; }
             .product-title { font-size: 0.95rem; }
-        }
-
-        #cart-count {
-            background: #d14900; color: white; border-radius: 50%; padding: 2px 6px;
-            font-size: 10px; position: absolute; top: -10px; right: -15px; font-weight: bold;
         }
     </style>
 </head>
@@ -105,19 +147,21 @@
 <header>
     <div class="container navbar">
         <a href="index.html" class="logo-container">
-            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze" class="logo-img">
+            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="logo-img">
             <span class="logo-text">Cat Gaze</span>
         </a>
         <nav class="nav-links">
             <a href="index.html">首頁</a>
+            <a href="new-arrivals.html">嚴選新品</a>
+            <a href="categories.html">各類品項</a>
+            <a href="tools.html" class="active-nav" style="color: #7F916A; font-weight: 700;">資材用具</a>
             <a href="knowledge.html">知識中心</a>
-            <a href="tools.html" style="color: var(--brand-main);">資材用具</a>
             <a href="about.html">關於我們</a>
+            <a href="contact.html">聯繫我們</a>
             <a href="member.html">👤 會員</a>
             <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
-    🛒 購物車 <span id="cart-count" style="background: var(--price-color); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -10px; right: -15px;">0</span>
-</a>
-
+                🛒 購物車 <span id="cart-count">0</span>
+            </a>
         </nav>
     </div>
 </header>
@@ -139,58 +183,63 @@
 <div class="container">
     <div class="product-grid" id="product-container">
         <div class="product-card">
-            <div class="product-image">
-                <img src="tool-1.jpg" alt="職人剪定鋏">
-            </div>
-            <div class="product-info">
-                <div class="product-tag">修剪工具</div>
-                <h3 class="product-title">日本製 職人級黑鋼剪定鋏</h3>
-                <div class="product-price">NT$ 1,880</div>
+            <div>
+                <div class="product-image">
+                    <img src="tool-1.jpg" alt="職人剪定鋏">
+                </div>
+                <div class="product-info">
+                    <div class="product-tag">修剪工具</div>
+                    <h3 class="product-title">日本製 職人級黑鋼剪定鋏</h3>
+                    <div class="product-price">NT$ 1,880</div>
+                </div>
             </div>
             <button class="add-to-cart-btn" onclick="addToCart('日本製黑鋼剪定鋏', 1880, 'tool-1.jpg')">
-    加入選植清單
-</button>
+                加入選植清單
+            </button>
         </div>
 
         <div class="product-card">
-            <div class="product-image">
-                <img src="tool-2.jpg" alt="赤玉土">
-            </div>
-            <div class="product-info">
-                <div class="product-tag">專業介質</div>
-                <h3 class="product-title">三本線 赤玉土 (極硬質 - 5L)</h3>
-                <div class="product-price">NT$ 450</div>
+            <div>
+                <div class="product-image">
+                    <img src="tool-2.jpg" alt="赤玉土">
+                </div>
+                <div class="product-info">
+                    <div class="product-tag">專業介質</div>
+                    <h3 class="product-title">三本線 赤玉土 (極硬質 - 5L)</h3>
+                    <div class="product-price">NT$ 450</div>
+                </div>
             </div>
             <button class="add-to-cart-btn" onclick="addToCart('三本線赤玉土 5L', 450, 'tool-2.jpg')">
-    加入選植清單
-</button>
+                加入選植清單
+            </button>
         </div>
 
         <div class="product-card">
-            <div class="product-image">
-                <img src="tool-3.jpg" alt="手作陶盆">
-            </div>
-            <div class="product-info">
-                <div class="product-tag">職人盆器</div>
-                <h3 class="product-title">墨染手作 柴燒粗陶盆</h3>
-                <div class="product-price">NT$ 1,200</div>
+            <div>
+                <div class="product-image">
+                    <img src="tool-3.jpg" alt="手作陶盆">
+                </div>
+                <div class="product-info">
+                    <div class="product-tag">職人盆器</div>
+                    <h3 class="product-title">墨染手作 柴燒粗陶盆</h3>
+                    <div class="product-price">NT$ 1,200</div>
+                </div>
             </div>
             <button class="add-to-cart-btn" onclick="addToCart('墨染手作柴燒陶盆', 1200, 'tool-3.jpg')">
-    加入選植清單
-</button>
+                加入選植清單
+            </button>
         </div>
     </div>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<footer>
+    <div class="container"><p>© 2026 Cat Gaze | 透過貓眼凝視，發掘植栽的靈魂</p></div>
+</footer>
 
-<script src="cart-system.js"></script>
 
 <div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
 
-<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
+<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; max-width:90vw; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
         <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
         <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
@@ -211,6 +260,12 @@
     </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="cart-system.js"></script>
+
+
 <script>
     const filterBtns = document.querySelectorAll('.filter-btn');
     const productCards = document.querySelectorAll('.product-card');
@@ -223,16 +278,13 @@
             productCards.forEach(card => {
                 const cardTag = card.querySelector('.product-tag').textContent.trim();
                 if (selectedTag === '全部' || cardTag === selectedTag) {
-                    card.style.display = 'block';
+                    card.style.display = 'flex';
                 } else {
                     card.style.display = 'none';
                 }
             });
         });
     });
-
-    // 強制檢查：如果點擊按鈕沒反應，檢查控制台有無錯誤
-    console.log("購物車系統已載入");
 </script>
 </body>
 </html>

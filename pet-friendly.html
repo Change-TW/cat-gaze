@@ -14,170 +14,145 @@
             --text-dark: #4a4a4a;
             --price-color: #d14900;
         }
-
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background-color: var(--bg-light);
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); margin: 0; color: var(--text-dark); line-height: 1.6; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+        
+        /* --- 全站統一 Header 導覽列 --- */
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #eeeeee;
+            padding: 0.8rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 55px;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
+        .logo-img, .site-logo {
+            height: 42px;
+            width: auto;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #7F916A;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            white-space: nowrap;
             margin: 0;
-            color: var(--text-dark);
-            line-height: 1.6;
+        }
+        .nav-links a:hover, .nav-links a.active-nav {
+            color: #7F916A;
+            font-weight: 700;
+        }
+        #cart-count {
+            background: #d14900;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            position: absolute;
+            top: -10px;
+            right: -15px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 0;
+                gap: 12px;
+            }
+            .nav-links {
+                justify-content: center;
+                gap: 12px;
+                width: 100%;
+            }
+            .nav-links a {
+                font-size: 0.88rem;
+            }
         }
 
-        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
-
-        /* --- Header 修正版 --- */
-header { 
-    background: white; 
-    padding: 10px 0; 
-    border-bottom: 1px solid #eee; 
-    position: sticky; 
-    top: 0; 
-    z-index: 1000; 
-}
-.navbar { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-}
-
-/* Logo 容器 */
-.logo-container {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    gap: 12px; /* 圖片與文字間距 */
-}
-
-/* Logo 圖片 */
-.site-logo {
-    height: 45px; /* 調整 Logo 高度 */
-    width: auto;
-    object-fit: contain;
-}
-
-/* Logo 文字 */
-.logo-text { 
-    font-size: 1.4rem; 
-    font-weight: 700; 
-    color: var(--brand-main); 
-    letter-spacing: 1px;
-}
-
-.nav-right a { 
-    margin-left: 20px; 
-    text-decoration: none; 
-    color: var(--text-dark); 
-    font-size: 0.95rem;
-    transition: 0.3s;
-}
-.nav-right a:hover {
-    color: var(--brand-main);
-}
-
-        /* --- Hero Section --- */
         .category-hero {
             background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
                 url('https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=2000&auto=format&fit=crop'); 
-    background-size: cover;
-    /* 重點：調整這裡讓貓臉靠右 */
-    /* 第一個值 85% 代表水平位置（越往 100% 越靠右），第二個值 30% 代表垂直位置 */
-    background-position: 85% 30%; 
-
-    padding: 100px 0;
-    text-align: center;
-    color: white;
-}
+            background-size: cover;
+            background-position: 85% 30%; 
+            padding: 100px 0;
+            text-align: center;
+            color: white;
+        }
         .category-hero h1 { font-size: 3rem; margin: 0; font-weight: 300; letter-spacing: 4px; }
         .category-hero p { font-size: 1.1rem; opacity: 0.9; margin-top: 15px; }
-
-        /* --- Safety Guide --- */
-        .safety-guide {
-            background: white;
-            padding: 60px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
+        .safety-guide { background: white; padding: 60px 0; border-bottom: 1px solid #f0f0f0; }
         .guide-wrapper { display: flex; gap: 50px; align-items: center; flex-wrap: wrap; }
         .guide-text { flex: 1; min-width: 300px; }
-        .guide-card { 
-            flex: 1; min-width: 300px; background: var(--brand-cream); 
-            padding: 30px; border-radius: 20px; border: 1px solid #eee;
-        }
-
-        /* --- Filter Tags --- */
+        .guide-card { flex: 1; min-width: 300px; background: var(--brand-cream); padding: 30px; border-radius: 20px; border: 1px solid #eee; }
         .filter-container { padding: 40px 0 20px; display: flex; gap: 12px; overflow-x: auto; }
-        .filter-tag {
-            padding: 8px 25px; border: 1px solid #ddd; border-radius: 25px;
-            background: white; cursor: pointer; transition: 0.3s; white-space: nowrap;
-        }
+        .filter-tag { padding: 8px 25px; border: 1px solid #ddd; border-radius: 25px; background: white; cursor: pointer; transition: 0.3s; white-space: nowrap; }
         .filter-tag.active { background: var(--brand-main); color: white; border-color: var(--brand-main); }
-
-        /* --- Product Grid --- */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 35px;
-            padding-bottom: 80px;
-        }
-
-        .product-card {
-            background: white; border-radius: 15px; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            position: relative; transition: 0.3s;
-        }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 35px; padding-bottom: 80px; }
+        .product-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.03); position: relative; transition: 0.3s; }
         .product-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
-
-        /* 浮動收藏按鈕 */
         .btn-fav-float {
-            position: absolute; top: 15px; right: 15px;
-            width: 38px; height: 38px; background: rgba(255,255,255,0.9);
-            border: none; border-radius: 50%; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; z-index: 10;
+            position: absolute; top: 15px; right: 15px; width: 38px; height: 38px; background: rgba(255,255,255,0.9);
+            border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.3s;
         }
         .btn-fav-float:hover { transform: scale(1.1); background: white; }
         .btn-fav-float svg { fill: #ccc; transition: 0.3s; }
         .btn-fav-float:hover svg { fill: #ff4d4d; }
-
-        /* 寵物友善標籤 */
         .pet-badge {
-            position: absolute; top: 15px; left: 15px;
-            background: var(--brand-main); color: white;
-            padding: 5px 12px; border-radius: 20px; font-size: 0.7rem;
-            font-weight: bold; z-index: 10; letter-spacing: 1px;
+            position: absolute; top: 15px; left: 15px; background: var(--brand-main); color: white;
+            padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; z-index: 10; letter-spacing: 1px;
         }
-
         .img-box { position: relative; height: 300px; overflow: hidden; }
         .img-box img { width: 100%; height: 100%; object-fit: cover; }
-        
-        /* 環境參數條 */
         .env-bar {
-            position: absolute; bottom: 0; width: 100%;
-            background: rgba(255,255,255,0.8); backdrop-filter: blur(5px);
-            display: flex; justify-content: space-around; padding: 8px 0;
-            font-size: 0.7rem; color: #666;
+            position: absolute; bottom: 0; width: 100%; background: rgba(255,255,255,0.8); backdrop-filter: blur(5px);
+            display: flex; justify-content: space-around; padding: 8px 0; font-size: 0.7rem; color: #666;
         }
-
         .product-info { padding: 25px; }
         .product-info h3 { margin: 0 0 10px; font-size: 1.2rem; color: var(--text-dark); }
         .product-desc { font-size: 0.85rem; color: #888; margin-bottom: 20px; height: 40px; }
-        
         .price-row { display: flex; justify-content: space-between; align-items: center; }
         .price { font-size: 1.3rem; font-weight: 700; color: var(--price-color); }
-        .btn-add { 
-            background: var(--brand-main); color: white; border: none;
-            width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
-            font-size: 1.2rem; transition: 0.3s;
-        }
+        .btn-add { background: var(--brand-main); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
         .btn-add:hover { background: #6a7a59; transform: rotate(90deg); }
-
+        .product-card.hidden { display: none !important; }
         @media (max-width: 768px) {
             .category-hero h1 { font-size: 2rem; }
             .guide-wrapper { flex-direction: column; }
         }
-/* 確保隱藏時完全消失，顯示時維持 Grid 子元素特性 */
-.product-card.hidden {
-    display: none !important;
-}
     </style>
 </head>
 <body>
@@ -185,18 +160,25 @@ header {
 <header>
     <div class="container navbar">
         <a href="index.html" class="logo-container">
-            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="site-logo">
+            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="logo-img">
             <span class="logo-text">Cat Gaze</span>
         </a>
-        
-        <nav class="nav-right">
-            <a href="index.html">返回首頁</a>
-            <a href="categories.html">各類品項</a>
-            <a href="member.html">會員中心</a>
-            <a href="javascript:void(0)" onclick="toggleCart()">🛒 購物車</a>
+        <nav class="nav-links">
+            <a href="index.html">首頁</a>
+            <a href="new-arrivals.html">嚴選新品</a>
+            <a href="categories.html" class="active-nav" style="color: #7F916A; font-weight: 700;">各類品項</a>
+            <a href="tools.html">資材用具</a>
+            <a href="knowledge.html">知識中心</a>
+            <a href="about.html">關於我們</a>
+            <a href="contact.html">聯繫我們</a>
+            <a href="member.html">👤 會員</a>
+            <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
+                🛒 購物車 <span id="cart-count">0</span>
+            </a>
         </nav>
     </div>
 </header>
+
 <section class="category-hero">
     <div class="container">
         <h1>🐾 寵物友善植栽</h1>
@@ -232,64 +214,63 @@ header {
         <button class="filter-tag">陽台喜光</button>
     </div>
 
-<div class="product-grid">
-    <div class="product-card" data-category="陽台喜光" onclick="location.href='luohan-detail.html'" style="cursor: pointer;">
-        <div class="pet-badge">CAT SAFE</div>
-        
-        <button class="btn-fav-float" onclick="event.stopPropagation(); addToFavorites('小葉羅漢松 | 友善首選', 2200, 'luohan.jpg')">
-            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-        </button>
-
-        <div class="img-box">
-            <img src="luohan.jpg" alt="羅漢松">
-            <div class="env-bar">
-                <span>☀️ 半日照</span>
-                <span>💧 每週2次</span>
-                <span>📏 20cm</span>
+    <div class="product-grid">
+        <div class="product-card" data-category="陽台喜光" onclick="location.href='luohan-detail.html'" style="cursor: pointer;">
+            <div class="pet-badge">CAT SAFE</div>
+            <button class="btn-fav-float" onclick="event.stopPropagation(); addToFavorites('小葉羅漢松 | 友善首選', 2200, 'luohan.jpg')">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </button>
+            <div class="img-box">
+                <img src="luohan.jpg" alt="羅漢松">
+                <div class="env-bar">
+                    <span>☀️ 半日照</span>
+                    <span>💧 每週2次</span>
+                    <span>📏 20cm</span>
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>小葉羅漢松</h3>
+                <p class="product-desc">蒼勁姿態卻擁有溫柔心腸，對貓狗完全無害的松柏替代首選。</p>
+                <div class="price-row">
+                    <span class="price">NT$ 2,200</span>
+                    <button class="btn-add" onclick="event.stopPropagation(); addToCart('小葉羅漢松', 2200, 'luohan.jpg')">+</button>
+                </div>
             </div>
         </div>
 
-        <div class="product-info">
-            <h3>小葉羅漢松</h3>
-            <p class="product-desc">蒼勁姿態卻擁有溫柔心腸，對貓狗完全無害的松柏替代首選。</p>
-            <div class="price-row">
-                <span class="price">NT$ 2,200</span>
-                <button class="btn-add" onclick="event.stopPropagation(); addToCart('小葉羅漢松', 2200)">+</button>
+        <div class="product-card" data-category="耐陰室內" onclick="location.href='fern-detail.html'" style="cursor: pointer;">
+            <div class="pet-badge">DOG SAFE</div>
+            <button class="btn-fav-float" onclick="event.stopPropagation(); addToFavorites('銀脈鳳尾蕨', 980, 'fern.jpg')">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </button>
+            <div class="img-box">
+                <img src="fern.jpg" alt="鳳尾蕨">
+                <div class="env-bar">
+                    <span>☁️ 耐陰</span>
+                    <span>💧 保持濕潤</span>
+                    <span>📏 15cm</span>
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>銀脈鳳尾蕨</h3>
+                <p class="product-desc">優雅的銀色脈絡，適合擺放在光線較弱的室內角落。</p>
+                <div class="price-row">
+                    <span class="price">NT$ 980</span>
+                    <button class="btn-add" onclick="event.stopPropagation(); addToCart('銀脈鳳尾蕨', 980, 'fern.jpg')">+</button>
+                </div>
             </div>
         </div>
-    </div> <div class="product-card" data-category="耐陰室內" onclick="location.href='fern-detail.html'" style="cursor: pointer;">
-        <div class="pet-badge">DOG SAFE</div>
-        
-        <button class="btn-fav-float" onclick="event.stopPropagation(); addToFavorites('銀脈鳳尾蕨', 980, 'fern.jpg')">
-            <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-        </button>
-
-        <div class="img-box">
-            <img src="fern.jpg" alt="鳳尾蕨">
-            <div class="env-bar">
-                <span>☁️ 耐陰</span>
-                <span>💧 保持濕潤</span>
-                <span>📏 15cm</span>
-            </div>
-        </div>
-
-        <div class="product-info">
-            <h3>銀脈鳳尾蕨</h3>
-            <p class="product-desc">優雅的銀色脈絡，適合擺放在光線較弱的室內角落。</p>
-            <div class="price-row">
-                <span class="price">NT$ 980</span>
-                <button class="btn-add" onclick="event.stopPropagation(); addToCart('銀脈鳳尾蕨', 980)">+</button>
-            </div>
-        </div>
-    </div> </div>
+    </div>
+</div>
 
 <footer style="background: white; padding: 40px 0; text-align: center; border-top: 1px solid #eee;">
     <p style="color: #aaa; font-size: 0.8rem;">© 2026 Cat Gaze. 每一株植物都經過安全複審。</p>
 </footer>
 
+
 <div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
 
-<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
+<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; max-width:90vw; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
         <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
         <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
@@ -315,30 +296,25 @@ header {
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script src="cart-system.js"></script>
 
+
 <script>
     const filterButtons = document.querySelectorAll('.filter-tag');
     const productCards = document.querySelectorAll('.product-card');
-
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // 1. 按鈕狀態切換
             filterButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-
             const selectedCategory = button.textContent.trim();
-
-            // 2. 篩選邏輯
             productCards.forEach(card => {
                 const cardCategories = card.getAttribute('data-category') || "";
-                
-                // 如果是「全部植物」或是 類別包含關鍵字
                 if (selectedCategory === "全部植物" || cardCategories.includes(selectedCategory)) {
-                    card.classList.remove('hidden'); // 顯示
+                    card.classList.remove('hidden');
                 } else {
-                    card.classList.add('hidden');    // 隱藏
+                    card.classList.add('hidden');
                 }
             });
         });
     });
-</script></body>
+</script>
+</body>
 </html>

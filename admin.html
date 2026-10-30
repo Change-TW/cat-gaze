@@ -4,41 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cat Gaze | 老闆後台管理系統</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --brand-main: #7F916A;
             --bg-light: #fcfcf8;
             --text-dark: #4a4a4a;
         }
-        body { font-family: sans-serif; background: var(--bg-light); color: var(--text-dark); margin: 0; padding: 20px; }
+        body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg-light); color: var(--text-dark); margin: 0; padding: 20px; }
         .container { max-width: 1000px; margin: 0 auto; }
-        h1 { color: var(--brand-main); border-bottom: 2px solid var(--brand-main); padding-bottom: 10px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--brand-main); padding-bottom: 12px; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+        h1 { color: var(--brand-main); margin: 0; font-size: 1.8rem; }
+        .back-home { text-decoration: none; color: var(--brand-main); font-weight: bold; font-size: 0.95rem; }
         
+        .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-top: 3px solid var(--brand-main); }
+        .stat-label { font-size: 0.85rem; color: #888; }
+        .stat-val { font-size: 1.5rem; font-weight: bold; color: var(--text-dark); margin-top: 4px; }
+
         .order-card {
             background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-left: 5px solid var(--brand-main);
         }
         .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
-        .order-id { font-weight: bold; color: #888; font-size: 0.9rem; }
-        .status-badge { background: #eee; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; }
+        .order-id { font-weight: bold; color: #555; font-size: 1rem; }
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-done { background: #d4edda; color: #155724; }
         
-        .customer-info { background: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 0.9rem; }
+        .customer-info { background: #f9f9f9; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 0.9rem; line-height: 1.6; }
         .item-list { border-top: 1px solid #eee; padding-top: 10px; }
-        .item-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .item-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.95rem; }
         
-        .total-row { text-align: right; font-weight: bold; color: #d14900; font-size: 1.2rem; margin-top: 15px; }
+        .total-row { text-align: right; font-weight: bold; color: #d14900; font-size: 1.25rem; margin-top: 15px; }
         .actions { margin-top: 15px; display: flex; gap: 10px; }
         
-        button { cursor: pointer; border: none; padding: 8px 16px; border-radius: 5px; font-weight: bold; }
+        button { cursor: pointer; border: none; padding: 8px 16px; border-radius: 5px; font-weight: bold; font-family: inherit; transition: 0.2s; }
         .btn-done { background: var(--brand-main); color: white; }
+        .btn-done:hover { background: #5d7065; }
         .btn-del { background: #ffeded; color: #d9534f; }
-        .btn-refresh { background: #eee; margin-bottom: 20px; }
+        .btn-del:hover { background: #f8d7da; }
+        .btn-refresh { background: #e2e8f0; color: #333; margin-bottom: 20px; }
+        .btn-refresh:hover { background: #cbd5e1; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Cat Gaze 訂單後台</h1>
+    <div class="top-bar">
+        <h1>Cat Gaze 訂單後台管理系統</h1>
+        <a href="index.html" class="back-home">← 返回官網首頁</a>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-card">
+            <div class="stat-label">總訂單數</div>
+            <div class="stat-val" id="stat-total-count">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">待處理訂單</div>
+            <div class="stat-val" id="stat-pending-count" style="color:#d14900;">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">累計訂單總額</div>
+            <div class="stat-val" id="stat-total-rev" style="color:#7F916A;">NT$ 0</div>
+        </div>
+    </div>
+
     <button class="btn-refresh" onclick="fetchOrders()">🔄 重新整理訂單</button>
     <div id="orders-container">讀取中...</div>
 </div>
@@ -47,7 +79,6 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-    // 使用與 cart-system.js 相同的 Firebase 配置
     const firebaseConfig = {
         apiKey: "AIzaSyCe9jsOgigX1Ok4sMbr1P2o4RcSM15BI_U",
         authDomain: "cat-gaze-bonsai.firebaseapp.com",
@@ -59,7 +90,9 @@
         measurementId: "G-8ZW69YQQN0"
     };
 
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
     const database = firebase.database();
 
     function fetchOrders() {
@@ -70,40 +103,55 @@
             const orders = snapshot.val();
             if (!orders) {
                 container.innerHTML = "<p>目前沒有任何訂單。</p>";
+                document.getElementById('stat-total-count').innerText = "0";
+                document.getElementById('stat-pending-count').innerText = "0";
+                document.getElementById('stat-total-rev').innerText = "NT$ 0";
                 return;
             }
 
             let html = "";
-            // 將訂單轉為陣列並按時間倒序排列（最新的在上面）
             const orderList = Object.values(orders).reverse();
+            let pendingCount = 0;
+            let totalRev = 0;
 
             orderList.forEach(order => {
+                if (!order) return;
+                const statusStr = order.status || '待處理';
+                if (statusStr !== '已完成') pendingCount++;
+                const orderTotal = Number(order.total_price !== undefined ? order.total_price : order.totalPrice) || 0;
+                totalRev += orderTotal;
+
                 let itemsHtml = "";
-                order.items.forEach(item => {
-                    itemsHtml += `<div class="item-row"><span>${item.name}</span><span>NT$ ${item.price.toLocaleString()}</span></div>`;
+                const itemsArr = Array.isArray(order.items) ? order.items : [];
+                itemsArr.forEach(item => {
+                    const priceVal = Number(item.price) || 0;
+                    itemsHtml += `<div class="item-row"><span>${item.name || '植栽商品'}</span><span>NT$ ${priceVal.toLocaleString()}</span></div>`;
                 });
+
+                const cust = order.customer || {};
+                const badgeClass = statusStr === '已完成' ? 'status-done' : 'status-pending';
 
                 html += `
                 <div class="order-card" id="card-${order.order_id}">
                     <div class="order-header">
                         <div>
-                            <div class="order-id">${order.order_id}</div>
-                            <div style="font-size:0.8rem; color:#aaa;">下單時間：${order.created_at}</div>
+                            <div class="order-id">${order.order_id || '無編號'}</div>
+                            <div style="font-size:0.8rem; color:#aaa;">下單時間：${order.created_at || order.orderDate || '--'}</div>
                         </div>
-                        <div class="status-badge">${order.status || '待處理'}</div>
+                        <div class="status-badge ${badgeClass}">${statusStr}</div>
                     </div>
                     
                     <div class="customer-info">
-                        <strong>👤 客戶：${order.customer.name}</strong><br>
-                        📧 Email: ${order.customer.email}<br>
-                        📞 電話: ${order.customer.phone || '未提供'}
+                        <strong>👤 客戶：${cust.name || '未填寫'}</strong><br>
+                        📧 Email: ${cust.email || '未提供'}<br>
+                        📞 電話: ${cust.phone || '未提供'}
                     </div>
 
                     <div class="item-list">
                         ${itemsHtml}
                     </div>
 
-                    <div class="total-row">總計：NT$ ${order.total_price.toLocaleString()}</div>
+                    <div class="total-row">總計：NT$ ${orderTotal.toLocaleString()}</div>
                     
                     <div class="actions">
                         <button class="btn-done" onclick="updateStatus('${order.order_id}', '已完成')">標記為已完成</button>
@@ -112,7 +160,11 @@
                 </div>
                 `;
             });
+
             container.innerHTML = html;
+            document.getElementById('stat-total-count').innerText = orderList.length;
+            document.getElementById('stat-pending-count').innerText = pendingCount;
+            document.getElementById('stat-total-rev').innerText = "NT$ " + totalRev.toLocaleString();
         });
     }
 
@@ -134,9 +186,7 @@
         }
     }
 
-    // 頁面載入時先抓一次
     window.onload = fetchOrders;
 </script>
-
 </body>
 </html>

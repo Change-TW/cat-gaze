@@ -11,8 +11,10 @@ const firebaseConfig = {
 };
 
 // 初始化 Firebase
-if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const database = (typeof firebase !== 'undefined' && typeof firebase.database === 'function') ? firebase.database() : null;
 
 let cart = JSON.parse(localStorage.getItem('CatGazeCart')) || [];
 
@@ -35,55 +37,37 @@ function toggleCart() {
     }
 }
 
+// 統一單一 addToCart (修正原本重複定義問題，保留自動打開購物車側欄)
 function addToCart(pName, pPrice, pImage) {
-    // 1. 建立商品物件
     const item = {
         name: pName,
-        price: pPrice,
-        image: pImage
+        price: Number(pPrice) || 0,
+        image: pImage || 'CG_logo w bg_vertica_green.png',
+        quantity: 1
     };
-
-    // 2. 推入購物車陣列
     cart.push(item);
-
-    // 3. 儲存到 LocalStorage
     localStorage.setItem('CatGazeCart', JSON.stringify(cart));
 
-    // 4. 同步到 Firebase (如果有登入)
     const userKey = getUserKey();
-    if (userKey) {
+    if (userKey && database) {
         database.ref('carts/' + userKey).set(cart);
     }
 
-    // 5. 更新 UI 數字
     updateCount();
+    renderCart();
 
-    // 6. 給使用者一個動態視覺回饋
-    alert("🌿 " + pName + " 已加入選植清單");
-    
-    // 選項：自動打開購物車側欄
-    // toggleCart(); 
-}
-function addToCart(pName, pPrice, pImage) {
-    const item = { name: pName, price: pPrice, image: pImage };
-    cart.push(item);
-    localStorage.setItem('CatGazeCart', JSON.stringify(cart));
-
-    const userKey = getUserKey();
-    if (userKey) database.ref('carts/' + userKey).set(cart);
-
-    updateCount();
-    renderCart(); // 確保內容即時更新
-
-    // --- 自動側滑邏輯 ---
     const drawer = document.getElementById('cart-drawer');
-    // 如果購物車目前是收起來的 (右邊距離是 -400px)，就把它打開
     if (drawer && drawer.style.right !== '0px') {
         toggleCart();
     }
 }
 
 function addToFavorites(pName, pPrice, pImage) {
+    if (typeof firebase === 'undefined' || typeof firebase.auth !== 'function') {
+        alert("請先登入會員才能收藏植物喔！");
+        window.location.href = "member.html";
+        return;
+    }
     const user = firebase.auth().currentUser;
     if (!user) {
         alert("請先登入會員才能收藏植物喔！");
@@ -93,21 +77,25 @@ function addToFavorites(pName, pPrice, pImage) {
 
     const favData = {
         name: pName,
-        price: pPrice,
-        image: pImage,
+        price: Number(pPrice) || 0,
+        image: pImage || 'CG_logo w bg_vertica_green.png',
         addedAt: firebase.database.ServerValue.TIMESTAMP
     };
 
-    // 使用植物名稱作為 Key (或隨機 ID)
-    const favKey = pName.replace(/\s/g, '_'); 
-    
+    const favKey = pName.replace(/\s/g, '_');
     firebase.database().ref('favorites/' + user.uid + '/' + favKey).set(favData)
         .then(() => alert("✨ 已加入收藏清單"))
-        .catch(err => alert("收藏失敗"));
+        .catch(() => alert("收藏失敗"));
 }
+
 function updateCount() {
     const countEl = document.getElementById('cart-count');
-    if(countEl) countEl.innerText = cart.length;
+    if (countEl) countEl.innerText = cart.length;
+}
+
+function updateCartUI() {
+    updateCount();
+    renderCart();
 }
 
 function renderCart() {
@@ -123,15 +111,16 @@ function renderCart() {
     let html = '';
     let sum = 0;
     cart.forEach((item, index) => {
+        const priceNum = Number(item.price) || 0;
         html += `
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #f9f9f9; padding-bottom:10px;">
                 <div>
                     <div style="font-weight:bold; color:#4a4a4a;">${item.name}</div>
-                    <div style="color:#d14900; font-size:0.9rem;">NT$ ${item.price.toLocaleString()}</div>
+                    <div style="color:#d14900; font-size:0.9rem;">NT$ ${priceNum.toLocaleString()}</div>
                 </div>
                 <button onclick="removeItem(${index})" style="color:red; background:none; border:none; cursor:pointer;">移除</button>
             </div>`;
-        sum += item.price;
+        sum += priceNum;
     });
     list.innerHTML = html;
     total.innerText = `NT$ ${sum.toLocaleString()}`;
@@ -141,7 +130,7 @@ function removeItem(index) {
     cart.splice(index, 1);
     localStorage.setItem('CatGazeCart', JSON.stringify(cart));
     const userKey = getUserKey();
-    if (userKey) database.ref('carts/' + userKey).set(cart);
+    if (userKey && database) database.ref('carts/' + userKey).set(cart);
     renderCart();
     updateCount();
 }
@@ -158,13 +147,20 @@ function checkoutToLine() {
     }
 
     const orderId = "ORD-" + Date.now();
+    const totalVal = cart.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
+    const nowStr = new Date().toLocaleString();
+
+    // 同時寫入 admin.html 與 orders.html 所需欄位，讓前台訂單查詢與老闆後台 100% 互通
     const orderData = {
         order_id: orderId,
+        uid: profile.uid || userKey,
         customer: profile,
         items: cart,
-        total_price: cart.reduce((sum, item) => sum + item.price, 0),
+        total_price: totalVal,
+        totalPrice: totalVal,
         status: "待處理",
-        created_at: new Date().toLocaleString()
+        created_at: nowStr,
+        orderDate: nowStr
     };
 
     database.ref('orders/' + orderId).set(orderData)
@@ -177,19 +173,21 @@ function checkoutToLine() {
             alert("✨ 訂單已傳送到雲端！編號：" + orderId);
             toggleCart();
         })
-        .catch(err => alert("傳送失敗"));
+        .catch(() => alert("傳送失敗"));
 }
 
 window.addEventListener('load', function() {
     updateCount();
+    renderCart();
     const userKey = getUserKey();
-    if (userKey) {
+    if (userKey && database) {
         database.ref('carts/' + userKey).once('value', (snapshot) => {
             const cloudCart = snapshot.val();
             if (cloudCart) {
                 cart = cloudCart;
                 localStorage.setItem('CatGazeCart', JSON.stringify(cart));
                 updateCount();
+                renderCart();
             }
         });
     }

@@ -4,79 +4,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>嚴選新品 | Cat Gaze - 跨越季節的凝視</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --brand-main: #7F916A;
-            --brand-gold: #A68D5B; /* 增加金色點綴感 */
+            --brand-gold: #A68D5B;
+            --brand-cream: #FDFAD9;
             --bg-light: #fcfcf8;
             --text-dark: #333;
             --price-color: #d14900;
         }
-
         body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); margin: 0; color: var(--text-dark); }
         .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+        
+        /* --- 全站統一 Header 導覽列 --- */
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #eeeeee;
+            padding: 0.8rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 55px;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
+        .logo-img, .site-logo {
+            height: 42px;
+            width: auto;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #7F916A;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+            margin: 0;
+        }
+        .nav-links a:hover, .nav-links a.active-nav {
+            color: #7F916A;
+            font-weight: 700;
+        }
+        #cart-count {
+            background: #d14900;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            position: absolute;
+            top: -10px;
+            right: -15px;
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 0;
+                gap: 12px;
+            }
+            .nav-links {
+                justify-content: center;
+                gap: 12px;
+                width: 100%;
+            }
+            .nav-links a {
+                font-size: 0.88rem;
+            }
+        }
 
-        /* --- Header (保持統一) --- */
-        header { background: white; border-bottom: 1px solid #eee; padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
-        .navbar { display: flex; justify-content: space-between; align-items: center; height: 60px; }
-        .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--brand-main); text-decoration: none; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); margin-left: 2rem; font-weight: 500; font-size: 0.9rem; }
-
-        /* --- 新品主題區 (Magazine Style) --- */
         .new-hero { padding: 5rem 0; text-align: center; background: #fff; }
         .new-hero span { color: var(--brand-gold); letter-spacing: 4px; font-size: 0.9rem; font-weight: 700; }
-        .new-hero h1 { 
-            font-family: 'Noto Serif TC', serif; 
-            font-size: 2.8rem; 
-            margin: 15px 0; 
-            color: var(--brand-main); 
-        }
-
-        /* --- 重點新品展示 (交錯排版) --- */
+        .new-hero h1 { font-family: 'Noto Serif TC', serif; font-size: 2.8rem; margin: 15px 0; color: var(--brand-main); }
         .featured-new { padding: 4rem 0; }
-        .feature-item { 
-            display: flex; 
-            align-items: center; 
-            gap: 50px; 
-            margin-bottom: 8rem; 
-        }
+        .feature-item { display: flex; align-items: center; gap: 50px; margin-bottom: 8rem; }
         .feature-item:nth-child(even) { flex-direction: row-reverse; }
-        
         .feature-img { flex: 1.2; position: relative; }
         .feature-img img { width: 100%; border-radius: 4px; box-shadow: 20px 20px 0px var(--brand-cream); }
         .feature-img::after {
-            content: "NEW";
-            position: absolute; top: -20px; left: -20px;
-            background: var(--brand-gold); color: white;
-            padding: 10px 20px; font-weight: bold; font-size: 0.8rem;
+            content: "NEW"; position: absolute; top: -20px; left: -20px;
+            background: var(--brand-gold); color: white; padding: 10px 20px; font-weight: bold; font-size: 0.8rem;
         }
-
         .feature-text { flex: 1; }
         .feature-text h2 { font-family: 'Noto Serif TC', serif; font-size: 2rem; margin-bottom: 1.5rem; }
         .feature-text p { line-height: 2; color: #666; margin-bottom: 2rem; }
-        
-        /* --- 價格與按鈕 --- */
         .price-tag { font-size: 1.5rem; font-weight: 700; color: #d14900; margin-bottom: 20px; display: block; }
         .btn-luxury {
-            display: inline-block;
-            padding: 12px 40px;
-            border: 1px solid var(--brand-main);
-            color: var(--brand-main);
-            text-decoration: none;
-            transition: 0.3s;
-            background: transparent;
-            cursor: pointer;
+            display: inline-block; padding: 12px 40px; border: 1px solid var(--brand-main);
+            color: var(--brand-main); text-decoration: none; transition: 0.3s; background: transparent; cursor: pointer; font-weight: bold;
         }
         .btn-luxury:hover { background: var(--brand-main); color: white; }
-
-        /* --- 手機版 RWD --- */
+        footer { background-color: var(--brand-main); color: white; text-align: center; padding: 3rem 0; margin-top: 2rem; }
         @media (max-width: 768px) {
             .new-hero h1 { font-size: 2rem; }
             .feature-item { flex-direction: column !important; gap: 30px; margin-bottom: 4rem; }
             .feature-img img { box-shadow: 10px 10px 0px var(--brand-cream); }
             .feature-text { text-align: center; }
-            .nav-links { display: none; } /* 建議手機版使用漢堡選單，暫時隱藏避免擠壓 */
         }
     </style>
 </head>
@@ -84,21 +136,22 @@
 
 <header>
     <div class="container navbar">
-        <a href="index.html" style="display: flex; align-items: center; text-decoration: none;">
-            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" style="height: 40px; margin-right: 12px; border-radius: 50%;">
+        <a href="index.html" class="logo-container">
+            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="logo-img">
             <span class="logo-text">Cat Gaze</span>
         </a>
-        
         <nav class="nav-links">
             <a href="index.html">首頁</a>
-            <a href="new-arrivals.html" style="color: var(--brand-gold);">嚴選新品</a>
-            <a href="knowledge.html">知識中心</a>
+            <a href="new-arrivals.html" class="active-nav" style="color: #7F916A; font-weight: 700;">嚴選新品</a>
+            <a href="categories.html">各類品項</a>
             <a href="tools.html">資材用具</a>
+            <a href="knowledge.html">知識中心</a>
+            <a href="about.html">關於我們</a>
+            <a href="contact.html">聯繫我們</a>
             <a href="member.html">👤 會員</a>
             <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
-    🛒 購物車 <span id="cart-count" style="background: var(--price-color); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -10px; right: -15px;">0</span>
-</a>
-
+                🛒 購物車 <span id="cart-count">0</span>
+            </a>
         </nav>
     </div>
 </header>
@@ -121,8 +174,8 @@
             <p>來自日本紀州的頂級真柏，擁有極其優美的舍利干線條。經過職人十年以上的耐心培植，展現出與自然對抗後的蒼勁力量。適合作為書房或禪意空間的視覺靈魂。</p>
             <span class="price-tag">NT$ 12,800</span>
             <button class="btn-luxury" onclick="addToCart('百年紀州真柏', 12800, 'https://images.unsplash.com/photo-1512428813834-c702c7702b78')">
-    將這份靜謐帶回家
-</button>
+                將這份靜謐帶回家
+            </button>
         </div>
     </div>
 
@@ -135,20 +188,20 @@
             <p>清姬楓以其細緻的葉形與四季分明的顏色變化著稱。這批新品特選了比例完美的陶盆搭配，非常適合放在辦公桌前，在凝視與修剪中找回心靈的平衡。</p>
             <span class="price-tag">NT$ 3,200</span>
             <button class="btn-luxury" onclick="addToCart('清姬楓 迷你盆景', 3200, 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688')">
-    開始您的植感生活
-</button>
+                開始您的植感生活
+            </button>
         </div>
     </div>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-<script src="cart-system.js"></script>
+<footer>
+    <div class="container"><p>© 2026 Cat Gaze | 透過貓眼凝視，發掘植栽的靈魂</p></div>
+</footer>
+
 
 <div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
 
-<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
+<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; max-width:90vw; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
         <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
         <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
@@ -168,5 +221,11 @@
         </button>
     </div>
 </div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="cart-system.js"></script>
+
 </body>
 </html>

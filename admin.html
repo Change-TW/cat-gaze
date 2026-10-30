@@ -110,6 +110,18 @@
             transition: 0.2s;
         }
         .btn-email-admin:hover { background: var(--brand-dark); }
+        .btn-reset-pw {
+            margin-top: 10px;
+            background: transparent;
+            color: #666;
+            border: 1px dashed #ccc;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn-reset-pw:hover { color: var(--brand-main); border-color: var(--brand-main); }
         #auth-error-msg {
             display: none;
             margin-top: 16px;
@@ -120,6 +132,7 @@
             color: #c53030;
             font-size: 0.85rem;
             font-weight: 600;
+            line-height: 1.5;
         }
         .gate-footer {
             margin-top: 24px;
@@ -402,13 +415,15 @@
         使用 Google 管理員帳號登入
     </button>
 
-    <div class="divider">─── 或使用管理員信箱密碼登入 ───</div>
+    <div class="divider">─── 或使用管理員信箱密碼登入（本機與線上皆可用） ───</div>
 
     <form onsubmit="loginAdminWithEmail(event)">
-        <input type="email" id="admin-email-input" class="auth-input" placeholder="管理員 Email (change2020810@gmail.com)" required>
-        <input type="password" id="admin-pw-input" class="auth-input" placeholder="管理員密碼" required>
+        <input type="email" id="admin-email-input" class="auth-input" value="change2020810@gmail.com" placeholder="管理員 Email (change2020810@gmail.com)" required>
+        <input type="password" id="admin-pw-input" class="auth-input" placeholder="輸入管理員密碼（首次輸入將自動建立）" required>
         <button type="submit" class="btn-email-admin">驗證並進入後台</button>
     </form>
+
+    <button type="button" class="btn-reset-pw" onclick="sendAdminPasswordReset()">📧 忘記或尚未設定密碼？點此寄送密碼設定信至 change2020810@gmail.com</button>
 
     <div id="auth-error-msg"></div>
 
@@ -505,19 +520,15 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-    // =========================================================================
-    // 🚩 授權管理員白名單設定 (僅允許此清單內的信箱進入後台)
-    // =========================================================================
     const ALLOWED_ADMIN_EMAILS = [
         "change2020810@gmail.com"
     ];
 
-    // 智慧返回首頁：在 GitHub Pages 或本機資料夾直接跳轉同目錄 index.html；若在單頁沙盒預覽中則開啟線上官網首頁
     function goBackToHome(e) {
         const host = window.location.hostname || '';
         const proto = window.location.protocol || '';
         if (proto === 'file:' || host.includes('github.io') || host === 'localhost' || host === '127.0.0.1') {
-            return true; // 走原生 <a href="index.html"> 跳轉同目錄下的 index.html
+            return true;
         }
         e.preventDefault();
         window.open('https://change-tw.github.io/cat-gaze/index.html', '_blank');
@@ -545,13 +556,19 @@
     let cachedMembers = [];
     let cachedFavorites = {};
 
-    // =========================================================================
-    // 管理員身分驗證邏輯
-    // =========================================================================
-    function showAuthError(msg) {
+    function showAuthError(msg, isSuccess) {
         const errBox = document.getElementById('auth-error-msg');
         errBox.innerText = msg;
         errBox.style.display = 'block';
+        if (isSuccess) {
+            errBox.style.background = '#e6f4ea';
+            errBox.style.borderColor = '#a8dab5';
+            errBox.style.color = '#137333';
+        } else {
+            errBox.style.background = '#fff5f5';
+            errBox.style.borderColor = '#feb2b2';
+            errBox.style.color = '#c53030';
+        }
     }
 
     auth.onAuthStateChanged((user) => {
@@ -582,23 +599,52 @@
 
     function loginAdminWithGoogle() {
         document.getElementById('auth-error-msg').style.display = 'none';
+        if (window.location.protocol === 'file:') {
+            showAuthError("💡 提醒：您目前是在電腦本機資料夾 (file://) 開啟檔案，Google 官方安全機制不支援在 file:// 彈窗登入。請直接使用下方「信箱＋密碼」登入，或上傳至 GitHub 正式網址後再點 Google 登入！");
+            return;
+        }
         auth.signInWithPopup(googleProvider).catch((err) => {
             showAuthError("Google 登入失敗：" + err.message);
         });
     }
 
+    // 支援首次輸入自動註冊管理員密碼（僅限白名單信箱 change2020810@gmail.com）
     function loginAdminWithEmail(e) {
         e.preventDefault();
         document.getElementById('auth-error-msg').style.display = 'none';
         const email = document.getElementById('admin-email-input').value.trim();
         const pw = document.getElementById('admin-pw-input').value;
+
         if (!ALLOWED_ADMIN_EMAILS.includes(email.toLowerCase())) {
             showAuthError(`⛔ 拒絕登入：「${email}」非授權管理員信箱！`);
             return;
         }
+        if (pw.length < 6) {
+            showAuthError("密碼長度請至少輸入 6 個字元。");
+            return;
+        }
+
         auth.signInWithEmailAndPassword(email, pw).catch((err) => {
-            showAuthError("登入失敗：" + err.message);
+            // 若尚未建立過密碼，自動為管理員信箱註冊此密碼並登入
+            auth.createUserWithEmailAndPassword(email, pw).catch((createErr) => {
+                if (createErr.code === 'auth/email-already-in-use') {
+                    showAuthError("此管理員信箱先前已用 Google 登入過（或密碼輸入不符）。請點擊下方「📧 寄送密碼設定信」至您的 Gmail 設定後台密碼，或於 GitHub 正式網址使用 Google 登入！");
+                } else {
+                    showAuthError("驗證失敗：" + (createErr.message || err.message));
+                }
+            });
         });
+    }
+
+    function sendAdminPasswordReset() {
+        const email = "change2020810@gmail.com";
+        auth.sendPasswordResetEmail(email)
+            .then(() => {
+                showAuthError("✅ 已成功寄出密碼設定信至 change2020810@gmail.com！請至您的 Gmail 收信（含垃圾郵件匣）點擊連結設定密碼，設定完即可在上方直接輸入密碼登入後台。", true);
+            })
+            .catch((err) => {
+                showAuthError("寄送失敗：" + err.message);
+            });
     }
 
     function logoutAdmin() {
@@ -624,9 +670,6 @@
         fetchActiveCarts();
     }
 
-    // =========================================================================
-    // 1. 讀取與管理訂單 (orders)
-    // =========================================================================
     function fetchOrders() {
         const container = document.getElementById('orders-container');
         container.innerHTML = "<div class='empty-box'>正在從雲端讀取訂單...</div>";
@@ -716,9 +759,6 @@
         }
     }
 
-    // =========================================================================
-    // 2. 讀取與管理會員檔案 + 植栽偏好調查 (users + favorites)
-    // =========================================================================
     function formatExperience(exp) {
         const map = {
             'beginner': '🌱 我是新手 (剛開始凝視植物)',
@@ -897,9 +937,6 @@
         document.body.removeChild(a);
     }
 
-    // =========================================================================
-    // 3. 讀取未結帳雲端購物車 (carts)
-    // =========================================================================
     function fetchActiveCarts() {
         const container = document.getElementById('carts-container');
         container.innerHTML = "<div class='empty-box'>正在讀取雲端購物車...</div>";

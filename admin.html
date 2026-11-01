@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cat Gaze | 老闆後台管理系統</title>
+    <title>Cat Gaze | 老闆後台管理系統（訂單・會員・商品上架生成）</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -24,7 +24,7 @@
             padding: 24px 16px 60px;
             line-height: 1.6;
         }
-        .container { max-width: 1120px; margin: 0 auto; }
+        .container { max-width: 1140px; margin: 0 auto; }
 
         /* =========================================================
            管理員專屬登入防護閘門 (#admin-auth-gate)
@@ -51,209 +51,91 @@
             font-size: 1.8rem;
             margin: 0 auto 16px;
         }
-        #admin-auth-gate h2 {
-            margin: 0 0 8px;
-            color: var(--brand-main);
-            font-size: 1.5rem;
-        }
-        #admin-auth-gate p {
-            color: #777;
-            font-size: 0.9rem;
-            margin: 0 0 24px;
-        }
+        #admin-auth-gate h2 { margin: 0 0 8px; color: var(--brand-main); font-size: 1.5rem; }
+        #admin-auth-gate p { color: #777; font-size: 0.9rem; margin: 0 0 24px; }
         .btn-google-admin {
-            width: 100%;
-            background: white;
-            color: #333;
-            border: 1.5px solid #ddd;
-            padding: 12px 18px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: 0.2s;
+            width: 100%; background: white; color: #333; border: 1.5px solid #ddd;
+            padding: 12px 18px; border-radius: 8px; font-size: 0.95rem; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s;
         }
-        .btn-google-admin:hover {
-            border-color: var(--brand-main);
-            background: #fafcf9;
-        }
-        .divider {
-            margin: 20px 0;
-            color: #bbb;
-            font-size: 0.82rem;
-            position: relative;
-        }
+        .btn-google-admin:hover { border-color: var(--brand-main); background: #fafcf9; }
+        .divider { margin: 20px 0; color: #bbb; font-size: 0.82rem; position: relative; }
         .auth-input {
-            width: 100%;
-            padding: 11px 14px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            font-size: 0.95rem;
-            outline: none;
+            width: 100%; padding: 11px 14px; border: 1px solid #ddd; border-radius: 8px;
+            margin-bottom: 10px; font-size: 0.95rem; outline: none;
         }
         .auth-input:focus { border-color: var(--brand-main); }
         .btn-email-admin {
-            width: 100%;
-            background: var(--brand-main);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
+            width: 100%; background: var(--brand-main); color: white; border: none;
+            padding: 12px; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: 0.2s;
         }
         .btn-email-admin:hover { background: var(--brand-dark); }
         .btn-reset-pw {
-            margin-top: 10px;
-            background: transparent;
-            color: #666;
-            border: 1px dashed #ccc;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 0.82rem;
-            cursor: pointer;
-            width: 100%;
+            margin-top: 10px; background: transparent; color: #666; border: 1px dashed #ccc;
+            padding: 8px 14px; border-radius: 6px; font-size: 0.82rem; cursor: pointer; width: 100%;
         }
         .btn-reset-pw:hover { color: var(--brand-main); border-color: var(--brand-main); }
         #auth-error-msg {
-            display: none;
-            margin-top: 16px;
-            padding: 12px;
-            border-radius: 8px;
-            background: #fff5f5;
-            border: 1px solid #feb2b2;
-            color: #c53030;
-            font-size: 0.85rem;
-            font-weight: 600;
-            line-height: 1.5;
+            display: none; margin-top: 16px; padding: 12px; border-radius: 8px;
+            background: #fff5f5; border: 1px solid #feb2b2; color: #c53030; font-size: 0.85rem; font-weight: 600; line-height: 1.5;
         }
         .gate-footer {
-            margin-top: 24px;
-            padding-top: 16px;
-            border-top: 1px solid #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            margin-top: 24px; padding-top: 16px; border-top: 1px solid #f0f0f0;
+            display: flex; justify-content: center; align-items: center;
         }
         .gate-home-link {
-            color: var(--brand-main);
-            text-decoration: none;
-            font-size: 0.92rem;
-            font-weight: 700;
-            padding: 8px 18px;
-            border: 1.5px solid var(--brand-main);
-            border-radius: 20px;
-            transition: 0.2s;
+            color: var(--brand-main); text-decoration: none; font-size: 0.92rem; font-weight: 700;
+            padding: 8px 18px; border: 1.5px solid var(--brand-main); border-radius: 20px; transition: 0.2s;
         }
-        .gate-home-link:hover {
-            background: var(--brand-main);
-            color: white;
-        }
+        .gate-home-link:hover { background: var(--brand-main); color: white; }
 
         /* =========================================================
-           後台主控台 (#admin-dashboard-main) - 預設隱藏，驗證通過才顯示
+           後台主控台 (#admin-dashboard-main)
            ========================================================= */
-        #admin-dashboard-main {
-            display: none;
-        }
+        #admin-dashboard-main { display: none; }
         .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid var(--brand-main);
-            padding-bottom: 14px;
-            margin-bottom: 22px;
-            flex-wrap: wrap;
-            gap: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid var(--brand-main); padding-bottom: 14px; margin-bottom: 22px; flex-wrap: wrap; gap: 12px;
         }
         h1 { color: var(--brand-main); margin: 0; font-size: 1.7rem; display: flex; align-items: center; gap: 10px; }
         .admin-badge {
-            background: #e6f4ea;
-            color: #137333;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            margin-top: 6px;
+            background: #e6f4ea; color: #137333; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; margin-top: 6px;
         }
         .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .back-home {
-            text-decoration: none;
-            color: var(--brand-main);
-            border: 1.5px solid var(--brand-main);
-            padding: 7px 14px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 0.88rem;
-            transition: 0.2s;
+            text-decoration: none; color: var(--brand-main); border: 1.5px solid var(--brand-main);
+            padding: 7px 14px; border-radius: 20px; font-weight: 700; font-size: 0.88rem; transition: 0.2s;
         }
         .back-home:hover { background: var(--brand-main); color: white; }
 
         /* 頂部統計儀表板 */
         .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 14px; margin-bottom: 25px;
         }
         .stat-card {
-            background: white;
-            padding: 16px 20px;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
-            border-top: 4px solid var(--brand-main);
+            background: white; padding: 15px 18px; border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04); border-top: 4px solid var(--brand-main);
         }
-        .stat-label { font-size: 0.85rem; color: #888; font-weight: 500; }
-        .stat-val { font-size: 1.6rem; font-weight: 700; color: var(--text-dark); margin-top: 4px; }
+        .stat-label { font-size: 0.83rem; color: #888; font-weight: 500; }
+        .stat-val { font-size: 1.5rem; font-weight: 700; color: var(--text-dark); margin-top: 4px; }
 
         /* 分頁切換籤 (Tabs) */
         .tabs-header {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 22px;
-            border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 12px;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; gap: 10px; margin-bottom: 22px; border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 12px; flex-wrap: wrap; justify-content: space-between; align-items: center;
         }
         .tab-group { display: flex; gap: 10px; flex-wrap: wrap; }
         .tab-btn {
-            background: white;
-            color: #666;
-            border: 1px solid #ddd;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            background: white; color: #666; border: 1px solid #ddd; padding: 10px 18px;
+            border-radius: 25px; font-size: 0.92rem; font-weight: 700; cursor: pointer;
+            transition: 0.2s; display: inline-flex; align-items: center; gap: 6px;
         }
         .tab-btn.active, .tab-btn:hover {
-            background: var(--brand-main);
-            color: white;
-            border-color: var(--brand-main);
+            background: var(--brand-main); color: white; border-color: var(--brand-main);
             box-shadow: 0 4px 12px rgba(127,145,106,0.25);
         }
-        .tab-count {
-            background: rgba(0,0,0,0.12);
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.78rem;
-        }
+        .tab-count { background: rgba(0,0,0,0.12); padding: 2px 8px; border-radius: 12px; font-size: 0.76rem; }
         .tab-btn.active .tab-count { background: rgba(255,255,255,0.25); color: white; }
 
         .tab-panel { display: none; }
@@ -261,13 +143,8 @@
 
         /* 共用按鈕 */
         button {
-            cursor: pointer;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-family: inherit;
-            transition: 0.2s;
+            cursor: pointer; border: none; padding: 8px 16px; border-radius: 6px;
+            font-weight: 700; font-family: inherit; transition: 0.2s;
         }
         .btn-refresh { background: #e2e8f0; color: #333; }
         .btn-refresh:hover { background: #cbd5e1; }
@@ -278,34 +155,22 @@
         .btn-del { background: #ffeded; color: #d9534f; }
         .btn-del:hover { background: #f8d7da; }
 
-        /* 訂單卡片 */
-        .order-card, .member-card, .cart-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 18px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-            border-left: 5px solid var(--brand-main);
+        /* 卡片樣式 */
+        .order-card, .member-card, .cart-card, .prod-admin-card {
+            background: white; border-radius: 10px; padding: 20px; margin-bottom: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04); border-left: 5px solid var(--brand-main);
         }
         .order-header, .member-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 14px;
-            flex-wrap: wrap;
-            gap: 10px;
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 14px; flex-wrap: wrap; gap: 10px;
         }
         .order-id { font-weight: 700; color: #444; font-size: 1.05rem; }
         .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
         .status-pending { background: #fff3cd; color: #856404; }
         .status-done { background: #d4edda; color: #155724; }
         .customer-info {
-            background: #f9faf8;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 14px;
-            font-size: 0.92rem;
-            border: 1px solid #f0f2ee;
+            background: #f9faf8; padding: 12px 15px; border-radius: 8px;
+            margin-bottom: 14px; font-size: 0.92rem; border: 1px solid #f0f2ee;
         }
         .item-list { border-top: 1px solid #eee; padding-top: 10px; }
         .item-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.95rem; }
@@ -314,89 +179,164 @@
 
         /* 會員偏好統計區塊 */
         .persona-summary {
-            background: white;
-            border-radius: 10px;
-            padding: 18px 22px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-            border: 1px solid #eef0ec;
+            background: white; border-radius: 10px; padding: 18px 22px;
+            margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #eef0ec;
         }
-        .persona-summary h3 {
-            margin: 0 0 12px 0;
-            font-size: 1.05rem;
-            color: var(--brand-main);
-        }
+        .persona-summary h3 { margin: 0 0 12px 0; font-size: 1.05rem; color: var(--brand-main); }
         .persona-chips { display: flex; flex-wrap: wrap; gap: 10px; }
         .persona-chip {
-            background: #f4f7f2;
-            border: 1px solid #dce5d5;
-            color: #4a5a40;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            background: #f4f7f2; border: 1px solid #dce5d5; color: #4a5a40;
+            padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
         }
-
-        /* 會員搜尋與工具列 */
         .toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 18px;
-            flex-wrap: wrap;
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 12px; margin-bottom: 18px; flex-wrap: wrap;
         }
         .search-input {
-            flex: 1;
-            min-width: 240px;
-            padding: 10px 16px;
-            border: 1px solid #ddd;
-            border-radius: 25px;
-            font-size: 0.92rem;
-            outline: none;
+            flex: 1; min-width: 240px; padding: 10px 16px; border: 1px solid #ddd;
+            border-radius: 25px; font-size: 0.92rem; outline: none;
         }
         .search-input:focus { border-color: var(--brand-main); }
-
-        /* 會員卡片細節 */
-        .member-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 18px;
-        }
+        .member-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 18px; }
         .member-card { margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; }
         .member-name { font-size: 1.15rem; font-weight: 700; color: var(--brand-main); }
         .exp-badge {
-            background: var(--brand-cream);
-            color: #5a6b47;
-            border: 1px solid #e2dec0;
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 700;
+            background: var(--brand-cream); color: #5a6b47; border: 1px solid #e2dec0;
+            padding: 3px 10px; border-radius: 15px; font-size: 0.8rem; font-weight: 700;
         }
         .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
         .interest-tag {
-            background: #eef3eb;
-            color: var(--brand-main);
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            background: #eef3eb; color: var(--brand-main); padding: 3px 10px;
+            border-radius: 12px; font-size: 0.8rem; font-weight: 600;
         }
-        .fav-box {
-            margin-top: 12px;
-            padding-top: 10px;
-            border-top: 1px dashed #eee;
-            font-size: 0.85rem;
-            color: #666;
-        }
+        .fav-box { margin-top: 12px; padding-top: 10px; border-top: 1px dashed #eee; font-size: 0.85rem; color: #666; }
         .empty-box {
+            background: white; padding: 40px 20px; text-align: center;
+            border-radius: 10px; color: #888; border: 1px dashed #ddd;
+        }
+
+        /* =========================================================
+           第 4 分頁：商品上架與自動生成器樣式
+           ========================================================= */
+        .generator-layout {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+        .form-card {
             background: white;
-            padding: 40px 20px;
-            text-align: center;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            border-top: 4px solid var(--brand-main);
+        }
+        .form-card h3 {
+            margin: 0 0 18px;
+            color: var(--brand-main);
+            font-size: 1.2rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+        .field-group { margin-bottom: 14px; }
+        .field-group label {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #444;
+            margin-bottom: 6px;
+        }
+        .field-group input, .field-group select, .field-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            font-size: 0.93rem;
+            font-family: inherit;
+            background: #fafafa;
+        }
+        .field-group input:focus, .field-group select:focus, .field-group textarea:focus {
+            background: white;
+            border-color: var(--brand-main);
+            outline: none;
+        }
+        .cat-checkbox-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .cat-check-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #f4f7f2;
+            border: 1px solid #dce5d5;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.83rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #4a5a40;
+        }
+        .template-subbox {
+            background: #f9faf8;
+            border: 1px solid #e4ebe0;
+            padding: 16px;
             border-radius: 10px;
-            color: #888;
-            border: 1px dashed #ddd;
+            margin-bottom: 16px;
+        }
+        .template-subbox h4 {
+            margin: 0 0 12px;
+            color: var(--brand-main);
+            font-size: 0.95rem;
+        }
+        .gen-btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 18px;
+        }
+        .btn-cloud-publish {
+            background: var(--brand-main);
+            color: white;
+            padding: 14px;
+            border-radius: 30px;
+            font-size: 1rem;
+            box-shadow: 0 4px 12px rgba(127,145,106,0.3);
+        }
+        .btn-cloud-publish:hover { background: var(--brand-dark); transform: translateY(-1px); }
+        .btn-html-export {
+            background: white;
+            color: var(--brand-main);
+            border: 2px solid var(--brand-main);
+            padding: 12px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+        }
+        .btn-html-export:hover { background: #f0f4ec; }
+        .prod-admin-card {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+        }
+        .prod-thumb {
+            width: 75px;
+            height: 75px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #eee;
+            flex-shrink: 0;
+        }
+        @media (max-width: 900px) {
+            .generator-layout { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -408,11 +348,11 @@
 <div id="admin-auth-gate">
     <div class="lock-icon">🔒</div>
     <h2>Cat Gaze 後台安全驗證</h2>
-    <p>此區域僅限授權管理員（<strong>change2020810@gmail.com</strong>）存取。<br>請先完成身分驗證以載入雲端訂單與會員資料。</p>
+    <p>此區域僅限授權管理員（<strong>change2020810@gmail.com</strong>）存取。<br>請先完成身分驗證以載入雲端訂單、會員與商品上架系統。</p>
 
     <button class="btn-google-admin" onclick="loginAdminWithGoogle()">
         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
-        使用 Google 管理員帳號登入
+        使用 Google 管理員帳號登入（限正式網址）
     </button>
 
     <div class="divider">─── 或使用管理員信箱密碼登入（本機與線上皆可用） ───</div>
@@ -433,7 +373,7 @@
 </div>
 
 <!-- =======================================================================
-     第二道防線：後台管理主畫面 (僅在管理員白名單通過後解鎖並載入資料)
+     第二道防線：後台管理主畫面
      ======================================================================= -->
 <div class="container" id="admin-dashboard-main">
     <div class="top-bar">
@@ -467,8 +407,8 @@
             <div class="stat-val" id="stat-users-count" style="color:#2b6cb0;">0</div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">🛒 未結帳購物車</div>
-            <div class="stat-val" id="stat-carts-count" style="color:#805ad5;">0</div>
+            <div class="stat-label">🪴 雲端上架商品</div>
+            <div class="stat-val" id="stat-products-count" style="color:#2f855a;">0</div>
         </div>
     </div>
 
@@ -478,11 +418,14 @@
             <button class="tab-btn active" onclick="switchTab('orders', this)">
                 📦 訂單管理 <span class="tab-count" id="tab-badge-orders">0</span>
             </button>
+            <button class="tab-btn" onclick="switchTab('products', this)">
+                🪴 商品快速上架與生成 <span class="tab-count" id="tab-badge-products">0</span>
+            </button>
             <button class="tab-btn" onclick="switchTab('members', this)">
                 👥 會員名單與植栽偏好 <span class="tab-count" id="tab-badge-members">0</span>
             </button>
             <button class="tab-btn" onclick="switchTab('carts', this)">
-                🛒 潛在客戶購物車 (未結帳) <span class="tab-count" id="tab-badge-carts">0</span>
+                🛒 潛在客戶購物車 <span class="tab-count" id="tab-badge-carts">0</span>
             </button>
         </div>
     </div>
@@ -492,7 +435,142 @@
         <div id="orders-container">讀取訂單資料中...</div>
     </div>
 
-    <!-- 分頁 2：會員名單與植栽偏好調查 -->
+    <!-- 分頁 2：商品快速上架與生成系統 (NEW!) -->
+    <div id="panel-products" class="tab-panel">
+        <div class="generator-layout">
+            <!-- 左側：上架與生成表單 -->
+            <div class="form-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <h3 style="margin:0; border:none; padding:0;">➕ 快速新增／編輯植栽商品</h3>
+                    <button type="button" class="btn-refresh" style="font-size:0.8rem; padding:4px 10px;" onclick="resetProductForm()">清空重填</button>
+                </div>
+                <p style="font-size:0.84rem; color:#777; margin-top:0; margin-bottom:18px;">
+                    填寫下方表單後，點擊<strong>「🚀 雲端即時上架」</strong>即可自動在首頁、分類頁與萬用商品頁 (`product.html?id=代號`) 同步生成；也可點<strong>「📄 下載獨立 HTML 檔」</strong>產生單獨網頁檔。
+                </p>
+
+                <form id="product-gen-form" onsubmit="saveProductToCloud(event)">
+                    <div class="form-row">
+                        <div class="field-group" style="margin-bottom:0;">
+                            <label>商品代號 / 網址 ID (英數，例：CG-008)</label>
+                            <input type="text" id="p-id" placeholder="例如：CG-008 或 sageretia" required>
+                        </div>
+                        <div class="field-group" style="margin-bottom:0;">
+                            <label>售價 (NT$)</label>
+                            <input type="number" id="p-price" placeholder="例如：2600" required>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label>商品標題名稱</label>
+                        <input type="text" id="p-title" placeholder="例如：山採老態雀梅 | 懸崖小品" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="field-group" style="margin-bottom:0;">
+                            <label>圖片檔名或圖片網址</label>
+                            <input type="text" id="p-image" placeholder="例如：shimpaku_main.jpg 或 https://..." required>
+                        </div>
+                        <div class="field-group" style="margin-bottom:0;">
+                            <label>卡片角標標籤 (選填)</label>
+                            <input type="text" id="p-badge" placeholder="例如：一物一拍 / 寵物安全 / 稀有釋出" value="一物一拍">
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label>自動串流顯示於哪些前台頁面？（可複選）</label>
+                        <div class="cat-checkbox-grid">
+                            <label class="cat-check-label"><input type="checkbox" class="p-cat-cb" value="index" checked> 🏠 首頁精選</label>
+                            <label class="cat-check-label"><input type="checkbox" class="p-cat-cb" value="new-arrivals" checked> ✨ 嚴選新品</label>
+                            <label class="cat-check-label"><input type="checkbox" class="p-cat-cb" value="pet-friendly"> 🐾 寵物友善專區</label>
+                            <label class="cat-check-label"><input type="checkbox" class="p-cat-cb" value="products-deciduous"> 🌿 居家療癒・辦公</label>
+                            <label class="cat-check-label"><input type="checkbox" class="p-cat-cb" value="products-mini"> 🌸 風水招財・桃花</label>
+                            <label class="cat-check-label"><input type="checkbox" class="p-cat-cb" value="products-caudex"> 🌵 綠手指・塊根多肉</label>
+                            <label class="cat-check-label"><input type="checkbox" class="p-cat-cb" value="tools"> ✂️ 資材用具</label>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label>選擇商品詳情頁版型</label>
+                        <select id="p-template" onchange="toggleTemplateFields()">
+                            <option value="bonsai">🌲 版型 A：職人盆景嚴選檔案版（同真柏／黑松／紅楓，含樹齡尺寸與養護四格）</option>
+                            <option value="pet">🐈 版型 B：巧遇店長悄悄話・寵物友善版（同小葉羅漢松，含巧遇店長對話框）</option>
+                        </select>
+                    </div>
+
+                    <!-- 版型 A 專屬欄位 -->
+                    <div id="tpl-bonsai-fields" class="template-subbox">
+                        <h4>🌲 職人盆景【Cat Gaze 嚴選檔案】設定</h4>
+                        <div class="field-group">
+                            <label>特色標語 (Tagline)</label>
+                            <input type="text" id="p-tagline" value="✦ 貓凝嚴選：姿態蒼勁優雅，實際拍攝、僅此一盆">
+                        </div>
+                        <div class="form-row">
+                            <div class="field-group" style="margin-bottom:0;">
+                                <label>✦ 樹種</label>
+                                <input type="text" id="p-species" placeholder="例如：系魚川真柏">
+                            </div>
+                            <div class="field-group" style="margin-bottom:0;">
+                                <label>✦ 樹齡</label>
+                                <input type="text" id="p-age" placeholder="例如：約 6 年">
+                            </div>
+                        </div>
+                        <div class="form-row" style="margin-top:10px; margin-bottom:0;">
+                            <div class="field-group" style="margin-bottom:0;">
+                                <label>✦ 尺寸</label>
+                                <input type="text" id="p-size" placeholder="例如：含盆高約 25 公分">
+                            </div>
+                            <div class="field-group" style="margin-bottom:0;">
+                                <label>✦ 盆器</label>
+                                <input type="text" id="p-pot" placeholder="例如：手作柴燒圓盆">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 版型 B 專屬欄位 -->
+                    <div id="tpl-pet-fields" class="template-subbox" style="display:none;">
+                        <h4>🐈 巧遇店長推薦與養護標籤設定</h4>
+                        <div class="field-group">
+                            <label>植物介紹文案</label>
+                            <textarea id="p-desc" rows="3" placeholder="請輸入植物特色與居家擺放建議..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="field-group" style="margin-bottom:0;">
+                                <label>光照要求</label>
+                                <input type="text" id="p-light" value="半日照 / 明亮散射光">
+                            </div>
+                            <div class="field-group" style="margin-bottom:0;">
+                                <label>澆水頻率</label>
+                                <input type="text" id="p-water" value="土乾澆透 (每週 2-3 次)">
+                            </div>
+                        </div>
+                        <div class="field-group" style="margin-top:10px;">
+                            <label>安全評級</label>
+                            <input type="text" id="p-safe" value="100% 寵物無害">
+                        </div>
+                        <div class="field-group" style="margin-bottom:0;">
+                            <label>🐈 店長「巧遇」的悄悄話</label>
+                            <textarea id="p-qiaoyu" rows="2">「這盆本喵親自鑑定過，安全無毒又好照顧，批准進駐你們家客廳喵～」</textarea>
+                        </div>
+                    </div>
+
+                    <div class="gen-btn-group">
+                        <button type="submit" class="btn-cloud-publish">🚀 儲存並雲端即時上架（自動串流至前台分類與 product.html）</button>
+                        <button type="button" class="btn-html-export" onclick="exportStandaloneProductHtml()">📄 一鍵生成並下載獨立商品頁 (.html 檔案)</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 右側：目前已上架的雲端商品清單 -->
+            <div>
+                <div class="form-card" style="margin-bottom:18px;">
+                    <h3>☁️ 目前已上架的雲端商品清單</h3>
+                    <div id="products-list-container">讀取雲端商品中...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分頁 3：會員名單與植栽偏好調查 -->
     <div id="panel-members" class="tab-panel">
         <div class="persona-summary">
             <h3>📊 會員植栽經驗與興趣偏好分佈統計（即時計算自 Firebase `users` 節點）</h3>
@@ -509,7 +587,7 @@
         <div id="members-container" class="member-grid">讀取會員資料中...</div>
     </div>
 
-    <!-- 分頁 3：未結帳購物車與收藏動態 -->
+    <!-- 分頁 4：未結帳購物車與收藏動態 -->
     <div id="panel-carts" class="tab-panel">
         <div id="carts-container">讀取未結帳購物車資料中...</div>
     </div>
@@ -555,6 +633,7 @@
 
     let cachedMembers = [];
     let cachedFavorites = {};
+    let cachedProducts = {};
 
     function showAuthError(msg, isSuccess) {
         const errBox = document.getElementById('auth-error-msg');
@@ -600,7 +679,7 @@
     function loginAdminWithGoogle() {
         document.getElementById('auth-error-msg').style.display = 'none';
         if (window.location.protocol === 'file:') {
-            showAuthError("💡 提醒：您目前是在電腦本機資料夾 (file://) 開啟檔案，Google 官方安全機制不支援在 file:// 彈窗登入。請直接使用下方「信箱＋密碼」登入，或上傳至 GitHub 正式網址後再點 Google 登入！");
+            showAuthError("💡 提醒：您目前是在電腦本機資料夾 (file://) 開啟檔案，Google 安全機制不支援在 file:// 彈窗登入。請直接使用下方「信箱＋密碼」登入，或於 GitHub 正式網址點 Google 登入！");
             return;
         }
         auth.signInWithPopup(googleProvider).catch((err) => {
@@ -608,7 +687,6 @@
         });
     }
 
-    // 支援首次輸入自動註冊管理員密碼（僅限白名單信箱 change2020810@gmail.com）
     function loginAdminWithEmail(e) {
         e.preventDefault();
         document.getElementById('auth-error-msg').style.display = 'none';
@@ -625,7 +703,6 @@
         }
 
         auth.signInWithEmailAndPassword(email, pw).catch((err) => {
-            // 若尚未建立過密碼，自動為管理員信箱註冊此密碼並登入
             auth.createUserWithEmailAndPassword(email, pw).catch((createErr) => {
                 if (createErr.code === 'auth/email-already-in-use') {
                     showAuthError("此管理員信箱先前已用 Google 登入過（或密碼輸入不符）。請點擊下方「📧 寄送密碼設定信」至您的 Gmail 設定後台密碼，或於 GitHub 正式網址使用 Google 登入！");
@@ -640,7 +717,7 @@
         const email = "change2020810@gmail.com";
         auth.sendPasswordResetEmail(email)
             .then(() => {
-                showAuthError("✅ 已成功寄出密碼設定信至 change2020810@gmail.com！請至您的 Gmail 收信（含垃圾郵件匣）點擊連結設定密碼，設定完即可在上方直接輸入密碼登入後台。", true);
+                showAuthError("✅ 已成功寄出密碼設定信至 change2020810@gmail.com！請至您的 Gmail 收信點擊連結設定密碼。", true);
             })
             .catch((err) => {
                 showAuthError("寄送失敗：" + err.message);
@@ -666,10 +743,14 @@
             return;
         }
         fetchOrders();
+        fetchCloudProducts();
         fetchMembersAndFavorites();
         fetchActiveCarts();
     }
 
+    // =========================================================================
+    // 1. 訂單管理 (orders)
+    // =========================================================================
     function fetchOrders() {
         const container = document.getElementById('orders-container');
         container.innerHTML = "<div class='empty-box'>正在從雲端讀取訂單...</div>";
@@ -748,17 +829,333 @@
     }
 
     function updateStatus(orderKey, newStatus) {
-        database.ref('orders/' + orderKey).update({ status: newStatus })
-            .then(() => fetchOrders());
+        database.ref('orders/' + orderKey).update({ status: newStatus }).then(() => fetchOrders());
     }
 
     function deleteOrder(orderKey) {
         if (confirm("確定要刪除這筆訂單記錄嗎？此動作無法復原。")) {
-            database.ref('orders/' + orderKey).remove()
-                .then(() => fetchOrders());
+            database.ref('orders/' + orderKey).remove().then(() => fetchOrders());
         }
     }
 
+    // =========================================================================
+    // 2. 商品快速上架與生成器 (products)
+    // =========================================================================
+    function toggleTemplateFields() {
+        const tpl = document.getElementById('p-template').value;
+        document.getElementById('tpl-bonsai-fields').style.display = tpl === 'bonsai' ? 'block' : 'none';
+        document.getElementById('tpl-pet-fields').style.display = tpl === 'pet' ? 'block' : 'none';
+    }
+
+    function resetProductForm() {
+        document.getElementById('product-gen-form').reset();
+        document.getElementById('p-id').value = "CG-" + Math.floor(100 + Math.random() * 900);
+        toggleTemplateFields();
+    }
+
+    function collectProductFormData() {
+        const rawId = document.getElementById('p-id').value.trim().replace(/\.html$/i, '').replace(/[^a-zA-Z0-9_-]/g, '-');
+        const categories = Array.from(document.querySelectorAll('.p-cat-cb:checked')).map(cb => cb.value);
+        return {
+            id: rawId || ('CG-' + Date.now()),
+            title: document.getElementById('p-title').value.trim(),
+            price: Number(document.getElementById('p-price').value) || 0,
+            image: document.getElementById('p-image').value.trim() || 'CG_logo w bg_vertica_green.png',
+            badge: document.getElementById('p-badge').value.trim() || '嚴選上架',
+            categories: categories,
+            template: document.getElementById('p-template').value,
+            tagline: document.getElementById('p-tagline').value.trim(),
+            files: {
+                species: document.getElementById('p-species').value.trim() || '--',
+                age: document.getElementById('p-age').value.trim() || '--',
+                size: document.getElementById('p-size').value.trim() || '--',
+                pot: document.getElementById('p-pot').value.trim() || '--'
+            },
+            petDetails: {
+                desc: document.getElementById('p-desc').value.trim(),
+                light: document.getElementById('p-light').value.trim() || '半日照 / 通風',
+                water: document.getElementById('p-water').value.trim() || '土乾澆透',
+                safe: document.getElementById('p-safe').value.trim() || '100% 寵物無害',
+                qiaoyu: document.getElementById('p-qiaoyu').value.trim()
+            },
+            updatedAt: new Date().toISOString()
+        };
+    }
+
+    function saveProductToCloud(e) {
+        e.preventDefault();
+        const prod = collectProductFormData();
+        database.ref('products/' + prod.id).set(prod)
+            .then(() => {
+                alert(`✨ 商品「${prod.title}」已成功上架至雲端！\n\n• 專屬動態商品頁：product.html?id=${prod.id}\n• 已自動同步至勾選的前台分類頁！`);
+                fetchCloudProducts();
+            })
+            .catch(err => {
+                alert("上架失敗（請確認 Firebase Rules 已加入 products 寫入權限）：" + err.message);
+            });
+    }
+
+    function fetchCloudProducts() {
+        const container = document.getElementById('products-list-container');
+        container.innerHTML = "<div class='empty-box'>正在讀取雲端商品...</div>";
+
+        database.ref('products').once('value', (snap) => {
+            cachedProducts = snap.val() || {};
+            const list = Object.values(cachedProducts).sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
+            document.getElementById('stat-products-count').innerText = list.length;
+            document.getElementById('tab-badge-products').innerText = list.length;
+
+            if (list.length === 0) {
+                container.innerHTML = "<div class='empty-box'>目前雲端尚無動態上架商品。<br>從左側表單填寫並點擊「🚀 雲端即時上架」即可立即新增！</div>";
+                return;
+            }
+
+            const catNames = {
+                'index': '首頁精選',
+                'new-arrivals': '嚴選新品',
+                'pet-friendly': '寵物友善',
+                'products-deciduous': '居家辦公',
+                'products-mini': '風水招財',
+                'products-caudex': '塊根多肉',
+                'tools': '資材用具'
+            };
+
+            let html = "";
+            list.forEach(p => {
+                const catsStr = (p.categories || []).map(c => catNames[c] || c).join('、') || '未指定分類';
+                const tplBadge = p.template === 'pet' ? '🐈 巧遇店長版' : '🌲 職人盆景版';
+                html += `
+                <div class="prod-admin-card">
+                    <img src="${p.image}" class="prod-thumb" alt="${p.title}" onerror="this.src='CG_logo w bg_vertica_green.png'">
+                    <div style="flex:1;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; flex-wrap:wrap;">
+                            <strong style="color:var(--brand-main); font-size:1.05rem;">${p.title}</strong>
+                            <span class="exp-badge">${tplBadge}</span>
+                        </div>
+                        <div style="color:var(--price-color); font-weight:700; font-size:0.95rem; margin:2px 0;">
+                            NT$ ${Number(p.price || 0).toLocaleString()} <span style="color:#999; font-weight:400; font-size:0.8rem;">(ID: ${p.id})</span>
+                        </div>
+                        <div style="font-size:0.8rem; color:#666;">📍 顯示於：${catsStr}</div>
+                        <div class="actions" style="margin-top:10px;">
+                            <a href="product.html?id=${encodeURIComponent(p.id)}" target="_blank" class="btn-done" style="text-decoration:none; font-size:0.8rem; padding:5px 12px; border-radius:5px;">🔗 預覽商品頁</a>
+                            <button type="button" class="btn-refresh" style="font-size:0.8rem; padding:5px 12px;" onclick="loadProductIntoForm('${p.id}')">✏️ 編輯</button>
+                            <button type="button" class="btn-export" style="font-size:0.8rem; padding:5px 12px;" onclick="downloadSingleProductHtmlById('${p.id}')">📄 下載獨立 HTML</button>
+                            <button type="button" class="btn-del" style="font-size:0.8rem; padding:5px 12px;" onclick="deleteCloudProduct('${p.id}', '${p.title}')">🗑️ 刪除</button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            });
+            container.innerHTML = html;
+        });
+    }
+
+    function loadProductIntoForm(id) {
+        const p = cachedProducts[id];
+        if (!p) return;
+        document.getElementById('p-id').value = p.id || '';
+        document.getElementById('p-title').value = p.title || '';
+        document.getElementById('p-price').value = p.price || '';
+        document.getElementById('p-image').value = p.image || '';
+        document.getElementById('p-badge').value = p.badge || '';
+        document.getElementById('p-template').value = p.template || 'bonsai';
+        toggleTemplateFields();
+
+        const cats = Array.isArray(p.categories) ? p.categories : [];
+        document.querySelectorAll('.p-cat-cb').forEach(cb => {
+            cb.checked = cats.includes(cb.value);
+        });
+
+        if (p.files) {
+            document.getElementById('p-species').value = p.files.species || '';
+            document.getElementById('p-age').value = p.files.age || '';
+            document.getElementById('p-size').value = p.files.size || '';
+            document.getElementById('p-pot').value = p.files.pot || '';
+        }
+        document.getElementById('p-tagline').value = p.tagline || '';
+
+        if (p.petDetails) {
+            document.getElementById('p-desc').value = p.petDetails.desc || '';
+            document.getElementById('p-light').value = p.petDetails.light || '';
+            document.getElementById('p-water').value = p.petDetails.water || '';
+            document.getElementById('p-safe').value = p.petDetails.safe || '';
+            document.getElementById('p-qiaoyu').value = p.petDetails.qiaoyu || '';
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deleteCloudProduct(id, title) {
+        if (confirm(`確定要從雲端下架刪除「${title}」嗎？`)) {
+            database.ref('products/' + id).remove().then(() => fetchCloudProducts());
+        }
+    }
+
+    // 產生獨立 HTML 檔案並下載
+    function buildStandaloneHtmlString(p) {
+        return `<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${p.title} - Cat Gaze</title>
+</head>
+<body>
+    <script>
+        window.location.replace("product.html?id=${encodeURIComponent(p.id)}");
+    <\/script>
+</body>
+</html>`;
+    }
+
+    function exportStandaloneProductHtml() {
+        const prod = collectProductFormData();
+        if (!prod.title) return alert("請先填寫商品標題名稱！");
+        // 同步存上雲端並下載獨立 HTML
+        database.ref('products/' + prod.id).set(prod).then(() => fetchCloudProducts());
+        downloadHtmlFile(prod.id + ".html", generateFullStandalonePageHtml(prod));
+    }
+
+    function downloadSingleProductHtmlById(id) {
+        const p = cachedProducts[id];
+        if (!p) return;
+        downloadHtmlFile(p.id + ".html", generateFullStandalonePageHtml(p));
+    }
+
+    function downloadHtmlFile(filename, content) {
+        const blob = new Blob([content], { type: "text/html;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function generateFullStandalonePageHtml(p) {
+        const safeTitle = (p.title || '').replace(/'/g, "\\'");
+        const safeImg = (p.image || '').replace(/'/g, "\\'");
+        const priceNum = Number(p.price) || 0;
+        const mainContent = p.template === 'pet' ? `
+<main class="container" style="display:flex; gap:50px; padding:60px 0; flex-wrap:wrap;">
+    <section style="flex:1.2; min-width:320px;">
+        <img src="${p.image}" alt="${p.title}" style="width:100%; border-radius:20px; box-shadow:0 15px 40px rgba(0,0,0,0.05);">
+        <div style="margin-top:20px; color:#888; font-size:0.9rem; text-align:center;">* 植株均包含手工陶盆與天然赤玉土介質</div>
+    </section>
+    <section style="flex:1; min-width:320px;">
+        <div style="font-size:0.85rem; color:#aaa; margin-bottom:10px;"><a href="index.html" style="color:#888; text-decoration:none;">首頁</a> / <a href="categories.html" style="color:#888; text-decoration:none;">嚴選植栽</a> / ${p.title}</div>
+        <h1 style="font-size:2.2rem; margin:0 0 15px; color:#4a4a4a;">${p.title}</h1>
+        <div style="font-size:1.8rem; font-weight:700; color:#d14900; margin-bottom:25px;">NT$ ${priceNum.toLocaleString()}</div>
+        <p>${(p.petDetails && p.petDetails.desc) || ''}</p>
+        <div style="display:flex; gap:15px; margin:25px 0;">
+            <div style="background:white; border:1px solid #eee; padding:10px 16px; border-radius:12px; text-align:center; flex:1;"><span style="display:block; font-size:0.75rem; color:#999;">光照要求</span><strong style="color:#7F916A;">${(p.petDetails && p.petDetails.light) || '半日照'}</strong></div>
+            <div style="background:white; border:1px solid #eee; padding:10px 16px; border-radius:12px; text-align:center; flex:1;"><span style="display:block; font-size:0.75rem; color:#999;">澆水頻率</span><strong style="color:#7F916A;">${(p.petDetails && p.petDetails.water) || '土乾澆透'}</strong></div>
+            <div style="background:white; border:1px solid #eee; padding:10px 16px; border-radius:12px; text-align:center; flex:1;"><span style="display:block; font-size:0.75rem; color:#999;">安全評級</span><strong style="color:#7F916A;">${(p.petDetails && p.petDetails.safe) || '100% 寵物無害'}</strong></div>
+        </div>
+        <div style="background:#FDFAD9; padding:25px; border-radius:20px; margin:30px 0; border-left:5px solid #7F916A;">
+            <strong style="color:#7F916A; display:block; margin-bottom:8px;">🐈 店長「巧遇」的悄悄話：</strong>
+            <p style="margin:0; font-style:italic;">${(p.petDetails && p.petDetails.qiaoyu) || ''}</p>
+        </div>
+        <div style="display:flex; gap:15px; margin-top:30px;">
+            <button onclick="addToCart('${safeTitle}', ${priceNum}, '${safeImg}')" style="flex:2; background:#7F916A; color:white; border:none; padding:18px; border-radius:35px; font-weight:700; cursor:pointer; font-size:1rem;">加入購物清單</button>
+            <button onclick="addToFavorites('${safeTitle}', ${priceNum}, '${safeImg}')" style="flex:1; background:white; color:#7F916A; border:2px solid #7F916A; padding:18px; border-radius:35px; font-weight:700; cursor:pointer; font-size:1rem;">收藏植物</button>
+        </div>
+    </section>
+</main>` : `
+<div class="container">
+    <a href="index.html" style="color:#888; text-decoration:none; font-size:0.9rem; margin-top:25px; display:inline-block;">← 返回首頁</a>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:50px; padding:2.5rem 0;">
+        <div>
+            <img src="${p.image}" alt="${p.title}" style="width:100%; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.05);">
+            <div style="margin-top:15px; color:#888; font-size:0.9rem;">✦ 實際拍攝，僅此一盆</div>
+        </div>
+        <div>
+            <h1 style="font-size:2.2rem; color:#7F916A; margin:0 0 10px 0; font-weight:500;">${p.title}</h1>
+            <p style="color:#aaa; font-size:0.9rem; margin-bottom:20px;">編號: ${p.id}</p>
+            <div style="font-size:2.5rem; color:#d14900; font-weight:bold; margin-bottom:20px;">NT$ ${priceNum.toLocaleString()}</div>
+            <div style="color:#7F916A; font-weight:600; margin-bottom:20px;">${p.tagline || '✦ 貓眼嚴選'}</div>
+            <button onclick="addToCart('${safeTitle}', ${priceNum}, '${safeImg}')" style="display:block; width:100%; background:#7F916A; color:white; padding:16px; border:none; border-radius:30px; font-size:1.1rem; font-weight:bold; cursor:pointer; margin-bottom:10px;">✦ 加入購物車</button>
+            <button onclick="addToFavorites('${safeTitle}', ${priceNum}, '${safeImg}')" style="display:block; width:100%; background:white; color:#7F916A; padding:12px; border:1.5px solid #7F916A; border-radius:30px; font-size:1rem; font-weight:bold; cursor:pointer;">♡ 加入我的收藏</button>
+            <div style="margin-top:35px; background:white; padding:25px; border-radius:12px; border:1px solid #eee;">
+                <h3 style="color:#7F916A; margin-top:0; font-size:1.1rem; border-bottom:1px solid #B0C4B8; padding-bottom:10px;">【Cat Gaze 嚴選檔案】</h3>
+                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #f0f0f0;"><span>✦ 樹種</span><span>${(p.files && p.files.species) || '--'}</span></div>
+                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #f0f0f0;"><span>✦ 樹齡</span><span>${(p.files && p.files.age) || '--'}</span></div>
+                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #f0f0f0;"><span>✦ 尺寸</span><span>${(p.files && p.files.size) || '--'}</span></div>
+                <div style="display:flex; justify-content:space-between; padding:10px 0;"><span>✦ 盆器</span><span>${(p.files && p.files.pot) || '--'}</span></div>
+            </div>
+        </div>
+    </div>
+</div>`;
+
+        return `<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${p.title} - Cat Gaze</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; margin: 0; background: #fcfcf8; color: #4a4a4a; line-height: 1.7; }
+        .container { width: 90%; max-width: 1150px; margin: 0 auto; }
+        header { background: #fff; border-bottom: 1px solid #eee; padding: 0.8rem 0; position: sticky; top: 0; z-index: 1000; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; width: 90%; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; gap: 12px; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; gap: 10px; }
+        .logo-img { height: 42px; border-radius: 50%; }
+        .logo-text { font-size: 1.4rem; font-weight: 700; color: #7F916A; }
+        .nav-links { display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap; }
+        .nav-links a { text-decoration: none; color: #4a4a4a; font-weight: 500; font-size: 0.95rem; }
+        #cart-count { background: #d14900; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -10px; right: -15px; font-weight: bold; }
+        footer { background: #7F916A; color: white; text-align: center; padding: 3rem 0; margin-top: 4rem; }
+    </style>
+</head>
+<body>
+<header>
+    <div class="navbar">
+        <a href="index.html" class="logo-container">
+            <img src="CG_logo w bg_vertica_green.png" alt="Logo" class="logo-img">
+            <span class="logo-text">Cat Gaze</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">首頁</a>
+            <a href="new-arrivals.html">嚴選新品</a>
+            <a href="categories.html">各類品項</a>
+            <a href="tools.html">資材用具</a>
+            <a href="knowledge.html">知識中心</a>
+            <a href="about.html">關於我們</a>
+            <a href="contact.html">聯繫我們</a>
+            <a href="member.html">👤 會員</a>
+            <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">🛒 購物車 <span id="cart-count">0</span></a>
+        </nav>
+    </div>
+</header>
+${mainContent}
+<footer><div class="container"><p>© 2026 Cat Gaze | 透過貓眼凝視，發掘植栽的靈魂</p></div></footer>
+<div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
+<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; max-width:90vw; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
+        <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
+        <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+    <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;"><p style="text-align:center; color:#999;">目前沒有選購植物</p></div>
+    <div style="border-top:1px solid #eee; padding-top:20px;">
+        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
+            <span>總計金額</span><span id="cart-total-price" style="color:#d14900;">NT$ 0</span>
+        </div>
+        <button onclick="checkoutToLine()" style="width:100%; background:#7F916A; color:white; border:none; padding:15px; border-radius:30px; font-weight:bold; cursor:pointer;">帶它們回家 (聯繫 LINE 結帳)</button>
+    </div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"><\/script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"><\/script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"><\/script>
+<script src="cart-system.js"><\/script>
+</body>
+</html>`;
+    }
+
+    // =========================================================================
+    // 3. 會員檔案 + 植栽偏好調查 (users + favorites)
+    // =========================================================================
     function formatExperience(exp) {
         const map = {
             'beginner': '🌱 我是新手 (剛開始凝視植物)',
@@ -900,8 +1297,7 @@
 
     function deleteMember(uid, name) {
         if (confirm(`確定要刪除會員「${name}」的個人偏好檔案嗎？`)) {
-            database.ref('users/' + uid).remove()
-                .then(() => fetchMembersAndFavorites());
+            database.ref('users/' + uid).remove().then(() => fetchMembersAndFavorites());
         }
     }
 
@@ -937,6 +1333,9 @@
         document.body.removeChild(a);
     }
 
+    // =========================================================================
+    // 4. 讀取未結帳雲端購物車 (carts)
+    // =========================================================================
     function fetchActiveCarts() {
         const container = document.getElementById('carts-container');
         container.innerHTML = "<div class='empty-box'>正在讀取雲端購物車...</div>";
@@ -945,13 +1344,11 @@
             const cartsObj = snapshot.val();
             if (!cartsObj) {
                 container.innerHTML = "<div class='empty-box'>目前沒有未結帳的雲端購物車。</div>";
-                document.getElementById('stat-carts-count').innerText = "0";
                 document.getElementById('tab-badge-carts').innerText = "0";
                 return;
             }
 
             const entries = Object.entries(cartsObj).filter(([k, v]) => Array.isArray(v) && v.length > 0);
-            document.getElementById('stat-carts-count').innerText = entries.length;
             document.getElementById('tab-badge-carts').innerText = entries.length;
 
             if (entries.length === 0) {
@@ -988,6 +1385,9 @@
             container.innerHTML = html;
         });
     }
+
+    // 預設先產生一組隨機商品代號方便直接填表
+    resetProductForm();
 </script>
 
 </body>

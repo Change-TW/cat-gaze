@@ -3,7 +3,7 @@
 // 1. 購物車同步 (localStorage + Firebase carts)
 // 2. 訂單與會員查詢雙向相容 (Firebase orders)
 // 3. 雙核心商品自動串流：同時支援 Google 試算表中控表 + Firebase products
-// 4. 智慧比對既有靜態卡片：不重複生卡、自動補上單品頁連結、同步改價、支援一鍵「下架」隱藏
+// 4. 全站單品頁與分類頁雙向同步：改試算表即可同步更新所有新舊商品的價格、文案、規格與上下架狀態
 // ==========================================================================
 
 const firebaseConfig = {
@@ -201,12 +201,95 @@ function checkoutToLine() {
 }
 
 // ==========================================================================
-// 智慧檢查頁面上是否已有同名靜態卡片 (避免重複生卡、自動綁定單品連結與下架隱藏)
+// 智慧檢查頁面上是否已有同名靜態卡片 & 同步既有獨立單品頁內容
 // ==========================================================================
 function getCurrentPageKey() {
     let path = window.location.pathname.split('/').pop() || 'index.html';
     if (!path.endsWith('.html')) path = 'index.html';
     return path.replace('.html', '');
+}
+
+// 若目前位於舊版獨立單品頁 (shimpaku.html 等)，自動用試算表最新內容更新文字與售價
+const LEGACY_PAGE_ID_MAP = {
+    'shimpaku': 'CG-SB002',
+    'black-pine': 'CG-BP001',
+    'red-maple': 'CG-RM003',
+    'luohan-detail': 'CG-LH001',
+    'fern-detail': 'CG-FN001'
+};
+
+function syncLegacyDetailPageFromSheet(sheetMap) {
+    const pageKey = getCurrentPageKey();
+    const mappedId = LEGACY_PAGE_ID_MAP[pageKey];
+    if (!mappedId || !sheetMap[mappedId]) return;
+    const p = sheetMap[mappedId];
+    const priceNum = Number(p.price) || 0;
+
+    // 針對 shimpaku / black-pine / red-maple 版型
+    const titleEl = document.getElementById('display-title');
+    if (titleEl) {
+        titleEl.innerText = p.title;
+        document.title = p.title + " - Cat Gaze";
+        const priceEl = document.getElementById('display-price');
+        if (priceEl) priceEl.innerText = "NT$ " + priceNum.toLocaleString();
+        const imgEl = document.getElementById('display-img');
+        if (imgEl && p.image) imgEl.src = p.image;
+        const tagEl = document.getElementById('display-tagline');
+        if (tagEl && p.tagline) tagEl.innerText = p.tagline;
+        if (p.files) {
+            const sp = document.getElementById('file-species');
+            const ag = document.getElementById('file-age');
+            const sz = document.getElementById('file-size');
+            const pt = document.getElementById('file-pot');
+            if (sp) sp.innerText = p.files.species;
+            if (ag) ag.innerText = p.files.age;
+            if (sz) sz.innerText = p.files.size;
+            if (pt) pt.innerText = p.files.pot;
+        }
+        const addBtn = document.getElementById('add-btn');
+        if (addBtn) {
+            if (p.status === '下架') {
+                addBtn.innerText = "目前已下架 / 售罄";
+                addBtn.disabled = true;
+                addBtn.style.background = "#ccc";
+                addBtn.onclick = null;
+            } else {
+                addBtn.onclick = function() { addToCart(p.title, priceNum, p.image); };
+            }
+        }
+    }
+
+    // 針對 luohan-detail / fern-detail 版型
+    const petTitleEl = document.querySelector('.product-info-section .product-title');
+    if (petTitleEl) {
+        petTitleEl.innerText = p.title;
+        document.title = p.title + " | Cat Gaze";
+        const petPriceEl = document.querySelector('.product-info-section .price-tag');
+        if (petPriceEl) petPriceEl.innerText = "NT$ " + priceNum.toLocaleString();
+        const petImgEl = document.querySelector('.product-image-section img');
+        if (petImgEl && p.image) petImgEl.src = p.image;
+        const petDescEl = document.querySelector('.product-info-section > p');
+        if (petDescEl && p.petDetails && p.petDetails.desc) petDescEl.innerText = p.petDetails.desc;
+        const qiaoyuEl = document.querySelector('.qiaoyu-text');
+        if (qiaoyuEl && p.petDetails && p.petDetails.qiaoyu) qiaoyuEl.innerText = p.petDetails.qiaoyu;
+        const careStrongEls = document.querySelectorAll('.care-tags .care-tag strong');
+        if (careStrongEls.length >= 3 && p.petDetails) {
+            careStrongEls[0].innerText = p.petDetails.light;
+            careStrongEls[1].innerText = p.petDetails.water;
+            careStrongEls[2].innerText = p.petDetails.safe;
+        }
+        const buyBtn = document.querySelector('.buy-actions .btn-main');
+        if (buyBtn) {
+            if (p.status === '下架') {
+                buyBtn.innerText = "目前已下架 / 售罄";
+                buyBtn.disabled = true;
+                buyBtn.style.background = "#ccc";
+                buyBtn.onclick = null;
+            } else {
+                buyBtn.onclick = function() { addToCart(p.title, priceNum, p.image); };
+            }
+        }
+    }
 }
 
 function findMatchingStaticCard(p) {
@@ -228,14 +311,28 @@ function findMatchingStaticCard(p) {
 function enhanceExistingStaticCard(card, p) {
     const detailUrl = `product.html?id=${encodeURIComponent(p.id)}`;
     const priceNum = Number(p.price) || 0;
+    const safeTitle = (p.title || '').replace(/'/g, "\\'");
+    const safeImg = (p.image || '').replace(/'/g, "\\'");
 
-    // 1. 同步更新卡片上顯示的價格
+    // 1. 同步更新卡片上的標題與價格
+    const heading = card.querySelector('.product-title, .card-title, h3');
+    if (heading && p.title) heading.innerText = p.title;
+
     const priceEl = card.querySelector('.product-price, .price');
     if (priceEl && priceNum > 0) {
         priceEl.innerText = 'NT$ ' + priceNum.toLocaleString();
     }
 
-    // 2. 若該靜態卡片原本沒有連往單品頁（例如 tools.html 的 3 項資材），自動為圖片與標題加上點擊跳轉
+    // 2. 同步更新卡片上「加入購物車」按鈕的價格參數
+    const cartBtn = card.querySelector('.add-to-cart-btn, .btn-add, .btn-cta');
+    if (cartBtn && cartBtn.tagName === 'BUTTON') {
+        cartBtn.onclick = function(e) {
+            if (e) e.stopPropagation();
+            addToCart(p.title, priceNum, p.image);
+        };
+    }
+
+    // 3. 若該靜態卡片原本沒有連往單品頁（例如 tools.html 的 3 項資材），自動為圖片與標題加上點擊跳轉
     const existingLink = card.querySelector('a[href]');
     if (!existingLink && !card.getAttribute('onclick')) {
         const imgBox = card.querySelector('.product-image, .img-box, .img-container');
@@ -255,7 +352,6 @@ function insertProductCardOnPage(p, pageKey) {
     if (!p || !p.id) return;
     if (document.getElementById('cloud-prod-' + p.id)) return;
 
-    // 若頁面上已有同名靜態卡片，直接升級該張卡片（補連結、同步價格），不重複插入第二張
     const existingStatic = findMatchingStaticCard(p);
     if (existingStatic) {
         enhanceExistingStaticCard(existingStatic, p);
@@ -429,7 +525,6 @@ window.__onCatGazeSheetLoaded = function(response) {
         if (!p.id || p.id === '商品代號(id)') return;
         window.__CATGAZE_SHEET_PRODUCTS__[p.id] = p;
 
-        // 1. 若狀態設為「下架」，自動隱藏頁面上同名靜態卡片或動態卡片
         if (p.status === '下架') {
             const matchedStatic = findMatchingStaticCard(p);
             if (matchedStatic) matchedStatic.style.display = 'none';
@@ -438,18 +533,19 @@ window.__onCatGazeSheetLoaded = function(response) {
             return;
         }
 
-        // 2. 若狀態設為「既有基準」，若當前頁面有同名卡片則同步價格並補齊點擊連結
         if (p.status === '既有基準') {
             const matchedStatic = findMatchingStaticCard(p);
             if (matchedStatic) enhanceExistingStaticCard(matchedStatic, p);
             return;
         }
 
-        // 3. 若狀態設為「上架」，且勾選了當前頁面，自動升級既有卡片或插入新卡片
         if (p.status === '上架' && p.categories.includes(pageKey)) {
             insertProductCardOnPage(p, pageKey);
         }
     });
+
+    // 若使用者正在瀏覽舊版獨立單品頁 (shimpaku.html 等)，自動將試算表修改同步覆蓋到畫面上
+    syncLegacyDetailPageFromSheet(window.__CATGAZE_SHEET_PRODUCTS__);
 
     if (typeof window.__onSheetProductsReady === 'function') {
         window.__onSheetProductsReady(window.__CATGAZE_SHEET_PRODUCTS__);

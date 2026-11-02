@@ -2,8 +2,8 @@
 // Cat Gaze 購物車與雙核心雲端商品串流系統 (cart-system.js)
 // 1. 購物車同步 (localStorage + Firebase carts)
 // 2. 訂單與會員查詢雙向相容 (Firebase orders)
-// 3. 雙核心商品自動串流：同時支援 Google 試算表中控表 + Firebase products
-// 4. 精準將首頁雲端商品插入「本週嚴選新品 (#home-featured-grid)」，絕不混入「主題分類」
+// 3. 支援試算表「G欄：主分類專區」、「H欄：細項子分類」、「I欄：首頁與新品曝光」與「J欄：單品頁版型」全中文下拉選單解析
+// 4. 自動綁定各頁面頂部「細項子分類篩選按鈕」（耐陰室內/陽台喜光、桌面盆栽/大型落地/珍稀斑葉、塊根/多肉、修剪工具/專業介質/職人盆器/養護資材）
 // ==========================================================================
 
 const firebaseConfig = {
@@ -296,7 +296,6 @@ function findMatchingStaticCard(p) {
     for (let i = 0; i < allCards.length; i++) {
         const card = allCards[i];
         if (card.id && card.id.startsWith('cloud-prod-')) continue;
-        // 忽略主題分類區塊內的分類卡片
         if (card.closest('.categories-section')) continue;
         const heading = card.querySelector('.product-title, .card-title, h3, h2');
         const headingText = heading ? heading.innerText.trim() : card.innerText;
@@ -317,6 +316,20 @@ function enhanceExistingStaticCard(card, p) {
     const priceEl = card.querySelector('.product-price, .price, .price-tag');
     if (priceEl && priceNum > 0) {
         priceEl.innerText = 'NT$ ' + priceNum.toLocaleString();
+    }
+
+    // 同步更新子分類篩選屬性 (data-category / data-type / .product-tag)
+    if (p.subCategoryLabel) {
+        if (card.hasAttribute('data-category')) {
+            card.setAttribute('data-category', p.subCategoryLabel);
+        }
+        if (card.hasAttribute('data-type')) {
+            card.setAttribute('data-type', p.subCategoryLabel.includes('多肉') ? 'succulent' : 'caudex');
+        }
+        const tagEl = card.querySelector('.product-tag');
+        if (tagEl && !tagEl.getAttribute('href')) {
+            tagEl.innerText = p.subCategoryLabel;
+        }
     }
 
     const cartBtn = card.querySelector('.add-to-cart-btn, .btn-add, .btn-cta, .btn-luxury');
@@ -342,7 +355,6 @@ function enhanceExistingStaticCard(card, p) {
     }
 }
 
-// 取得正確的商品清單容器 (首頁嚴格指定 .featured 區塊內的 .product-grid，絕不誤抓主題分類區塊)
 function getTargetProductGrid(pageKey) {
     if (pageKey === 'index') {
         return document.querySelector('#home-featured-grid, .featured .product-grid, #shop .product-grid');
@@ -370,6 +382,7 @@ function insertProductCardOnPage(p, pageKey) {
     const safeTitle = (p.title || '').replace(/'/g, "\\'");
     const safeImg = (p.image || '').replace(/'/g, "\\'");
     const detailUrl = `product.html?id=${encodeURIComponent(p.id)}`;
+    const subCat = p.subCategoryLabel || p.badge || '';
     let cardHtml = '';
 
     if (pageKey === 'new-arrivals') {
@@ -404,17 +417,47 @@ function insertProductCardOnPage(p, pageKey) {
                 </div>
             </div>`;
         }
-    } else if (pageKey === 'pet-friendly' || pageKey === 'products-deciduous') {
-        const badgeCls = pageKey === 'pet-friendly' ? 'safety-badge' : 'status-badge';
+    } else if (pageKey === 'pet-friendly') {
+        // 支援 pet-friendly.html 的「耐陰室內」與「陽台喜光」篩選標籤
+        const petSubCat = subCat.includes('陽台喜光') ? '陽台喜光' : (subCat.includes('耐陰室內') ? '耐陰室內' : '耐陰室內 陽台喜光');
+        const envIcon = petSubCat === '陽台喜光' ? '☀️ 半日照' : '☁️ 耐陰';
+        cardHtml = `
+        <div class="product-card" id="cloud-prod-${p.id}" data-category="${petSubCat}" onclick="location.href='${detailUrl}'" style="cursor:pointer;">
+            <div class="pet-badge">${p.badge || 'CAT SAFE'}</div>
+            <button class="btn-fav-float" onclick="event.stopPropagation(); addToFavorites('${safeTitle}', ${priceNum}, '${safeImg}')">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </button>
+            <div class="img-box">
+                <img src="${p.image}" alt="${p.title}" onerror="this.src='CG_logo w bg_vertica_green.png'">
+                <div class="env-bar">
+                    <span>${envIcon}</span>
+                    <span>💧 ${(p.petDetails && p.petDetails.water) || '土乾澆透'}</span>
+                    <span>🐾 100%無毒</span>
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>${p.title}</h3>
+                <p class="product-desc">${(p.petDetails && p.petDetails.desc) ? p.petDetails.desc.substring(0, 42) + '...' : '經 ASPCA 認證對貓狗無毒的安全療癒植栽。'}</p>
+                <div class="price-row">
+                    <span class="price">NT$ ${priceNum.toLocaleString()}</span>
+                    <button class="btn-add" onclick="event.stopPropagation(); addToCart('${safeTitle}', ${priceNum}, '${safeImg}')">+</button>
+                </div>
+            </div>
+        </div>`;
+    } else if (pageKey === 'products-deciduous') {
         const qiaoyu = (p.petDetails && p.petDetails.qiaoyu) || p.tagline || '「本喵親自認證的療癒綠意喵～」';
         cardHtml = `
         <div class="product-card" id="cloud-prod-${p.id}" onclick="location.href='${detailUrl}'" style="cursor:pointer;">
             <div class="img-box">
-                <div class="${badgeCls}">${p.badge || 'PET SAFE'}</div>
+                <div class="status-badge">${p.badge || 'OFFICE HEALING'}</div>
                 <img src="${p.image}" alt="${p.title}" onerror="this.src='CG_logo w bg_vertica_green.png'">
             </div>
             <div class="product-info">
-                <h3>${p.title}</h3>
+                <h3 class="serif">${p.title}</h3>
+                <div class="healing-meta">
+                    光照：${(p.petDetails && p.petDetails.light) || '明亮散射光'}<br>
+                    澆水：${(p.petDetails && p.petDetails.water) || '表土微乾澆透'}
+                </div>
                 <div class="qiaoyu-bubble">${qiaoyu}</div>
                 <div class="price-row">
                     <span class="price">NT$ ${priceNum.toLocaleString()}</span>
@@ -423,8 +466,10 @@ function insertProductCardOnPage(p, pageKey) {
             </div>
         </div>`;
     } else if (pageKey === 'products-mini') {
+        // 支援 products-mini.html 的「大型落地」、「桌面盆栽」、「珍稀斑葉」篩選
+        const miniCat = subCat || '桌面盆栽';
         cardHtml = `
-        <div class="product-card reveal active" id="cloud-prod-${p.id}" data-category="全部植物 桌面盆栽 大型落地 珍稀斑葉">
+        <div class="product-card reveal active" id="cloud-prod-${p.id}" data-category="${miniCat}">
             <div class="img-container" onclick="location.href='${detailUrl}'" style="cursor:pointer;">
                 <div class="env-label">${p.badge || '☀️ 嚴選'}</div>
                 <div class="img-box"><img src="${p.image}" alt="${p.title}" onerror="this.src='CG_logo w bg_vertica_green.png'"></div>
@@ -439,9 +484,12 @@ function insertProductCardOnPage(p, pageKey) {
             </div>
         </div>`;
     } else if (pageKey === 'products-caudex') {
+        // 支援 products-caudex.html 的「塊根植物 (caudex)」與「多肉植物 (succulent)」篩選
+        const caudexType = subCat.includes('多肉') ? 'succulent' : 'caudex';
+        const badgeLabel = caudexType === 'succulent' ? 'SUCCULENT' : 'CAUDEX';
         cardHtml = `
-        <div class="product-card" id="cloud-prod-${p.id}" data-type="caudex">
-            <div class="badge caudex">${p.badge || 'SELECTED'}</div>
+        <div class="product-card" id="cloud-prod-${p.id}" data-type="${caudexType}">
+            <div class="badge ${caudexType}">${badgeLabel}</div>
             <div class="img-box" onclick="location.href='${detailUrl}'" style="cursor:pointer;">
                 <img src="${p.image}" alt="${p.title}" onerror="this.src='CG_logo w bg_vertica_green.png'">
             </div>
@@ -455,12 +503,14 @@ function insertProductCardOnPage(p, pageKey) {
             </div>
         </div>`;
     } else if (pageKey === 'tools') {
+        // 支援 tools.html 的「修剪工具」、「專業介質」、「職人盆器」、「養護資材」篩選
+        const toolTag = subCat || p.badge || '職人選物';
         cardHtml = `
         <div class="product-card" id="cloud-prod-${p.id}">
             <div onclick="location.href='${detailUrl}'" style="cursor:pointer;">
                 <div class="product-image"><img src="${p.image}" alt="${p.title}" onerror="this.src='CG_logo w bg_vertica_green.png'"></div>
                 <div class="product-info">
-                    <div class="product-tag">${p.badge || '職人選物'}</div>
+                    <div class="product-tag">${toolTag}</div>
                     <h3 class="product-title">${p.title}</h3>
                     <div class="product-price">NT$ ${priceNum.toLocaleString()}</div>
                 </div>
@@ -468,7 +518,6 @@ function insertProductCardOnPage(p, pageKey) {
             <button class="add-to-cart-btn" onclick="addToCart('${safeTitle}', ${priceNum}, '${safeImg}')">加入選植清單</button>
         </div>`;
     } else if (pageKey === 'index') {
-        // 100% 採用首頁「本週嚴選新品」原生卡片樣式 (.product-image-placeholder + .product-subtitle + #查看詳情)
         const subtitleStr = (p.files && p.files.size && p.files.size !== '--') ? p.files.size : (p.badge || '嚴選新作');
         cardHtml = `
         <div class="product-card" id="cloud-prod-${p.id}" onclick="location.href='${detailUrl}'" style="cursor:pointer;">
@@ -489,6 +538,61 @@ function insertProductCardOnPage(p, pageKey) {
     }
 }
 
+// 動態強化各分類頁的篩選按鈕，讓後來從雲端長出來的商品卡片也能被頂部篩選按鈕正確篩選
+function bindDynamicCategoryFilters() {
+    const pageKey = getCurrentPageKey();
+
+    if (pageKey === 'pet-friendly') {
+        const btns = document.querySelectorAll('.filter-tag');
+        btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const selected = btn.textContent.trim();
+                document.querySelectorAll('.product-card').forEach(card => {
+                    const cats = card.getAttribute('data-category') || '';
+                    if (selected === '全部植物' || cats.includes(selected)) {
+                        card.classList.remove('hidden');
+                        card.style.display = '';
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    } else if (pageKey === 'products-mini') {
+        const btns = document.querySelectorAll('.filter-btn');
+        btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filterVal = btn.getAttribute('data-filter') || 'all';
+                document.querySelectorAll('.product-card').forEach(card => {
+                    const cats = card.getAttribute('data-category') || '';
+                    if (filterVal === 'all' || cats.includes(filterVal)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    } else if (pageKey === 'tools') {
+        const btns = document.querySelectorAll('.filter-btn');
+        btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const selectedTag = btn.textContent.trim();
+                document.querySelectorAll('.product-card').forEach(card => {
+                    const tagEl = card.querySelector('.product-tag');
+                    const cardTag = tagEl ? tagEl.textContent.trim() : '';
+                    if (selectedTag === '全部' || cardTag.includes(selectedTag)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    }
+}
+
+// 智慧解析試算表列（相容舊版 13 欄與新版含子分類下拉選單之 15 欄格式）
 function parseSheetRowToProduct(cells) {
     const val = (idx) => (cells[idx] && cells[idx].v !== null && cells[idx].v !== undefined) ? String(cells[idx].v).trim() : '';
     const id = val(0);
@@ -497,13 +601,55 @@ function parseSheetRowToProduct(cells) {
     const priceRaw = cells[3] && cells[3].v !== null ? Number(String(cells[3].v).replace(/[^0-9.]/g, '')) : 0;
     const image = val(4) || 'CG_logo w bg_vertica_green.png';
     const badge = val(5) || '嚴選上架';
-    const categories = val(6).split(',').map(s => s.trim()).filter(Boolean);
-    const template = val(7) || 'bonsai';
+
+    // 判斷是否為新版 15 欄結構 (G欄=主分類, H欄=細項子分類, I欄=首頁與新品曝光, J欄=版型, K~O欄=內容)
+    const colG = val(6);
+    const colH = val(7);
     const colI = val(8);
     const colJ = val(9);
-    const colK = val(10);
-    const colL = val(11);
-    const colM = val(12);
+    const isNew15Col = colJ.includes('bonsai') || colJ.includes('pet') || colJ.includes('tool') || colG.includes('(') || colH.includes('｜');
+
+    let categories = [];
+    let subCategoryLabel = '';
+    let template = 'bonsai';
+    let descOrTagline = '';
+    let spec1 = '', spec2 = '', spec3 = '', spec4 = '';
+
+    if (isNew15Col) {
+        // 解析 G 欄主分類
+        if (colG.includes('pet-friendly') || colG.includes('寵物友善')) categories.push('pet-friendly');
+        if (colG.includes('products-deciduous') || colG.includes('辦公室療癒')) categories.push('products-deciduous');
+        if (colG.includes('products-mini') || colG.includes('風水招財')) categories.push('products-mini');
+        if (colG.includes('products-caudex') || colG.includes('綠手指')) categories.push('products-caudex');
+        if (colG.includes('tools') || colG.includes('資材用具')) categories.push('tools');
+
+        // 解析 H 欄細項子分類 (例如 "寵物友善｜耐陰室內" -> "耐陰室內")
+        subCategoryLabel = colH.includes('｜') ? colH.split('｜')[1].trim() : colH;
+
+        // 解析 I 欄首頁與新品曝光
+        if (colI.includes('首頁')) categories.push('index');
+        if (colI.includes('嚴選新品')) categories.push('new-arrivals');
+
+        // 解析 J 欄版型
+        if (colJ.includes('pet') || colJ.includes('巧遇')) template = 'pet';
+        else if (colJ.includes('tool') || colJ.includes('資材')) template = 'tool';
+        else template = 'bonsai';
+
+        descOrTagline = val(10);
+        spec1 = val(11);
+        spec2 = val(12);
+        spec3 = val(13);
+        spec4 = val(14);
+    } else {
+        // 相容舊版 13 欄
+        categories = colG.split(',').map(s => s.trim()).filter(Boolean);
+        template = colH || 'bonsai';
+        descOrTagline = val(8);
+        spec1 = val(9);
+        spec2 = val(10);
+        spec3 = val(11);
+        spec4 = val(12);
+    }
 
     return {
         id: id,
@@ -513,20 +659,21 @@ function parseSheetRowToProduct(cells) {
         image: image,
         badge: badge,
         categories: categories,
+        subCategoryLabel: subCategoryLabel,
         template: template,
-        tagline: colI,
+        tagline: descOrTagline,
         files: {
-            species: colJ || '--',
-            age: colK || '--',
-            size: colL || '--',
-            pot: colM || '--'
+            species: spec1 || '--',
+            age: spec2 || '--',
+            size: spec3 || '--',
+            pot: spec4 || '--'
         },
         petDetails: {
-            desc: colI,
-            light: colJ || '半日照 / 通風',
-            water: colK || '土乾澆透',
-            safe: colL || '100% 寵物無害',
-            qiaoyu: colM
+            desc: descOrTagline,
+            light: spec1 || '半日照 / 通風',
+            water: spec2 || '土乾澆透',
+            safe: spec3 || '100% 寵物無害',
+            qiaoyu: spec4
         }
     };
 }
@@ -537,7 +684,6 @@ window.__onCatGazeSheetLoaded = function(response) {
     const rows = response.table.rows;
     window.__CATGAZE_SHEET_PRODUCTS__ = {};
 
-    // 若舊版 index.html 把卡片誤插進 .categories-section，先自動清除
     const wrongCardInCat = document.querySelector('.categories-section [id^="cloud-prod-"]');
     if (wrongCardInCat) wrongCardInCat.remove();
 
@@ -567,6 +713,7 @@ window.__onCatGazeSheetLoaded = function(response) {
     });
 
     syncLegacyDetailPageFromSheet(window.__CATGAZE_SHEET_PRODUCTS__);
+    bindDynamicCategoryFilters();
 
     if (typeof window.__onSheetProductsReady === 'function') {
         window.__onSheetProductsReady(window.__CATGAZE_SHEET_PRODUCTS__);

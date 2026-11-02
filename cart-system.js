@@ -593,3 +593,79 @@ window.addEventListener('load', function() {
         });
     }
 });
+
+
+// ==========================================================================
+// 5. 全站自動 SEO 結構化資料 (JSON-LD Schema) 注入器
+//    讓 Google 搜尋結果直接顯示「Cat Gaze 品牌資訊」與「NT$ 商品價格 + 現貨狀態」
+// ==========================================================================
+function injectAutoSEOSchema() {
+    const baseUrl = "https://change-tw.github.io/cat-gaze/";
+    const pageKey = getCurrentPageKey();
+
+    // Canonical URL 自動補齊
+    if (!document.querySelector('link[rel="canonical"]')) {
+        const link = document.createElement('link');
+        link.rel = 'canonical';
+        link.href = baseUrl + (pageKey === 'index' ? '' : (pageKey + '.html')) + (window.location.search || '');
+        document.head.appendChild(link);
+    }
+
+    // 首頁注入 Organization + WebSite Schema
+    if (pageKey === 'index') {
+        const orgSchema = {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Cat Gaze 貓凝植栽",
+            "url": baseUrl,
+            "logo": baseUrl + "CG_logo%20w%20bg_vertica_green.png",
+            "description": "透過貓眼凝視，發掘植栽的靈魂。專營日本黑松、系魚川真柏、小品盆景、ASPCA認證100%對貓無毒寵物友善植物與日本職人盆景資材。",
+            "sameAs": [
+                "https://www.instagram.com/catgaze_bonsai"
+            ]
+        };
+        const sc = document.createElement('script');
+        sc.type = 'application/ld+json';
+        sc.textContent = JSON.stringify(orgSchema);
+        document.head.appendChild(sc);
+    }
+
+    // 單品頁自動注入 Product Schema (支援動態頁與傳統單品頁)
+    setTimeout(() => {
+        const titleEl = document.querySelector('#display-title, .product-title, .info-section h1, .pet-info-col h1');
+        const priceEl = document.querySelector('#display-price, .price-tag, .info-section .price');
+        const imgEl = document.querySelector('#display-img, .product-image-section img, .image-gallery img, .pet-img-col img');
+        if (titleEl && priceEl) {
+            const prodName = titleEl.innerText.trim();
+            const priceVal = Number(priceEl.innerText.replace(/[^0-9.]/g, '')) || 0;
+            const imgSrc = imgEl ? imgEl.getAttribute('src') : 'CG_logo w bg_vertica_green.png';
+            if (prodName && priceVal > 0 && prodName !== '載入中...') {
+                const prodSchema = {
+                    "@context": "https://schema.org/",
+                    "@type": "Product",
+                    "name": prodName,
+                    "image": imgSrc.startsWith('http') ? imgSrc : (baseUrl + imgSrc),
+                    "description": document.title + " - Cat Gaze 貓凝植栽嚴選，實品拍攝出貨。",
+                    "brand": {
+                        "@type": "Brand",
+                        "name": "Cat Gaze 貓凝植栽"
+                    },
+                    "offers": {
+                        "@type": "Offer",
+                        "url": window.location.href,
+                        "priceCurrency": "TWD",
+                        "price": priceVal,
+                        "availability": "https://schema.org/InStock",
+                        "itemCondition": "https://schema.org/NewCondition"
+                    }
+                };
+                const sc = document.createElement('script');
+                sc.type = 'application/ld+json';
+                sc.textContent = JSON.stringify(prodSchema);
+                document.head.appendChild(sc);
+            }
+        }
+    }, 1500);
+}
+
+window.addEventListener('load', injectAutoSEOSchema);

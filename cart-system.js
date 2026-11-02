@@ -3,7 +3,7 @@
 // 1. 購物車同步 (localStorage + Firebase carts)
 // 2. 訂單與會員查詢雙向相容 (Firebase orders)
 // 3. 雙核心商品自動串流：同時支援 Google 試算表中控表 + Firebase products
-// 4. 全站單品頁與分類頁雙向同步：改試算表即可同步更新所有新舊商品的價格、文案、規格與上下架狀態
+// 4. 精準將首頁雲端商品插入「本週嚴選新品 (#home-featured-grid)」，絕不混入「主題分類」
 // ==========================================================================
 
 const firebaseConfig = {
@@ -209,7 +209,6 @@ function getCurrentPageKey() {
     return path.replace('.html', '');
 }
 
-// 若目前位於舊版獨立單品頁 (shimpaku.html 等)，自動用試算表最新內容更新文字與售價
 const LEGACY_PAGE_ID_MAP = {
     'shimpaku': 'CG-SB002',
     'black-pine': 'CG-BP001',
@@ -225,7 +224,6 @@ function syncLegacyDetailPageFromSheet(sheetMap) {
     const p = sheetMap[mappedId];
     const priceNum = Number(p.price) || 0;
 
-    // 針對 shimpaku / black-pine / red-maple 版型
     const titleEl = document.getElementById('display-title');
     if (titleEl) {
         titleEl.innerText = p.title;
@@ -259,7 +257,6 @@ function syncLegacyDetailPageFromSheet(sheetMap) {
         }
     }
 
-    // 針對 luohan-detail / fern-detail 版型
     const petTitleEl = document.querySelector('.product-info-section .product-title');
     if (petTitleEl) {
         petTitleEl.innerText = p.title;
@@ -295,11 +292,13 @@ function syncLegacyDetailPageFromSheet(sheetMap) {
 function findMatchingStaticCard(p) {
     const shortName = (p.title || '').split('|')[0].trim();
     if (!shortName) return null;
-    const allCards = document.querySelectorAll('.product-card, .bonsai-card');
+    const allCards = document.querySelectorAll('.product-card, .bonsai-card, .feature-item');
     for (let i = 0; i < allCards.length; i++) {
         const card = allCards[i];
         if (card.id && card.id.startsWith('cloud-prod-')) continue;
-        const heading = card.querySelector('.product-title, .card-title, h3');
+        // 忽略主題分類區塊內的分類卡片
+        if (card.closest('.categories-section')) continue;
+        const heading = card.querySelector('.product-title, .card-title, h3, h2');
         const headingText = heading ? heading.innerText.trim() : card.innerText;
         if (headingText && (headingText.includes(shortName) || shortName.includes(headingText))) {
             return card;
@@ -311,20 +310,16 @@ function findMatchingStaticCard(p) {
 function enhanceExistingStaticCard(card, p) {
     const detailUrl = `product.html?id=${encodeURIComponent(p.id)}`;
     const priceNum = Number(p.price) || 0;
-    const safeTitle = (p.title || '').replace(/'/g, "\\'");
-    const safeImg = (p.image || '').replace(/'/g, "\\'");
 
-    // 1. 同步更新卡片上的標題與價格
     const heading = card.querySelector('.product-title, .card-title, h3');
     if (heading && p.title) heading.innerText = p.title;
 
-    const priceEl = card.querySelector('.product-price, .price');
+    const priceEl = card.querySelector('.product-price, .price, .price-tag');
     if (priceEl && priceNum > 0) {
         priceEl.innerText = 'NT$ ' + priceNum.toLocaleString();
     }
 
-    // 2. 同步更新卡片上「加入購物車」按鈕的價格參數
-    const cartBtn = card.querySelector('.add-to-cart-btn, .btn-add, .btn-cta');
+    const cartBtn = card.querySelector('.add-to-cart-btn, .btn-add, .btn-cta, .btn-luxury');
     if (cartBtn && cartBtn.tagName === 'BUTTON') {
         cartBtn.onclick = function(e) {
             if (e) e.stopPropagation();
@@ -332,10 +327,9 @@ function enhanceExistingStaticCard(card, p) {
         };
     }
 
-    // 3. 若該靜態卡片原本沒有連往單品頁（例如 tools.html 的 3 項資材），自動為圖片與標題加上點擊跳轉
     const existingLink = card.querySelector('a[href]');
     if (!existingLink && !card.getAttribute('onclick')) {
-        const imgBox = card.querySelector('.product-image, .img-box, .img-container');
+        const imgBox = card.querySelector('.product-image, .img-box, .img-container, .feature-img');
         const infoBox = card.querySelector('.product-info');
         if (imgBox) {
             imgBox.style.cursor = 'pointer';
@@ -348,6 +342,17 @@ function enhanceExistingStaticCard(card, p) {
     }
 }
 
+// 取得正確的商品清單容器 (首頁嚴格指定 .featured 區塊內的 .product-grid，絕不誤抓主題分類區塊)
+function getTargetProductGrid(pageKey) {
+    if (pageKey === 'index') {
+        return document.querySelector('#home-featured-grid, .featured .product-grid, #shop .product-grid');
+    }
+    if (pageKey === 'new-arrivals') {
+        return document.querySelector('.Bonsai-grid, .featured-new');
+    }
+    return document.querySelector('#product-container, #productGrid, .product-grid');
+}
+
 function insertProductCardOnPage(p, pageKey) {
     if (!p || !p.id) return;
     if (document.getElementById('cloud-prod-' + p.id)) return;
@@ -358,7 +363,7 @@ function insertProductCardOnPage(p, pageKey) {
         return;
     }
 
-    const grid = document.querySelector('.product-grid, .Bonsai-grid, #product-container, #productGrid');
+    const grid = getTargetProductGrid(pageKey);
     if (!grid) return;
 
     const priceNum = Number(p.price) || 0;
@@ -368,21 +373,37 @@ function insertProductCardOnPage(p, pageKey) {
     let cardHtml = '';
 
     if (pageKey === 'new-arrivals') {
-        cardHtml = `
-        <div class="bonsai-card" id="cloud-prod-${p.id}">
-            <div class="img-container">
-                <span class="unique-tag">${p.badge || '一物一拍'}</span>
-                <img src="${p.image}" alt="${p.title}" onerror="this.src='CG_logo w bg_vertica_green.png'">
-            </div>
-            <div class="card-info">
-                <span class="card-meta">${(p.files && p.files.species) || '嚴選新作'} | ${(p.files && p.files.size) || '職人精選'}</span>
-                <h3 class="card-title serif">${p.title}</h3>
-                <div class="card-footer">
-                    <span class="price">NT$ ${priceNum.toLocaleString()}</span>
-                    <a href="${detailUrl}" class="btn-view">凝視細節 →</a>
+        if (grid.classList.contains('featured-new')) {
+            cardHtml = `
+            <div class="feature-item" id="cloud-prod-${p.id}">
+                <div class="feature-img" onclick="location.href='${detailUrl}'" style="cursor:pointer;">
+                    <img src="${p.image}" alt="${p.title}" onerror="this.src='CG_logo w bg_vertica_green.png'">
                 </div>
-            </div>
-        </div>`;
+                <div class="feature-text">
+                    <h2 onclick="location.href='${detailUrl}'" style="cursor:pointer;">${p.title}</h2>
+                    <p>${(p.petDetails && p.petDetails.desc) || p.tagline || 'Cat Gaze 嚴選植栽'}</p>
+                    <span class="price-tag">NT$ ${priceNum.toLocaleString()}</span>
+                    <button class="btn-luxury" onclick="addToCart('${safeTitle}', ${priceNum}, '${safeImg}')">將這份靜謐帶回家</button>
+                    <a href="${detailUrl}" style="margin-left:15px; color:#7F916A; text-decoration:none; font-weight:bold;">查看詳情 →</a>
+                </div>
+            </div>`;
+        } else {
+            cardHtml = `
+            <div class="bonsai-card" id="cloud-prod-${p.id}">
+                <div class="img-container">
+                    <span class="unique-tag">${p.badge || '一物一拍'}</span>
+                    <img src="${p.image}" alt="${p.title}" onerror="this.src='CG_logo w bg_vertica_green.png'">
+                </div>
+                <div class="card-info">
+                    <span class="card-meta">${(p.files && p.files.species) || '嚴選新作'} | ${(p.files && p.files.size) || '職人精選'}</span>
+                    <h3 class="card-title serif">${p.title}</h3>
+                    <div class="card-footer">
+                        <span class="price">NT$ ${priceNum.toLocaleString()}</span>
+                        <a href="${detailUrl}" class="btn-view">凝視細節 →</a>
+                    </div>
+                </div>
+            </div>`;
+        }
     } else if (pageKey === 'pet-friendly' || pageKey === 'products-deciduous') {
         const badgeCls = pageKey === 'pet-friendly' ? 'safety-badge' : 'status-badge';
         const qiaoyu = (p.petDetails && p.petDetails.qiaoyu) || p.tagline || '「本喵親自認證的療癒綠意喵～」';
@@ -447,21 +468,18 @@ function insertProductCardOnPage(p, pageKey) {
             <button class="add-to-cart-btn" onclick="addToCart('${safeTitle}', ${priceNum}, '${safeImg}')">加入選植清單</button>
         </div>`;
     } else if (pageKey === 'index') {
+        // 100% 採用首頁「本週嚴選新品」原生卡片樣式 (.product-image-placeholder + .product-subtitle + #查看詳情)
+        const subtitleStr = (p.files && p.files.size && p.files.size !== '--') ? p.files.size : (p.badge || '嚴選新作');
         cardHtml = `
-        <div class="product-card" id="cloud-prod-${p.id}">
-            <a href="${detailUrl}" style="text-decoration: none; color: inherit;">
-                <div class="product-image">
-                    <img src="${p.image}" alt="${p.title}" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='CG_logo w bg_vertica_green.png'">
-                </div>
-                <div class="product-info">
-                    <div class="product-tag">${p.badge || '嚴選上架'}</div>
-                    <div class="product-title">${p.title}</div>
-                    <div class="product-price">NT$ ${priceNum.toLocaleString()}</div>
-                </div>
-            </a>
-            <div style="padding: 0 1.2rem 1.2rem; display:flex; flex-direction:column; gap:8px;">
-                <button onclick="addToCart('${safeTitle}', ${priceNum}, '${safeImg}')" class="btn-cta" style="width:100%; border:none; cursor:pointer; padding:8px 0; font-size:0.9rem;">加入購物車</button>
-                <button onclick="addToFavorites('${safeTitle}', ${priceNum}, '${safeImg}')" style="background:none; border:1px solid #7F916A; color:#7F916A; padding:6px 0; border-radius:25px; cursor:pointer; font-size:0.8rem;">♡ 加入收藏</button>
+        <div class="product-card" id="cloud-prod-${p.id}" onclick="location.href='${detailUrl}'" style="cursor:pointer;">
+            <div class="product-image-placeholder">
+                <img src="${p.image}" alt="${p.title}" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='CG_logo w bg_vertica_green.png'">
+            </div>
+            <div class="product-info">
+                <div class="product-title">${p.title}</div>
+                <div class="product-subtitle">${subtitleStr}</div>
+                <div class="product-price">NT$ ${priceNum.toLocaleString()}</div>
+                <a href="${detailUrl}" class="product-tag">#查看詳情</a>
             </div>
         </div>`;
     }
@@ -519,6 +537,10 @@ window.__onCatGazeSheetLoaded = function(response) {
     const rows = response.table.rows;
     window.__CATGAZE_SHEET_PRODUCTS__ = {};
 
+    // 若舊版 index.html 把卡片誤插進 .categories-section，先自動清除
+    const wrongCardInCat = document.querySelector('.categories-section [id^="cloud-prod-"]');
+    if (wrongCardInCat) wrongCardInCat.remove();
+
     rows.forEach((r) => {
         if (!r || !r.c) return;
         const p = parseSheetRowToProduct(r.c);
@@ -544,7 +566,6 @@ window.__onCatGazeSheetLoaded = function(response) {
         }
     });
 
-    // 若使用者正在瀏覽舊版獨立單品頁 (shimpaku.html 等)，自動將試算表修改同步覆蓋到畫面上
     syncLegacyDetailPageFromSheet(window.__CATGAZE_SHEET_PRODUCTS__);
 
     if (typeof window.__onSheetProductsReady === 'function') {
@@ -575,35 +596,10 @@ function loadCloudProductsFromBothSources() {
     }
 }
 
-window.addEventListener('load', function() {
-    updateCount();
-    renderCart();
-    loadCloudProductsFromBothSources();
-
-    const userKey = getUserKey();
-    if (userKey && database) {
-        database.ref('carts/' + userKey).once('value', (snapshot) => {
-            const cloudCart = snapshot.val();
-            if (cloudCart && Array.isArray(cloudCart)) {
-                cart = cloudCart;
-                localStorage.setItem('CatGazeCart', JSON.stringify(cart));
-                updateCount();
-                renderCart();
-            }
-        });
-    }
-});
-
-
-// ==========================================================================
-// 5. 全站自動 SEO 結構化資料 (JSON-LD Schema) 注入器
-//    讓 Google 搜尋結果直接顯示「Cat Gaze 品牌資訊」與「NT$ 商品價格 + 現貨狀態」
-// ==========================================================================
 function injectAutoSEOSchema() {
     const baseUrl = "https://change-tw.github.io/cat-gaze/";
     const pageKey = getCurrentPageKey();
 
-    // Canonical URL 自動補齊
     if (!document.querySelector('link[rel="canonical"]')) {
         const link = document.createElement('link');
         link.rel = 'canonical';
@@ -611,7 +607,6 @@ function injectAutoSEOSchema() {
         document.head.appendChild(link);
     }
 
-    // 首頁注入 Organization + WebSite Schema
     if (pageKey === 'index') {
         const orgSchema = {
             "@context": "https://schema.org",
@@ -630,9 +625,8 @@ function injectAutoSEOSchema() {
         document.head.appendChild(sc);
     }
 
-    // 單品頁自動注入 Product Schema (支援動態頁與傳統單品頁)
     setTimeout(() => {
-        const titleEl = document.querySelector('#display-title, .product-title, .info-section h1, .pet-info-col h1');
+        const titleEl = document.querySelector('#display-title, .product-info-section .product-title, .info-section h1, .pet-info-col h1');
         const priceEl = document.querySelector('#display-price, .price-tag, .info-section .price');
         const imgEl = document.querySelector('#display-img, .product-image-section img, .image-gallery img, .pet-img-col img');
         if (titleEl && priceEl) {
@@ -668,4 +662,22 @@ function injectAutoSEOSchema() {
     }, 1500);
 }
 
-window.addEventListener('load', injectAutoSEOSchema);
+window.addEventListener('load', function() {
+    updateCount();
+    renderCart();
+    loadCloudProductsFromBothSources();
+    injectAutoSEOSchema();
+
+    const userKey = getUserKey();
+    if (userKey && database) {
+        database.ref('carts/' + userKey).once('value', (snapshot) => {
+            const cloudCart = snapshot.val();
+            if (cloudCart && Array.isArray(cloudCart)) {
+                cart = cloudCart;
+                localStorage.setItem('CatGazeCart', JSON.stringify(cart));
+                updateCount();
+                renderCart();
+            }
+        });
+    }
+});

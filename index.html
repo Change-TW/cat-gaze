@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cat Gaze 盆景 | 嚴選植栽與手作生活</title>
+    <link rel="canonical" href="https://change-tw.github.io/cat-gaze/">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -22,7 +23,7 @@
             line-height: 1.7;
         }
         .container { width: 90%; max-width: 1280px; margin: 0 auto; }
-        
+
         /* --- 全站統一 Header 導覽列 --- */
         header {
             background-color: #ffffff;
@@ -91,22 +92,6 @@
             font-weight: bold;
             line-height: 1.2;
         }
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                height: auto;
-                padding: 10px 0;
-                gap: 12px;
-            }
-            .nav-links {
-                justify-content: center;
-                gap: 12px;
-                width: 100%;
-            }
-            .nav-links a {
-                font-size: 0.88rem;
-            }
-        }
 
         .hero { background-color: var(--brand-cream); padding: 8rem 0; text-align: center; }
         .hero h1 { font-size: 3.2rem; color: var(--brand-main); margin-bottom: 1rem; font-weight: 300; }
@@ -123,6 +108,30 @@
             font-weight: 300; border-bottom: 2px solid var(--brand-accent); padding-bottom: 10px; display: inline-block;
         }
         .featured, .categories-section, .knowledge-preview { padding: 6rem 0; }
+
+        /* 主題分類專屬網格 (5大分類自適應排版，與下方商品網格獨立分開) */
+        .category-showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+        .category-item-card {
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--brand-accent);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .category-item-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 24px rgba(127, 145, 106, 0.15);
+        }
+
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; }
         .product-card {
             background: #ffffff; border-radius: 8px; overflow: hidden;
@@ -138,6 +147,7 @@
         .product-subtitle { color: #777; font-size: 0.9rem; margin-bottom: 1rem; }
         .product-price { color: var(--price-color); font-size: 1.4rem; font-weight: bold; }
         .product-tag { display: inline-block; background-color: var(--brand-accent); color: var(--brand-main); padding: 3px 8px; border-radius: 3px; font-size: 0.8rem; margin-top: 10px; text-decoration: none; }
+        .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
         .knowledge-card { background: var(--brand-cream); padding: 20px; border-radius: 8px; border: 1px solid var(--brand-accent); }
         .knowledge-card h4 { color: var(--brand-main); margin-top: 0; }
         footer { background-color: var(--brand-main); color: #ffffff; padding: 4rem 0; margin-top: 5rem; }
@@ -148,6 +158,9 @@
         .footer-col a:hover { color: #ffffff; }
         .footer-col p { color: #e0e0e0; }
         @media (max-width: 768px) {
+            .navbar { flex-direction: column; height: auto; padding: 10px 0; gap: 12px; }
+            .nav-links { justify-content: center; gap: 12px; width: 100%; }
+            .nav-links a { font-size: 0.88rem; }
             .hero h1 { font-size: 2rem !important; }
             .footer-grid { flex-direction: column; text-align: center; }
             .footer-col { width: 100%; margin-bottom: 30px; }
@@ -158,9 +171,9 @@
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "Cat Gaze 貓凝植栽",
-  "image": "https://yourdomain.com/CG_logo.png",
+  "image": "https://change-tw.github.io/cat-gaze/CG_logo%20w%20bg_vertica_green.png",
   "description": "專業盆景、植栽與寵物友善植物選物店。提供黑松真柏養護知識、日本製修剪工具及專業介質。",
-  "url": "https://yourdomain.com",
+  "url": "https://change-tw.github.io/cat-gaze/",
   "telephone": "0931366195",
   "address": {
     "@type": "PostalAddress",
@@ -204,50 +217,72 @@
         </div>
     </section>
 
+    <!-- 主題分類：對齊「各類品項」4大植栽分類 ＋「資材用具」共 5 大主題 -->
     <section class="categories-section container">
         <div class="section-title-wrapper">
             <h2 class="section-title">主題分類</h2>
         </div>
         
-        <div class="product-grid" style="gap: 30px;">
-            <div class="product-card" onclick="location.href='categories.html'" style="cursor:pointer;">
-                <div class="product-image-placeholder" style="height: 200px;">
-                    <img src="shimpaku_main.jpg" alt="收藏級松柏" style="width:100%; height:100%; object-fit:cover;">
+        <div class="category-showcase-grid">
+            <a href="pet-friendly.html" class="category-item-card">
+                <div class="product-image-placeholder" style="height: 190px;">
+                    <img src="luohan.jpg" alt="寵物友善類" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=800&q=80'">
                 </div>
-                <div class="product-info" style="text-align: center;">
-                    <div class="product-title">✦ 收藏級松柏 ✦</div>
-                    <div class="product-subtitle">樹齡 8~20 年以上，姿態蒼勁</div>
+                <div class="product-info" style="text-align: center; padding: 1.2rem 1rem;">
+                    <div class="product-title">✦ 寵物友善 ✦</div>
+                    <div class="product-subtitle" style="margin-bottom:0;">100% 寵物無毒認證，毛孩家庭安心首選</div>
                 </div>
-            </div>
+            </a>
 
-            <div class="product-card" onclick="location.href='products-caudex.html'" style="cursor:pointer;">
-                <div class="product-image-placeholder" style="height: 200px;">
-                    <img src="red-maple.jpg" alt="新手入門專區" style="width:100%; height:100%; object-fit:cover;">
+            <a href="products-deciduous.html" class="category-item-card">
+                <div class="product-image-placeholder" style="height: 190px;">
+                    <img src="red-maple.jpg" alt="辦公室療癒類" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80'">
                 </div>
-                <div class="product-info" style="text-align: center;">
-                    <div class="product-title">✦ 新手入門專區 ✦</div>
-                    <div class="product-subtitle">好照顧、生命力強的樹種</div>
+                <div class="product-info" style="text-align: center; padding: 1.2rem 1rem;">
+                    <div class="product-title">✦ 辦公室療癒類 ✦</div>
+                    <div class="product-subtitle" style="margin-bottom:0;">桌面上的微型山林，舒緩日常工作壓力</div>
                 </div>
-            </div>
+            </a>
 
-            <div class="product-card" onclick="location.href='tools.html'" style="cursor:pointer;">
-                <div class="product-image-placeholder" style="height: 200px;">
-                    <img src="tool-1.jpg" alt="盆器與用具" style="width:100%; height:100%; object-fit:cover;">
+            <a href="products-mini.html" class="category-item-card">
+                <div class="product-image-placeholder" style="height: 190px;">
+                    <img src="monstera.jpg" alt="風水招財、桃花類" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1463320898484-cdee8141c787?auto=format&fit=crop&w=800&q=80'">
                 </div>
-                <div class="product-info" style="text-align: center;">
-                    <div class="product-title">✦ 盆器與用具 ✦</div>
-                    <div class="product-subtitle">專業職人盆器與養護工具</div>
+                <div class="product-info" style="text-align: center; padding: 1.2rem 1rem;">
+                    <div class="product-title">✦ 風水招財、桃花類 ✦</div>
+                    <div class="product-subtitle" style="margin-bottom:0;">空間開運綠意，招財納福與好人緣</div>
                 </div>
-            </div>
+            </a>
+
+            <a href="products-caudex.html" class="category-item-card">
+                <div class="product-image-placeholder" style="height: 190px;">
+                    <img src="shimpaku_main.jpg" alt="綠手指入門" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=800&q=80'">
+                </div>
+                <div class="product-info" style="text-align: center; padding: 1.2rem 1rem;">
+                    <div class="product-title">✦ 綠手指入門 ✦</div>
+                    <div class="product-subtitle" style="margin-bottom:0;">好照顧、生命力強的塊根與多肉植物</div>
+                </div>
+            </a>
+
+            <a href="tools.html" class="category-item-card">
+                <div class="product-image-placeholder" style="height: 190px;">
+                    <img src="tool-1.jpg" alt="資材用具" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="product-info" style="text-align: center; padding: 1.2rem 1rem;">
+                    <div class="product-title">✦ 資材用具 ✦</div>
+                    <div class="product-subtitle" style="margin-bottom:0;">專業職人剪定鋏、赤玉土介質與手作陶盆</div>
+                </div>
+            </a>
         </div>
     </section>
 
-    <section class="featured container">
+    <!-- 本週嚴選新品：雲端動態上架商品（如小豆樹）會精準插入此區塊 (#home-featured-grid) -->
+    <section class="featured container" id="shop">
         <div class="section-title-wrapper">
             <h2 class="section-title">本週嚴選新品</h2>
         </div>
         
-        <div class="product-grid">
+        <div class="product-grid" id="home-featured-grid">
             <div class="product-card" onclick="location.href='shimpaku.html'" style="cursor:pointer;">
                 <div class="product-image-placeholder">
                     <img src="shimpaku_main.jpg" alt="系魚川真柏" style="width:100%; height:100%; object-fit:cover;">
@@ -266,7 +301,7 @@
                 </div>
                 <div class="product-info">
                     <div class="product-title">黑松 (Kuromatsu)</div>
-                    <div class="product-subtitle">樹齡約 30 年，直幹式</div>
+                    <div class="product-subtitle">樹齡約 8 年，扭幹文人風</div>
                     <div class="product-price">NT$ 1,800</div>
                     <a href="black-pine.html" class="product-tag">#查看詳情</a>
                 </div>
@@ -278,7 +313,7 @@
                 </div>
                 <div class="product-info">
                     <div class="product-title">日本紅楓 (Acer palmatum)</div>
-                    <div class="product-subtitle">樹齡約 2 年，叢林式</div>
+                    <div class="product-subtitle">樹齡約 2 年，季節色彩首選</div>
                     <div class="product-price">NT$ 1,200</div>
                     <a href="red-maple.html" class="product-tag">#查看詳情</a>
                 </div>
@@ -327,7 +362,7 @@
             <h2 class="section-title">養護知識中心</h2>
         </div>
         
-        <div class="product-grid" style="gap: 30px;">
+        <div class="knowledge-grid">
             <div class="knowledge-card">
                 <h4>【貓凝專欄】黑松摘芽的黃金時機</h4>
                 <p>詳細圖解如何正確摘除新芽，維持松針的短密與美觀姿態，是黑松養護的關鍵步驟...</p>
@@ -422,19 +457,15 @@
         </div>
     </footer>
 
-
 <div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
-
 <div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; max-width:90vw; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
         <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
         <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
     </div>
-
     <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;">
         <p style="text-align:center; color:#999;">目前沒有選購植物</p>
     </div>
-
     <div style="border-top:1px solid #eee; padding-top:20px;">
         <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
             <span>總計金額</span>
@@ -450,6 +481,5 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script src="cart-system.js"></script>
-
 </body>
 </html>

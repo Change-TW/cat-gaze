@@ -1,9 +1,9 @@
 // ==========================================================================
-// Cat Gaze 購物車與雙核心雲端商品串流系統 (cart-system.js)
+// Cat Gaze 購物車、雲端商品中控串流 ＆「🐈 AI 巧遇店長」全站智慧導購系統 (cart-system.js)
 // 1. 購物車同步 (localStorage + Firebase carts)
 // 2. 訂單與會員查詢雙向相容 (Firebase orders)
-// 3. 支援試算表「G欄：主分類專區」、「H欄：細項子分類」、「I欄：首頁與新品曝光」與「J欄：單品頁版型」全中文下拉選單解析
-// 4. 自動綁定各頁面頂部「細項子分類篩選按鈕」（耐陰室內/陽台喜光、桌面盆栽/大型落地/珍稀斑葉、塊根/多肉、修剪工具/專業介質/職人盆器/養護資材）
+// 3. 支援試算表「G欄：主分類專區」、「H欄：細項子分類」、「I欄：首頁與新品曝光」全中文下拉選單解析
+// 4. 全站右下角自動載入「🐈 AI 巧遇店長」互動選植診斷、預算篩選、養護問答與一鍵加購引擎
 // ==========================================================================
 
 const firebaseConfig = {
@@ -18,6 +18,8 @@ const firebaseConfig = {
 };
 
 const CATGAZE_SHEET_ID = "128TMT_BQmWfIwZGH01UrU_WoHm5W_STX26DkP9MeDN0";
+// LINE 官方帳號連結 (申請完成後可替換為 https://lin.ee/您的代碼)
+const CATGAZE_LINE_URL = "https://line.me/R/ti/p/@catgaze";
 
 if (typeof firebase !== 'undefined' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
@@ -30,6 +32,69 @@ try {
 } catch (e) {
     cart = [];
 }
+
+// 預設商品庫備援 (當試算表尚未載入完成時，AI 巧遇店長依然能瞬間回答並推播商品)
+const DEFAULT_CATALOG_FALLBACK = {
+    'CG-LH001': {
+        id: 'CG-LH001', status: '既有基準', title: '小葉羅漢松 | 寵物友善長壽守護', price: 2200, image: 'luohan.jpg',
+        badge: '100% 寵物無毒', categories: ['pet-friendly', 'products-deciduous', 'index'], subCategoryLabel: '陽台喜光',
+        template: 'pet', url: 'luohan-detail.html',
+        petDetails: { light: '半日照 / 通風', water: '每週 2-3 次', safe: '100% 寵物無害', qiaoyu: '「這棵樹的葉子尖尖的，但我咬過之後發現一點也不好吃（而且沒毒），本店長批准它進駐客廳！」' }
+    },
+    'CG-FN001': {
+        id: 'CG-FN001', status: '既有基準', title: '銀脈鳳尾蕨 | 室內耐陰保濕首選', price: 980, image: 'fern.jpg',
+        badge: '100% 寵物無毒', categories: ['pet-friendly', 'products-deciduous', 'index'], subCategoryLabel: '耐陰室內',
+        template: 'pet', url: 'fern-detail.html',
+        petDetails: { light: '室內散射光 / 耐陰', water: '保持盆土微濕', safe: '100% 寵物無害', qiaoyu: '「冷氣房太乾了？這盆銀白色的蕨類能幫你的空間保濕，而且就算本喵不小心撥到葉子也完全安全無毒喵！」' }
+    },
+    'CG-XD001': {
+        id: 'CG-XD001', status: '上架', title: '小豆樹 | 療癒羽葉微景觀', price: 1200, image: 'xiaodou.jpg',
+        badge: '療癒新品', categories: ['pet-friendly', 'products-deciduous', 'index', 'new-arrivals'], subCategoryLabel: '耐陰室內',
+        template: 'pet', url: 'product.html?id=CG-XD001',
+        petDetails: { light: '明亮散射光 / 半日照', water: '表土微乾即澆透', safe: '含盆高約 20-25 公分', qiaoyu: '「這棵小豆樹跟本喵一樣作息超規律！太陽下山它的葉子就會合起來睡覺，放在書桌旁陪你工作超療癒喵～」' }
+    },
+    'CG-SB002': {
+        id: 'CG-SB002', status: '既有基準', title: '系魚川真柏 | 職人手作雲朵造型', price: 4500, image: 'shimpaku_main.jpg',
+        badge: '一物一拍', categories: ['products-deciduous', 'index', 'new-arrivals'], subCategoryLabel: '桌面山林',
+        template: 'bonsai', url: 'shimpaku.html',
+        tagline: '✦ 貓凝嚴選：葉質細緻，雲朵造型、樹性強健、極耐修剪',
+        files: { species: '系魚川真柏', age: '約 8 年', size: '含盆高約 22 公分', pot: '復古朱泥圓盆' }
+    },
+    'CG-BP001': {
+        id: 'CG-BP001', status: '既有基準', title: '黑松 | 扭幹文人風', price: 1800, image: 'black_pine.jpg',
+        badge: '職人雕塑', categories: ['products-deciduous', 'index', 'new-arrivals'], subCategoryLabel: '桌面山林',
+        template: 'bonsai', url: 'black-pine.html',
+        tagline: '✦ 貓眼嚴選：蒼勁扭幹文人風，樹皮老態鱗片縱裂，居家窗台首選',
+        files: { species: '日本黑松', age: '約 8 年', size: '含盆高約 25 公分', pot: '復古紫砂圓盆' }
+    },
+    'CG-RM003': {
+        id: 'CG-RM003', status: '既有基準', title: '日本紅楓 | 季節色彩首選', price: 1200, image: 'red-maple.jpg',
+        badge: '季節限定', categories: ['products-deciduous', 'index', 'new-arrivals'], subCategoryLabel: '桌面山林',
+        template: 'bonsai', url: 'red-maple.html',
+        tagline: '✦ 貓眼嚴選：春季新芽火紅，適合居家陽台點綴',
+        files: { species: '日本紅楓', age: '約 2 年', size: '含盆高約 32 公分', pot: '造型陶盆' }
+    },
+    'CG-TL001': {
+        id: 'CG-TL001', status: '上架', title: '日本製 職人級黑鋼剪定鋏', price: 1880, image: 'tool-1.jpg',
+        badge: '修剪工具', categories: ['tools'], subCategoryLabel: '修剪工具',
+        template: 'tool', url: 'product.html?id=CG-TL001',
+        tagline: '✦ 日本鍛造高碳黑鋼，刀口俐落不傷維管束，切口平整癒合快。'
+    },
+    'CG-TL002': {
+        id: 'CG-TL002', status: '上架', title: '三本線 赤玉土 (極硬質 - 5L)', price: 450, image: 'tool-2.jpg',
+        badge: '專業介質', categories: ['tools'], subCategoryLabel: '專業介質',
+        template: 'tool', url: 'product.html?id=CG-TL002',
+        tagline: '✦ 日本進口三本線極硬質赤玉土，排水透氣極佳、不易崩解粉化，徹底預防爛根。'
+    },
+    'CG-TL003': {
+        id: 'CG-TL003', status: '上架', title: '墨染手作 柴燒粗陶盆', price: 1200, image: 'tool-3.jpg',
+        badge: '職人盆器', categories: ['tools'], subCategoryLabel: '職人盆器',
+        template: 'tool', url: 'product.html?id=CG-TL003',
+        tagline: '✦ 高溫柴燒自然落灰肌理，富含透氣微孔隙，讓植物根系自由呼吸。'
+    }
+};
+
+window.__CATGAZE_SHEET_PRODUCTS__ = Object.assign({}, DEFAULT_CATALOG_FALLBACK);
 
 function getUserKey() {
     try {
@@ -201,7 +266,7 @@ function checkoutToLine() {
 }
 
 // ==========================================================================
-// 智慧檢查頁面上是否已有同名靜態卡片 & 同步既有獨立單品頁內容
+// 雲端商品同步與子分類篩選引擎
 // ==========================================================================
 function getCurrentPageKey() {
     let path = window.location.pathname.split('/').pop() || 'index.html';
@@ -307,7 +372,7 @@ function findMatchingStaticCard(p) {
 }
 
 function enhanceExistingStaticCard(card, p) {
-    const detailUrl = `product.html?id=${encodeURIComponent(p.id)}`;
+    const detailUrl = p.url || `product.html?id=${encodeURIComponent(p.id)}`;
     const priceNum = Number(p.price) || 0;
 
     const heading = card.querySelector('.product-title, .card-title, h3');
@@ -318,7 +383,6 @@ function enhanceExistingStaticCard(card, p) {
         priceEl.innerText = 'NT$ ' + priceNum.toLocaleString();
     }
 
-    // 同步更新子分類篩選屬性 (data-category / data-type / .product-tag)
     if (p.subCategoryLabel) {
         if (card.hasAttribute('data-category')) {
             card.setAttribute('data-category', p.subCategoryLabel);
@@ -381,7 +445,7 @@ function insertProductCardOnPage(p, pageKey) {
     const priceNum = Number(p.price) || 0;
     const safeTitle = (p.title || '').replace(/'/g, "\\'");
     const safeImg = (p.image || '').replace(/'/g, "\\'");
-    const detailUrl = `product.html?id=${encodeURIComponent(p.id)}`;
+    const detailUrl = p.url || `product.html?id=${encodeURIComponent(p.id)}`;
     const subCat = p.subCategoryLabel || p.badge || '';
     let cardHtml = '';
 
@@ -418,7 +482,6 @@ function insertProductCardOnPage(p, pageKey) {
             </div>`;
         }
     } else if (pageKey === 'pet-friendly') {
-        // 支援 pet-friendly.html 的「耐陰室內」與「陽台喜光」篩選標籤
         const petSubCat = subCat.includes('陽台喜光') ? '陽台喜光' : (subCat.includes('耐陰室內') ? '耐陰室內' : '耐陰室內 陽台喜光');
         const envIcon = petSubCat === '陽台喜光' ? '☀️ 半日照' : '☁️ 耐陰';
         cardHtml = `
@@ -466,7 +529,6 @@ function insertProductCardOnPage(p, pageKey) {
             </div>
         </div>`;
     } else if (pageKey === 'products-mini') {
-        // 支援 products-mini.html 的「大型落地」、「桌面盆栽」、「珍稀斑葉」篩選
         const miniCat = subCat || '桌面盆栽';
         cardHtml = `
         <div class="product-card reveal active" id="cloud-prod-${p.id}" data-category="${miniCat}">
@@ -484,7 +546,6 @@ function insertProductCardOnPage(p, pageKey) {
             </div>
         </div>`;
     } else if (pageKey === 'products-caudex') {
-        // 支援 products-caudex.html 的「塊根植物 (caudex)」與「多肉植物 (succulent)」篩選
         const caudexType = subCat.includes('多肉') ? 'succulent' : 'caudex';
         const badgeLabel = caudexType === 'succulent' ? 'SUCCULENT' : 'CAUDEX';
         cardHtml = `
@@ -503,7 +564,6 @@ function insertProductCardOnPage(p, pageKey) {
             </div>
         </div>`;
     } else if (pageKey === 'tools') {
-        // 支援 tools.html 的「修剪工具」、「專業介質」、「職人盆器」、「養護資材」篩選
         const toolTag = subCat || p.badge || '職人選物';
         cardHtml = `
         <div class="product-card" id="cloud-prod-${p.id}">
@@ -538,7 +598,6 @@ function insertProductCardOnPage(p, pageKey) {
     }
 }
 
-// 動態強化各分類頁的篩選按鈕，讓後來從雲端長出來的商品卡片也能被頂部篩選按鈕正確篩選
 function bindDynamicCategoryFilters() {
     const pageKey = getCurrentPageKey();
 
@@ -592,7 +651,6 @@ function bindDynamicCategoryFilters() {
     }
 }
 
-// 智慧解析試算表列（相容舊版 13 欄與新版含子分類下拉選單之 15 欄格式）
 function parseSheetRowToProduct(cells) {
     const val = (idx) => (cells[idx] && cells[idx].v !== null && cells[idx].v !== undefined) ? String(cells[idx].v).trim() : '';
     const id = val(0);
@@ -602,7 +660,6 @@ function parseSheetRowToProduct(cells) {
     const image = val(4) || 'CG_logo w bg_vertica_green.png';
     const badge = val(5) || '嚴選上架';
 
-    // 判斷是否為新版 15 欄結構 (G欄=主分類, H欄=細項子分類, I欄=首頁與新品曝光, J欄=版型, K~O欄=內容)
     const colG = val(6);
     const colH = val(7);
     const colI = val(8);
@@ -616,21 +673,17 @@ function parseSheetRowToProduct(cells) {
     let spec1 = '', spec2 = '', spec3 = '', spec4 = '';
 
     if (isNew15Col) {
-        // 解析 G 欄主分類
         if (colG.includes('pet-friendly') || colG.includes('寵物友善')) categories.push('pet-friendly');
         if (colG.includes('products-deciduous') || colG.includes('辦公室療癒')) categories.push('products-deciduous');
         if (colG.includes('products-mini') || colG.includes('風水招財')) categories.push('products-mini');
         if (colG.includes('products-caudex') || colG.includes('綠手指')) categories.push('products-caudex');
         if (colG.includes('tools') || colG.includes('資材用具')) categories.push('tools');
 
-        // 解析 H 欄細項子分類 (例如 "寵物友善｜耐陰室內" -> "耐陰室內")
         subCategoryLabel = colH.includes('｜') ? colH.split('｜')[1].trim() : colH;
 
-        // 解析 I 欄首頁與新品曝光
         if (colI.includes('首頁')) categories.push('index');
         if (colI.includes('嚴選新品')) categories.push('new-arrivals');
 
-        // 解析 J 欄版型
         if (colJ.includes('pet') || colJ.includes('巧遇')) template = 'pet';
         else if (colJ.includes('tool') || colJ.includes('資材')) template = 'tool';
         else template = 'bonsai';
@@ -641,7 +694,6 @@ function parseSheetRowToProduct(cells) {
         spec3 = val(13);
         spec4 = val(14);
     } else {
-        // 相容舊版 13 欄
         categories = colG.split(',').map(s => s.trim()).filter(Boolean);
         template = colH || 'bonsai';
         descOrTagline = val(8);
@@ -650,6 +702,14 @@ function parseSheetRowToProduct(cells) {
         spec3 = val(11);
         spec4 = val(12);
     }
+
+    const legacyUrlMap = {
+        'CG-SB002': 'shimpaku.html',
+        'CG-BP001': 'black-pine.html',
+        'CG-RM003': 'red-maple.html',
+        'CG-LH001': 'luohan-detail.html',
+        'CG-FN001': 'fern-detail.html'
+    };
 
     return {
         id: id,
@@ -661,6 +721,7 @@ function parseSheetRowToProduct(cells) {
         categories: categories,
         subCategoryLabel: subCategoryLabel,
         template: template,
+        url: legacyUrlMap[id] || (`product.html?id=${encodeURIComponent(id)}`),
         tagline: descOrTagline,
         files: {
             species: spec1 || '--',
@@ -682,7 +743,6 @@ window.__onCatGazeSheetLoaded = function(response) {
     if (!response || !response.table || !Array.isArray(response.table.rows)) return;
     const pageKey = getCurrentPageKey();
     const rows = response.table.rows;
-    window.__CATGAZE_SHEET_PRODUCTS__ = {};
 
     const wrongCardInCat = document.querySelector('.categories-section [id^="cloud-prod-"]');
     if (wrongCardInCat) wrongCardInCat.remove();
@@ -728,6 +788,9 @@ function loadCloudProductsFromBothSources() {
             const prodsObj = snap.val();
             if (!prodsObj) return;
             Object.values(prodsObj).forEach(p => {
+                if (p && p.id) {
+                    window.__CATGAZE_SHEET_PRODUCTS__[p.id] = p;
+                }
                 if (p && Array.isArray(p.categories) && p.categories.includes(pageKey)) {
                     insertProductCardOnPage(p, pageKey);
                 }
@@ -743,6 +806,582 @@ function loadCloudProductsFromBothSources() {
     }
 }
 
+// ==========================================================================
+// 🐈 AI 巧遇店長：全站懸浮互動選植診斷、養護問答與一鍵加購系統
+// ==========================================================================
+function injectQiaoyuManagerWidget() {
+    const pageKey = getCurrentPageKey();
+    if (pageKey === 'admin') return; // 後台不顯示巧遇店長前台氣泡
+    if (document.getElementById('qiaoyu-ai-root')) return;
+
+    const styleEl = document.createElement('style');
+    styleEl.textContent = `
+        #qiaoyu-ai-root {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1500;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        /* 懸浮問候小氣泡 */
+        #qiaoyu-teaser-bubble {
+            position: absolute;
+            bottom: 78px;
+            right: 0;
+            background: #ffffff;
+            color: #4a4a4a;
+            border: 1.5px solid #7F916A;
+            padding: 10px 30px 10px 14px;
+            border-radius: 16px 16px 4px 16px;
+            box-shadow: 0 8px 25px rgba(127, 145, 106, 0.22);
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: 0.3s;
+            animation: qiaoyuFloat 3s ease-in-out infinite;
+        }
+        #qiaoyu-teaser-bubble:hover { transform: translateY(-3px); }
+        #qiaoyu-teaser-close {
+            position: absolute;
+            top: 4px;
+            right: 8px;
+            border: none;
+            background: none;
+            color: #aaa;
+            font-size: 0.78rem;
+            cursor: pointer;
+            padding: 2px;
+        }
+        @keyframes qiaoyuFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        /* 右下角巧遇店長圓形懸浮鈕 */
+        #qiaoyu-fab-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7F916A 0%, #5d7065 100%);
+            border: 3px solid #FDFAD9;
+            box-shadow: 0 8px 24px rgba(93, 112, 101, 0.38);
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            padding: 0;
+            overflow: visible;
+        }
+        #qiaoyu-fab-btn:hover {
+            transform: scale(1.07);
+            box-shadow: 0 12px 30px rgba(93, 112, 101, 0.48);
+        }
+        #qiaoyu-fab-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+        .qiaoyu-online-dot {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 14px;
+            height: 14px;
+            background: #2ecc71;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+        }
+
+        /* 巧遇店長聊天室主視窗 */
+        #qiaoyu-chat-window {
+            display: none;
+            position: fixed;
+            bottom: 98px;
+            right: 24px;
+            width: 375px;
+            max-width: calc(100vw - 32px);
+            height: 550px;
+            max-height: calc(100vh - 130px);
+            background: #fcfcf8;
+            border-radius: 20px;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+            border: 1px solid #e2e8dd;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1501;
+        }
+        #qiaoyu-chat-window.open {
+            display: flex;
+            animation: qiaoyuPopIn 0.25s ease-out;
+        }
+        @keyframes qiaoyuPopIn {
+            from { opacity: 0; transform: translateY(15px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .qiaoyu-chat-header {
+            background: linear-gradient(135deg, #7F916A 0%, #5d7065 100%);
+            color: white;
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .qiaoyu-header-info {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+        .qiaoyu-header-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #FDFAD9;
+            object-fit: cover;
+            background: #FDFAD9;
+        }
+        .qiaoyu-header-title {
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .qiaoyu-header-sub {
+            font-size: 0.74rem;
+            color: #FDFAD9;
+            opacity: 0.92;
+        }
+        .qiaoyu-close-btn {
+            background: rgba(255,255,255,0.18);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .qiaoyu-close-btn:hover { background: rgba(255,255,255,0.3); }
+
+        /* 訊息捲動區 */
+        #qiaoyu-messages-box {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .q-msg-row {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .q-msg-row.user {
+            flex-direction: row-reverse;
+        }
+        .q-msg-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #7F916A;
+            flex-shrink: 0;
+            background: #FDFAD9;
+        }
+        .q-msg-bubble {
+            max-width: 82%;
+            padding: 11px 14px;
+            border-radius: 15px;
+            font-size: 0.88rem;
+            line-height: 1.55;
+            word-break: break-word;
+        }
+        .q-msg-row.bot .q-msg-bubble {
+            background: #ffffff;
+            color: #444;
+            border: 1px solid #e6ece0;
+            border-top-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .q-msg-row.user .q-msg-bubble {
+            background: #7F916A;
+            color: #ffffff;
+            border-top-right-radius: 4px;
+        }
+
+        /* 對話內嵌推薦植物卡片 */
+        .q-rec-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .q-rec-card {
+            display: flex;
+            gap: 10px;
+            background: #f9fbf7;
+            border: 1px solid #dce5d5;
+            border-radius: 10px;
+            padding: 8px;
+            align-items: center;
+        }
+        .q-rec-img {
+            width: 54px;
+            height: 54px;
+            border-radius: 8px;
+            object-fit: cover;
+            background: #eee;
+            flex-shrink: 0;
+        }
+        .q-rec-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .q-rec-title {
+            font-weight: 700;
+            font-size: 0.84rem;
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .q-rec-price {
+            color: #d14900;
+            font-weight: 700;
+            font-size: 0.82rem;
+            margin-top: 2px;
+        }
+        .q-rec-actions {
+            display: flex;
+            gap: 5px;
+            margin-top: 4px;
+        }
+        .q-rec-btn-view {
+            text-decoration: none;
+            background: white;
+            color: #7F916A;
+            border: 1px solid #7F916A;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+        .q-rec-btn-buy {
+            background: #7F916A;
+            color: white;
+            border: none;
+            padding: 2px 9px;
+            border-radius: 12px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* 快捷問題膠囊區 */
+        .qiaoyu-quick-chips {
+            padding: 8px 12px;
+            background: #f4f7f1;
+            border-top: 1px solid #e6ece0;
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: thin;
+        }
+        .q-chip-btn {
+            background: #ffffff;
+            color: #5a6b47;
+            border: 1px solid #cdd9c5;
+            padding: 5px 11px;
+            border-radius: 16px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .q-chip-btn:hover {
+            background: #7F916A;
+            color: #ffffff;
+            border-color: #7F916A;
+        }
+
+        /* 底部輸入框 */
+        .qiaoyu-input-area {
+            display: flex;
+            gap: 8px;
+            padding: 10px 12px;
+            background: #ffffff;
+            border-top: 1px solid #eeeeee;
+            align-items: center;
+        }
+        #qiaoyu-user-input {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 8px 14px;
+            font-size: 0.88rem;
+            outline: none;
+            font-family: inherit;
+        }
+        #qiaoyu-user-input:focus { border-color: #7F916A; }
+        .qiaoyu-send-btn {
+            background: #7F916A;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .qiaoyu-send-btn:hover { background: #5d7065; }
+    `;
+    document.head.appendChild(styleEl);
+
+    const fallbackSvgAvatar = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#FDFAD9"/><path d="M25 38 L32 16 L45 30 Q50 28 55 30 L68 16 L75 38 Q82 50 78 66 Q70 82 50 82 Q30 82 22 66 Q18 50 25 38 Z" fill="#7F916A"/><circle cx="38" cy="52" r="5" fill="#FDFAD9"/><circle cx="62" cy="52" r="5" fill="#FDFAD9"/><polygon points="46,60 54,60 50,65" fill="#ffb6b9"/><path d="M42 68 Q50 73 58 68" stroke="#FDFAD9" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`);
+
+    const widgetRoot = document.createElement('div');
+    widgetRoot.id = 'qiaoyu-ai-root';
+    widgetRoot.innerHTML = `
+        <div id="qiaoyu-teaser-bubble" onclick="window.toggleQiaoyuChat(true)">
+            🐾 喵～不知道挑哪盆？問本喵店長！
+            <button id="qiaoyu-teaser-close" onclick="event.stopPropagation(); document.getElementById('qiaoyu-teaser-bubble').style.display='none';">✕</button>
+        </div>
+
+        <button id="qiaoyu-fab-btn" onclick="window.toggleQiaoyuChat()" title="呼叫 AI 巧遇店長">
+            <img id="qiaoyu-fab-avatar" src="qiaoyu.jpg" alt="巧遇店長" onerror="this.onerror=null; this.src='${fallbackSvgAvatar}';">
+            <span class="qiaoyu-online-dot"></span>
+        </button>
+
+        <div id="qiaoyu-chat-window">
+            <div class="qiaoyu-chat-header">
+                <div class="qiaoyu-header-info">
+                    <img class="qiaoyu-header-avatar" src="qiaoyu.jpg" alt="巧遇店長" onerror="this.onerror=null; this.src='${fallbackSvgAvatar}';">
+                    <div>
+                        <div class="qiaoyu-header-title">🐈 AI 巧遇店長</div>
+                        <div class="qiaoyu-header-sub">Cat Gaze 首席選植＆養護顧問（打呼嚕營業中）</div>
+                    </div>
+                </div>
+                <button class="qiaoyu-close-btn" onclick="window.toggleQiaoyuChat(false)">✕</button>
+            </div>
+
+            <div id="qiaoyu-messages-box"></div>
+
+            <div class="qiaoyu-quick-chips">
+                <button class="q-chip-btn" onclick="window.askQiaoyu('🐱 家有養貓推薦哪盆？')">🐱 家有養貓推薦</button>
+                <button class="q-chip-btn" onclick="window.askQiaoyu('💻 辦公桌與室內耐陰推薦')">💻 辦公桌耐陰</button>
+                <button class="q-chip-btn" onclick="window.askQiaoyu('🌲 陽台喜光松柏盆景推薦')">🌲 職人松柏盆景</button>
+                <button class="q-chip-btn" onclick="window.askQiaoyu('💧 怎麼判斷植物該澆水了？')">💧 澆水判斷法</button>
+                <button class="q-chip-btn" onclick="window.askQiaoyu('🪴 赤玉土跟修剪工具推薦')">🪴 介質與工具</button>
+            </div>
+
+            <form class="qiaoyu-input-area" onsubmit="window.submitQiaoyuInput(event)">
+                <input type="text" id="qiaoyu-user-input" placeholder="問問巧遇店長（例：養貓推薦、預算1500、怎麼澆水）..." autocomplete="off">
+                <button type="submit" class="qiaoyu-send-btn">傳送</button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(widgetRoot);
+
+    window.__QIAOYU_FALLBACK_AVATAR__ = fallbackSvgAvatar;
+
+    // 初始歡迎詞
+    appendQiaoyuBotMessage(
+        `喵嗚～歡迎光臨 <strong>Cat Gaze</strong>！我是這裡的一日店長「<strong>巧遇</strong>」🐾<br><br>想找<strong>對貓咪 100% 無毒的安全植物</strong>、<strong>辦公桌療癒小品</strong>，還是想問<strong>盆景怎麼澆水換土</strong>？直接點下方按鈕或打字問本喵就可以囉！`,
+        []
+    );
+}
+
+window.toggleQiaoyuChat = function(forceOpen) {
+    const win = document.getElementById('qiaoyu-chat-window');
+    const teaser = document.getElementById('qiaoyu-teaser-bubble');
+    if (!win) return;
+    const isOpen = forceOpen !== undefined ? forceOpen : !win.classList.contains('open');
+    if (isOpen) {
+        win.classList.add('open');
+        if (teaser) teaser.style.display = 'none';
+        setTimeout(() => {
+            const inp = document.getElementById('qiaoyu-user-input');
+            if (inp) inp.focus();
+        }, 150);
+    } else {
+        win.classList.remove('open');
+    }
+};
+
+function appendQiaoyuUserMessage(text) {
+    const box = document.getElementById('qiaoyu-messages-box');
+    if (!box) return;
+    const div = document.createElement('div');
+    div.className = 'q-msg-row user';
+    div.innerHTML = `<div class="q-msg-bubble">${text.replace(/</g, '&lt;')}</div>`;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+}
+
+function appendQiaoyuBotMessage(htmlText, recommendedProducts) {
+    const box = document.getElementById('qiaoyu-messages-box');
+    if (!box) return;
+    const fallbackAvatar = window.__QIAOYU_FALLBACK_AVATAR__ || '';
+
+    let cardsHtml = '';
+    if (Array.isArray(recommendedProducts) && recommendedProducts.length > 0) {
+        cardsHtml = `<div class="q-rec-list">` + recommendedProducts.map(p => {
+            const priceNum = Number(p.price) || 0;
+            const safeTitle = (p.title || '').replace(/'/g, "\\'");
+            const safeImg = (p.image || '').replace(/'/g, "\\'");
+            const linkUrl = p.url || (`product.html?id=${encodeURIComponent(p.id)}`);
+            return `
+            <div class="q-rec-card">
+                <img class="q-rec-img" src="${p.image}" alt="${p.title}" onerror="this.onerror=null; this.src='CG_logo w bg_vertica_green.png';">
+                <div class="q-rec-info">
+                    <div class="q-rec-title">${p.title}</div>
+                    <div class="q-rec-price">NT$ ${priceNum.toLocaleString()}</div>
+                    <div class="q-rec-actions">
+                        <a href="${linkUrl}" class="q-rec-btn-view">看詳情</a>
+                        <button type="button" class="q-rec-btn-buy" onclick="addToCart('${safeTitle}', ${priceNum}, '${safeImg}')">＋加入購物車</button>
+                    </div>
+                </div>
+            </div>`;
+        }).join('') + `</div>`;
+    }
+
+    const div = document.createElement('div');
+    div.className = 'q-msg-row bot';
+    div.innerHTML = `
+        <img class="q-msg-avatar" src="qiaoyu.jpg" alt="巧遇" onerror="this.onerror=null; this.src='${fallbackAvatar}';">
+        <div class="q-msg-bubble">
+            ${htmlText}
+            ${cardsHtml}
+        </div>
+    `;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+}
+
+function getAllActiveCatalogProducts() {
+    const map = Object.assign({}, DEFAULT_CATALOG_FALLBACK, window.__CATGAZE_SHEET_PRODUCTS__ || {});
+    return Object.values(map).filter(p => p && p.status !== '下架');
+}
+
+function generateQiaoyuResponse(query) {
+    const q = query.toLowerCase().trim();
+    const allProds = getAllActiveCatalogProducts();
+
+    // 1. 檢查是否詢問預算 (例如: 1500, 2000以內, 預算1000)
+    const numMatch = q.match(/(\d{3,5})/);
+    if (numMatch && (q.includes('預算') || q.includes('以內') || q.includes('以下') || q.includes('元') || q.includes('塊') || q.includes('便宜'))) {
+        const budget = Number(numMatch[1]);
+        const within = allProds.filter(p => Number(p.price) > 0 && Number(p.price) <= budget);
+        if (within.length > 0) {
+            return {
+                text: `喵嗚！預算在 <strong>NT$ ${budget.toLocaleString()} 以內</strong> 的話，本喵店長幫你從店裡挑出這 ${within.length} 款高質感好物，可以直接點「＋加入購物車」帶回家喵：`,
+                products: within.slice(0, 4)
+            };
+        }
+    }
+
+    // 2. 養貓 / 寵物安全 / 無毒詢問
+    if (q.includes('貓') || q.includes('狗') || q.includes('寵物') || q.includes('無毒') || q.includes('安全') || q.includes('毛孩')) {
+        if (q.includes('誤食') || q.includes('吃到') || q.includes('中毒') || q.includes('吐')) {
+            return {
+                text: `⚠️ <strong>本喵店長緊急提醒：</strong><br>如果家裡主子不小心啃食到不明或有毒植物（如黃金葛、虎尾蘭、百合），請<strong>第一時間拍下植物照片，並立刻帶去給獸醫檢查，千萬不要自己催吐</strong>喵！<br><br>想看完整的安全植物清單，可以點此閱讀：<a href="article-pet-safe.html" style="color:#7F916A; font-weight:bold;">《10 種 ASPCA 認證對貓無毒植物指南》</a>，或者挑選本喵親自試聞認證的無毒植栽：`,
+                products: allProds.filter(p => (p.categories && p.categories.includes('pet-friendly')) || p.template === 'pet').slice(0, 3)
+            };
+        }
+        const petProds = allProds.filter(p => (p.categories && p.categories.includes('pet-friendly')) || p.template === 'pet');
+        return {
+            text: `身為專業貓店長，這題問本喵最準喵！🐾<br>以下這幾盆都是經過 <strong>ASPCA 認證 100% 對貓狗無毒</strong> 的精選植栽——喜歡陽光窗台首推「<strong>小葉羅漢松</strong>」，室內冷氣房耐陰首推「<strong>銀脈鳳尾蕨</strong>」跟會睡覺的「<strong>小豆樹</strong>」喵：`,
+            products: petProds.slice(0, 4)
+        };
+    }
+
+    // 3. 辦公室 / 室內 / 耐陰 / 桌面 / 新手
+    if (q.includes('辦公') || q.includes('室內') || q.includes('耐陰') || q.includes('書桌') || q.includes('冷氣') || q.includes('新手') || q.includes('好養') || q.includes('小豆')) {
+        const officeProds = allProds.filter(p =>
+            p.id === 'CG-XD001' || p.id === 'CG-FN001' || p.id === 'CG-LH001' ||
+            (p.categories && p.categories.includes('products-deciduous'))
+        );
+        return {
+            text: `想放在辦公桌或室內窗邊療癒一下嗎喵？🌿<br>本喵特別推薦夜晚葉片會自己合起來睡覺的「<strong>小豆樹</strong>」、幫冷氣房保濕的「<strong>銀脈鳳尾蕨</strong>」，以及四季常青的「<strong>小葉羅漢松</strong>」，新手也超好照顧喵！`,
+            products: officeProds.slice(0, 4)
+        };
+    }
+
+    // 4. 澆水問題
+    if (q.includes('澆水') || q.includes('水') || q.includes('乾透') || q.includes('枯') || q.includes('黃')) {
+        return {
+            text: `💧 <strong>巧遇店長的「澆水學三年」小筆記：</strong><br>千萬別每天只噴噴葉子或讓盆土一直濕答答喔！植物的根需要呼吸，請記住口訣<strong>「乾透澆透」</strong>：<br>1. <strong>怎麼看乾透？</strong> 觀察赤玉土表層變淺白色，或拿起來感覺盆子明顯變輕。<br>2. <strong>怎麼澆透？</strong> 緩慢澆水直到水從盆底排水孔大量流出來，把舊空氣換成新鮮氧氣！<br><br>📖 推薦閱讀：<a href="article-watering.html" style="color:#7F916A; font-weight:bold;">《乾透澆透：別讓關愛淹沒它的呼吸》</a>`,
+            products: allProds.filter(p => p.id === 'CG-TL002' || p.id === 'CG-TL003')
+        };
+    }
+
+    // 5. 土壤 / 介質 / 換盆 / 工具 / 剪刀
+    if (q.includes('土') || q.includes('赤玉') || q.includes('介質') || q.includes('換盆') || q.includes('剪') || q.includes('工具') || q.includes('盆器') || q.includes('資材')) {
+        const toolProds = allProds.filter(p => p.template === 'tool' || (p.categories && p.categories.includes('tools')));
+        return {
+            text: `🪴 <strong>「養樹先養根，工欲善其事必先利其器喵！」</strong><br>• <strong>黃金混土比例</strong>：松柏類建議「赤玉土 70%＋砂石 20%＋腐植土 10%」；雜木與觀葉可提高保水比例（詳見 <a href="article-soil-mix.html" style="color:#7F916A; font-weight:bold;">《萬用土調配全攻略》</a>）。<br>• 以下三款是我們店裡職人最愛用的日本三本線極硬質赤玉土、黑鋼剪定鋏與手作柴燒盆：`,
+            products: toolProds
+        };
+    }
+
+    // 6. 松柏 / 真柏 / 黑松 / 紅楓 / 陽台 / 摘芽
+    if (q.includes('松') || q.includes('柏') || q.includes('楓') || q.includes('陽台') || q.includes('摘芽') || q.includes('盆景')) {
+        const bonsaiProds = allProds.filter(p => p.id === 'CG-SB002' || p.id === 'CG-BP001' || p.id === 'CG-RM003' || p.template === 'bonsai');
+        return {
+            text: `🌲 眼光真好喵！如果你家有通風明亮的陽台或窗台，職人耗時數年雕塑的<strong>系魚川真柏</strong>、蒼勁文人風的<strong>日本黑松</strong>，以及四季變色的<strong>日本紅楓</strong>都是「一樹一拍、僅此一盆」的收藏級作品喵：`,
+            products: bonsaiProds.slice(0, 4)
+        };
+    }
+
+    // 7. 風水 / 招財 / 送禮 / 開幕
+    if (q.includes('風水') || q.includes('招財') || q.includes('桃花') || q.includes('送禮') || q.includes('開幕') || q.includes('喬遷')) {
+        const giftProds = allProds.filter(p => p.id === 'CG-LH001' || p.id === 'CG-SB002' || (p.categories && p.categories.includes('products-mini')));
+        return {
+            text: `🎁 想挑新居落成、開幕送禮或居家招財開運植栽嗎喵？<br>傳統象徵長壽守財又對寵物無毒的「<strong>小葉羅漢松</strong>」、氣勢沉穩的「<strong>系魚川真柏</strong>」，或是前往 <a href="products-mini.html" style="color:#7F916A; font-weight:bold;">【風水招財、桃花類專區】</a> 挑選斑葉龜背芋都非常體面喵！`,
+            products: giftProds.slice(0, 3)
+        };
+    }
+
+    // 8. 預設萬用回答 (展示人氣推薦＋客服引導)
+    return {
+        text: `喵嗚～本喵收到你的問題了！🐾<br>你可以試著問我：<strong>「養貓推薦哪盆？」、「辦公桌耐陰植物」、「預算 1500 以內」或「怎麼澆水？」</strong>。<br><br>以下這幾盆是本喵店長本週最推薦的人氣精選，你也可以點 <a href="contact.html" style="color:#7F916A; font-weight:bold;">【聯繫我們】</a> 找人類店長 Henry 替你一對一解答喵：`,
+        products: allProds.slice(0, 3)
+    };
+}
+
+window.askQiaoyu = function(questionText) {
+    if (!questionText) return;
+    window.toggleQiaoyuChat(true);
+    appendQiaoyuUserMessage(questionText);
+    setTimeout(() => {
+        const reply = generateQiaoyuResponse(questionText);
+        appendQiaoyuBotMessage(reply.text, reply.products);
+    }, 260);
+};
+
+window.submitQiaoyuInput = function(e) {
+    e.preventDefault();
+    const inp = document.getElementById('qiaoyu-user-input');
+    if (!inp || !inp.value.trim()) return;
+    const text = inp.value.trim();
+    inp.value = '';
+    window.askQiaoyu(text);
+};
+
+// ==========================================================================
+// 全站自動 SEO 結構化資料 (JSON-LD Schema) 注入器
+// ==========================================================================
 function injectAutoSEOSchema() {
     const baseUrl = "https://change-tw.github.io/cat-gaze/";
     const pageKey = getCurrentPageKey();
@@ -813,6 +1452,7 @@ window.addEventListener('load', function() {
     updateCount();
     renderCart();
     loadCloudProductsFromBothSources();
+    injectQiaoyuManagerWidget();
     injectAutoSEOSchema();
 
     const userKey = getUserKey();

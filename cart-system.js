@@ -3,6 +3,7 @@
 // 1. 購物車同步 (localStorage + Firebase carts)
 // 2. 訂單與會員查詢雙向相容 (Firebase orders)
 // 3. 雙核心商品自動串流：同時支援 Google 試算表中控表 + Firebase products
+// 4. 智慧比對既有靜態卡片：不重複生卡、自動補上單品頁連結、同步改價、支援一鍵「下架」隱藏
 // ==========================================================================
 
 const firebaseConfig = {
@@ -16,7 +17,6 @@ const firebaseConfig = {
     measurementId: "G-8ZW69YQQN0"
 };
 
-// Google 試算表雲端中控台 ID (唯讀公開端點，不含任何客戶個資)
 const CATGAZE_SHEET_ID = "128TMT_BQmWfIwZGH01UrU_WoHm5W_STX26DkP9MeDN0";
 
 if (typeof firebase !== 'undefined' && !firebase.apps.length) {
@@ -201,7 +201,7 @@ function checkoutToLine() {
 }
 
 // ==========================================================================
-// 通用卡片插入器：將單筆商品插入當前分類頁
+// 智慧檢查頁面上是否已有同名靜態卡片 (避免重複生卡、自動綁定單品連結與下架隱藏)
 // ==========================================================================
 function getCurrentPageKey() {
     let path = window.location.pathname.split('/').pop() || 'index.html';
@@ -209,9 +209,58 @@ function getCurrentPageKey() {
     return path.replace('.html', '');
 }
 
+function findMatchingStaticCard(p) {
+    const shortName = (p.title || '').split('|')[0].trim();
+    if (!shortName) return null;
+    const allCards = document.querySelectorAll('.product-card, .bonsai-card');
+    for (let i = 0; i < allCards.length; i++) {
+        const card = allCards[i];
+        if (card.id && card.id.startsWith('cloud-prod-')) continue;
+        const heading = card.querySelector('.product-title, .card-title, h3');
+        const headingText = heading ? heading.innerText.trim() : card.innerText;
+        if (headingText && (headingText.includes(shortName) || shortName.includes(headingText))) {
+            return card;
+        }
+    }
+    return null;
+}
+
+function enhanceExistingStaticCard(card, p) {
+    const detailUrl = `product.html?id=${encodeURIComponent(p.id)}`;
+    const priceNum = Number(p.price) || 0;
+
+    // 1. 同步更新卡片上顯示的價格
+    const priceEl = card.querySelector('.product-price, .price');
+    if (priceEl && priceNum > 0) {
+        priceEl.innerText = 'NT$ ' + priceNum.toLocaleString();
+    }
+
+    // 2. 若該靜態卡片原本沒有連往單品頁（例如 tools.html 的 3 項資材），自動為圖片與標題加上點擊跳轉
+    const existingLink = card.querySelector('a[href]');
+    if (!existingLink && !card.getAttribute('onclick')) {
+        const imgBox = card.querySelector('.product-image, .img-box, .img-container');
+        const infoBox = card.querySelector('.product-info');
+        if (imgBox) {
+            imgBox.style.cursor = 'pointer';
+            imgBox.onclick = function() { window.location.href = detailUrl; };
+        }
+        if (infoBox) {
+            infoBox.style.cursor = 'pointer';
+            infoBox.onclick = function() { window.location.href = detailUrl; };
+        }
+    }
+}
+
 function insertProductCardOnPage(p, pageKey) {
     if (!p || !p.id) return;
     if (document.getElementById('cloud-prod-' + p.id)) return;
+
+    // 若頁面上已有同名靜態卡片，直接升級該張卡片（補連結、同步價格），不重複插入第二張
+    const existingStatic = findMatchingStaticCard(p);
+    if (existingStatic) {
+        enhanceExistingStaticCard(existingStatic, p);
+        return;
+    }
 
     const grid = document.querySelector('.product-grid, .Bonsai-grid, #product-container, #productGrid');
     if (!grid) return;
@@ -326,7 +375,6 @@ function insertProductCardOnPage(p, pageKey) {
     }
 }
 
-// 解析 Google Sheet 列資料為標準商品物件
 function parseSheetRowToProduct(cells) {
     const val = (idx) => (cells[idx] && cells[idx].v !== null && cells[idx].v !== undefined) ? String(cells[idx].v).trim() : '';
     const id = val(0);
@@ -369,7 +417,6 @@ function parseSheetRowToProduct(cells) {
     };
 }
 
-// JSONP 回呼：接收來自 Google 試算表「Cat Gaze 網站商品與內容雲端中控表」的即時資料
 window.__onCatGazeSheetLoaded = function(response) {
     if (!response || !response.table || !Array.isArray(response.table.rows)) return;
     const pageKey = getCurrentPageKey();
@@ -382,17 +429,23 @@ window.__onCatGazeSheetLoaded = function(response) {
         if (!p.id || p.id === '商品代號(id)') return;
         window.__CATGAZE_SHEET_PRODUCTS__[p.id] = p;
 
-        // 若狀態設為「下架」，自動隱藏頁面上同名卡片
+        // 1. 若狀態設為「下架」，自動隱藏頁面上同名靜態卡片或動態卡片
         if (p.status === '下架') {
-            document.querySelectorAll('.product-card, .bonsai-card').forEach(card => {
-                if (card.innerText && card.innerText.includes(p.title.split('|')[0].trim())) {
-                    card.style.display = 'none';
-                }
-            });
+            const matchedStatic = findMatchingStaticCard(p);
+            if (matchedStatic) matchedStatic.style.display = 'none';
+            const dynamicEl = document.getElementById('cloud-prod-' + p.id);
+            if (dynamicEl) dynamicEl.style.display = 'none';
             return;
         }
 
-        // 若狀態設為「上架」，且勾選了當前頁面，自動插入商品卡片
+        // 2. 若狀態設為「既有基準」，若當前頁面有同名卡片則同步價格並補齊點擊連結
+        if (p.status === '既有基準') {
+            const matchedStatic = findMatchingStaticCard(p);
+            if (matchedStatic) enhanceExistingStaticCard(matchedStatic, p);
+            return;
+        }
+
+        // 3. 若狀態設為「上架」，且勾選了當前頁面，自動升級既有卡片或插入新卡片
         if (p.status === '上架' && p.categories.includes(pageKey)) {
             insertProductCardOnPage(p, pageKey);
         }
@@ -406,7 +459,6 @@ window.__onCatGazeSheetLoaded = function(response) {
 function loadCloudProductsFromBothSources() {
     const pageKey = getCurrentPageKey();
 
-    // 1. 讀取 Firebase products 節點
     if (database) {
         database.ref('products').once('value', (snap) => {
             const prodsObj = snap.val();
@@ -419,7 +471,6 @@ function loadCloudProductsFromBothSources() {
         });
     }
 
-    // 2. 讀取 Google Sheet 雲端中控台 (免 CORS JSONP 端點)
     if (CATGAZE_SHEET_ID) {
         const sc = document.createElement('script');
         sc.src = `https://docs.google.com/spreadsheets/d/${CATGAZE_SHEET_ID}/gviz/tq?tqx=responseHandler:__onCatGazeSheetLoaded`;

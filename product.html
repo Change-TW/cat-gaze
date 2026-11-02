@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="meta-title">植栽詳情 | Cat Gaze</title>
+    <title id="meta-title">產品詳情 | Cat Gaze</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -111,8 +111,9 @@
         .btn-fav:hover { background-color: #f0f3ed; }
         .gaze-files { margin-top: 35px; background: white; padding: 25px; border-radius: 12px; border: 1px solid #eee; }
         .gaze-files h3 { color: var(--brand-main); margin-top: 0; font-size: 1.1rem; border-bottom: 1px solid var(--brand-accent); padding-bottom: 10px; }
-        .gaze-list div { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #f0f0f0; font-size: 0.95rem; }
-        .gaze-list span:first-child { color: #888; }
+        .gaze-list div { display: flex; justify-content: space-between; gap: 15px; padding: 10px 0; border-bottom: 1px dashed #f0f0f0; font-size: 0.95rem; }
+        .gaze-list span:first-child { color: #888; flex-shrink: 0; }
+        .gaze-list span:last-child { text-align: right; }
         .content-section { padding: 3rem 0; border-top: 1px solid #eee; }
         .section-heading { font-size: 1.6rem; color: var(--brand-main); margin-bottom: 25px; position: relative; }
         .section-heading::after { content: ''; display: block; width: 50px; height: 3px; background: var(--brand-accent); margin-top: 8px; }
@@ -157,7 +158,7 @@
         <nav class="nav-links">
             <a href="index.html">首頁</a>
             <a href="new-arrivals.html">嚴選新品</a>
-            <a href="categories.html" class="active-nav">各類品項</a>
+            <a href="categories.html">各類品項</a>
             <a href="tools.html">資材用具</a>
             <a href="knowledge.html">知識中心</a>
             <a href="about.html">關於我們</a>
@@ -172,7 +173,7 @@
 
 <div id="dynamic-product-mount" class="container">
     <div style="text-align:center; padding: 80px 20px; color:#888;">
-        正在從雲端載入植栽詳情...
+        正在從雲端載入商品詳情...
     </div>
 </div>
 
@@ -208,6 +209,18 @@
 <script>
     function drawProductToDOM(p) {
         const mount = document.getElementById('dynamic-product-mount');
+
+        // 若狀態為「下架」，顯示已下架提示並關閉購買按鈕
+        if (p.status === '下架') {
+            mount.innerHTML = `
+            <div style="text-align:center; padding:80px 20px;">
+                <h2 style="color:var(--brand-main);">此商品「${p.title}」目前已下架或售罄</h2>
+                <p style="color:#888; margin-bottom:25px;">感謝您的凝視，歡迎前往其他專區挑選合眼緣的植栽與職人資材。</p>
+                <a href="categories.html" style="background:var(--brand-main); color:white; padding:12px 28px; border-radius:25px; text-decoration:none; font-weight:bold;">← 瀏覽其他嚴選商品</a>
+            </div>`;
+            return;
+        }
+
         document.title = p.title + " | Cat Gaze";
         const priceNum = Number(p.price) || 0;
         const safeTitle = (p.title || '').replace(/'/g, "\\'");
@@ -234,7 +247,7 @@
                     <div class="care-tags">
                         <div class="care-tag"><span>光照要求</span><strong>${pet.light || '半日照 / 通風'}</strong></div>
                         <div class="care-tag"><span>澆水頻率</span><strong>${pet.water || '土乾澆透'}</strong></div>
-                        <div class="care-tag"><span>安全評級</span><strong>${pet.safe || '100% 寵物無害'}</strong></div>
+                        <div class="care-tag"><span>規格 / 安全評級</span><strong>${pet.safe || '100% 寵物無害'}</strong></div>
                     </div>
                     <div class="qiaoyu-box">
                         <span class="qiaoyu-title">🐈 店長「巧遇」的悄悄話：</span>
@@ -245,6 +258,46 @@
                         <button class="btn-fav" style="flex:1; margin:0;" onclick="addToFavorites('${safeTitle}', ${priceNum}, '${safeImg}')">收藏植物</button>
                     </div>
                 </section>
+            </div>
+            `;
+        } else if (p.template === 'tool') {
+            const f = p.files || {};
+            mount.innerHTML = `
+            <a href="tools.html" class="back-link">← 返回資材用具專區</a>
+            <div class="product-detail-grid">
+                <div class="image-gallery">
+                    <img src="${p.image}" alt="${p.title}" onerror="this.src='CG_logo w bg_vertica_green.png'">
+                    <div style="margin-top: 15px; color: #888; font-size: 0.9rem;">✦ Cat Gaze 職人嚴選資材・品質保證</div>
+                </div>
+                <div class="info-section">
+                    <h1>${p.title}</h1>
+                    <p class="product-id">編號: ${p.id} | ${p.badge || '職人選物'}</p>
+                    <div class="price">NT$ ${priceNum.toLocaleString()}</div>
+                    <div style="color: var(--text-dark); font-weight: 500; margin-bottom: 24px; line-height: 1.8;">
+                        ${p.tagline || '✦ 工欲善其事，必先利其器。Cat Gaze 嚴選專業盆景養護資材。'}
+                    </div>
+                    <button class="btn-buy" onclick="addToCart('${safeTitle}', ${priceNum}, '${safeImg}')">✦ 加入選植清單</button>
+                    <button class="btn-fav" onclick="addToFavorites('${safeTitle}', ${priceNum}, '${safeImg}')">♡ 加入我的收藏</button>
+                    <p style="text-align: center; font-size: 0.8rem; color: #999;">預計 2-3 個工作天內妥善包裝出貨 (不含例假日)</p>
+                    <div class="gaze-files">
+                        <h3>【Cat Gaze 職人資材規格檔案】</h3>
+                        <div class="gaze-list">
+                            <div><span>✦ 品項類別</span><span>${f.species || '--'}</span></div>
+                            <div><span>✦ 材質／產地</span><span>${f.age || '--'}</span></div>
+                            <div><span>✦ 尺寸／容量</span><span>${f.size || '--'}</span></div>
+                            <div><span>✦ 適用與保養</span><span>${f.pot || '--'}</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-section">
+                <h2 class="section-heading">職人資材使用與保養指南</h2>
+                <div class="care-grid">
+                    <div class="care-item"><div class="care-icon">✂️</div><div class="care-text"><h4>修剪工具保養</h4><p>每次修剪完畢後，請以乾布擦拭刀刃上的樹液與水分，並薄塗一層防鏽油或椿油收納。</p></div></div>
+                    <div class="care-item"><div class="care-icon">🪨</div><div class="care-text"><h4>顆粒介質使用</h4><p>換盆前建議先以篩網濾除底部細微粉塵，盆底鋪設大顆粒作為排水層，能大幅提升根系透氣度。</p></div></div>
+                    <div class="care-item"><div class="care-icon">🏺</div><div class="care-text"><h4>手作陶盆養盆</h4><p>柴燒與粗陶盆具天然微孔隙，隨日常澆水與歲月推移會逐漸養出溫潤古樸的包漿色澤。</p></div></div>
+                    <div class="care-item"><div class="care-icon">📖</div><div class="care-text"><h4>進階養護知識</h4><p>想了解赤玉土黃金混土比例或春季摘芽技巧，歡迎隨時造訪「<a href="knowledge.html" style="color:var(--brand-main);">知識中心</a>」閱讀專欄。</p></div></div>
+                </div>
             </div>
             `;
         } else {
@@ -296,11 +349,10 @@
         const mount = document.getElementById('dynamic-product-mount');
 
         if (!prodId) {
-            mount.innerHTML = `<div style="text-align:center; padding:80px 20px;"><h3>找不到指定的植栽商品</h3><a href="categories.html" style="color:#7F916A; font-weight:bold;">← 返回各類品項總覽</a></div>`;
+            mount.innerHTML = `<div style="text-align:center; padding:80px 20px;"><h3>找不到指定的商品</h3><a href="categories.html" style="color:#7F916A; font-weight:bold;">← 返回各類品項總覽</a></div>`;
             return;
         }
 
-        // 先看 Google Sheet 中控台是否已載入該商品
         if (window.__CATGAZE_SHEET_PRODUCTS__ && window.__CATGAZE_SHEET_PRODUCTS__[prodId]) {
             drawProductToDOM(window.__CATGAZE_SHEET_PRODUCTS__[prodId]);
             return;
@@ -312,7 +364,6 @@
             }
         };
 
-        // 同步查詢 Firebase products 節點
         firebase.database().ref('products/' + prodId).once('value').then((snap) => {
             const p = snap.val();
             if (p) {
@@ -322,7 +373,7 @@
                     if (window.__CATGAZE_SHEET_PRODUCTS__ && window.__CATGAZE_SHEET_PRODUCTS__[prodId]) {
                         drawProductToDOM(window.__CATGAZE_SHEET_PRODUCTS__[prodId]);
                     } else {
-                        mount.innerHTML = `<div style="text-align:center; padding:80px 20px;"><h3>此植栽商品尚未上架或已售出 (${prodId})</h3><a href="categories.html" style="color:#7F916A; font-weight:bold;">← 返回各類品項總覽</a></div>`;
+                        mount.innerHTML = `<div style="text-align:center; padding:80px 20px;"><h3>此商品尚未上架或已售出 (${prodId})</h3><a href="categories.html" style="color:#7F916A; font-weight:bold;">← 返回各類品項總覽</a></div>`;
                     }
                 }, 1200);
             }

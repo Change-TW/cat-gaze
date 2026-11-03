@@ -338,6 +338,383 @@
             .generator-layout { grid-template-columns: 1fr; }
             .form-row { grid-template-columns: 1fr; }
         }
+    
+        /* =========================================================
+           電商數據與 ROI 分析中心 (#panel-analytics)
+           ========================================================= */
+        .analytics-section {
+            margin-bottom: 24px;
+        }
+        .analytics-header-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #e2e8f0;
+            border-left: 5px solid var(--brand-main);
+            padding: 18px 22px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .analytics-header-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .analytics-header-desc {
+            font-size: 0.86rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+        .analytics-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn-export-csv {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-export-csv:hover {
+            background: #0369a1;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+        }
+        .btn-recalc {
+            background: white;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-recalc:hover {
+            border-color: var(--brand-main);
+            color: var(--brand-main);
+        }
+
+        /* KPI 指標網格 */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .kpi-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+            transition: 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        }
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--brand-main);
+        }
+        .kpi-card.accent-purple::before { background: #8b5cf6; }
+        .kpi-card.accent-emerald::before { background: #10b981; }
+        .kpi-card.accent-blue::before { background: #0284c7; }
+        .kpi-card.accent-amber::before { background: #f59e0b; }
+        .kpi-card.accent-rose::before { background: #f43f5e; }
+        
+        .kpi-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        .kpi-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+        .kpi-badge {
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+        .badge-roas-great { background: #dcfce7; color: #15803d; }
+        .badge-roas-fair { background: #fef3c7; color: #b45309; }
+        .badge-roas-low { background: #fee2e2; color: #b91c1c; }
+
+        .kpi-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #1e293b;
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+        .kpi-subtext {
+            font-size: 0.78rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+        .kpi-formula {
+            display: inline-block;
+            background: #f8fafc;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #64748b;
+            font-family: monospace;
+            font-size: 0.72rem;
+            margin-top: 4px;
+            border: 1px solid #f1f5f9;
+        }
+
+        /* 行銷效益調控中心 (Simulator) */
+        .simulator-panel {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            margin-bottom: 24px;
+        }
+        .simulator-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .simulator-subtitle {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+        .sim-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 860px) {
+            .sim-grid { grid-template-columns: 1fr; }
+        }
+        .sim-form-group {
+            margin-bottom: 18px;
+        }
+        .sim-form-label {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sim-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.2s;
+            box-sizing: border-box;
+        }
+        .sim-input:focus {
+            border-color: var(--brand-main);
+            box-shadow: 0 0 0 3px rgba(127,145,106,0.15);
+        }
+        .sim-quick-btns {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .sim-qbtn {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .sim-qbtn:hover {
+            background: var(--brand-main);
+            color: white;
+            border-color: var(--brand-main);
+        }
+        .sim-output-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 14px;
+        }
+        .sim-stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #e2e8f0;
+            padding-bottom: 10px;
+        }
+        .sim-stat-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .sim-stat-name {
+            font-size: 0.9rem;
+            color: #475569;
+            font-weight: 600;
+        }
+        .sim-stat-val {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        /* 漏斗與商品排行榜 */
+        .analytics-two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 860px) {
+            .analytics-two-col { grid-template-columns: 1fr; }
+        }
+        .funnel-card, .top-products-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+        }
+        .card-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .card-header-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .funnel-stage {
+            margin-bottom: 16px;
+        }
+        .funnel-stage-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.86rem;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .funnel-bar-bg {
+            background: #f1f5f9;
+            border-radius: 8px;
+            height: 14px;
+            overflow: hidden;
+        }
+        .funnel-bar-fill {
+            height: 100%;
+            border-radius: 8px;
+            transition: width 0.5s ease;
+        }
+        .rank-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.88rem;
+        }
+        .rank-item:last-child { border-bottom: none; }
+        .rank-badge {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #475569;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.76rem;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+        .rank-top1 { background: #fef08a; color: #854d0e; }
+        .rank-top2 { background: #e2e8f0; color: #475569; }
+        .rank-top3 { background: #fed7aa; color: #9a3412; }
+
+        /* 電商名詞速查與行動指南 */
+        .glossary-card {
+            background: #fafaf9;
+            border: 1px solid #e7e5e4;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-top: 14px;
+        }
+        .glossary-item {
+            background: white;
+            border: 1px solid #e7e5e4;
+            border-radius: 8px;
+            padding: 14px;
+        }
+        .glossary-term {
+            font-weight: 700;
+            color: #292524;
+            font-size: 0.92rem;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .glossary-desc {
+            font-size: 0.82rem;
+            color: #57534e;
+            line-height: 1.5;
+        }
+
     </style>
 </head>
 <body>
@@ -399,11 +776,23 @@
             <div class="stat-val" id="stat-pending-count" style="color:#d14900;">0</div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">💰 累計訂單總額</div>
+            <div class="stat-label">💰 累計營業額</div>
             <div class="stat-val" id="stat-total-rev" style="color:#7F916A;">NT$ 0</div>
         </div>
+        <div class="stat-card" style="border-top-color:#8b5cf6;">
+            <div class="stat-label">🎯 平均客單價 (AOV)</div>
+            <div class="stat-val" id="stat-aov" style="color:#7c3aed;">NT$ 0</div>
+        </div>
+        <div class="stat-card" style="border-top-color:#10b981;">
+            <div class="stat-label">📈 廣告投報 (ROAS)</div>
+            <div class="stat-val" id="stat-roas" style="color:#059669;">--</div>
+        </div>
+        <div class="stat-card" style="border-top-color:#0284c7;">
+            <div class="stat-label">⚡ 結帳轉化率 (CR)</div>
+            <div class="stat-val" id="stat-cr" style="color:#0284c7;">--</div>
+        </div>
         <div class="stat-card">
-            <div class="stat-label">👥 已收集會員檔案</div>
+            <div class="stat-label">👥 會員檔案</div>
             <div class="stat-val" id="stat-users-count" style="color:#2b6cb0;">0</div>
         </div>
         <div class="stat-card">
@@ -418,6 +807,9 @@
             <button class="tab-btn active" onclick="switchTab('orders', this)">
                 📦 訂單管理 <span class="tab-count" id="tab-badge-orders">0</span>
             </button>
+            <button class="tab-btn" onclick="switchTab('analytics', this)">
+                📊 營運數據與 ROI 分析 <span class="tab-count" id="tab-badge-analytics" style="background:#0284c7; color:white;">KPI</span>
+            </button>
             <button class="tab-btn" onclick="switchTab('products', this)">
                 🪴 商品快速上架與生成 <span class="tab-count" id="tab-badge-products">0</span>
             </button>
@@ -427,6 +819,265 @@
             <button class="tab-btn" onclick="switchTab('carts', this)">
                 🛒 潛在客戶購物車 <span class="tab-count" id="tab-badge-carts">0</span>
             </button>
+        </div>
+    </div>
+
+        <!-- 分頁 0：電商營運數據與 ROI / 行銷效益分析中心 (NEW!) -->
+    <div id="panel-analytics" class="tab-panel">
+        <!-- 頂部功能條 -->
+        <div class="analytics-header-card">
+            <div>
+                <div class="analytics-header-title">📊 貓凝植栽 (Cat Gaze) 電商營運與 ROI / ROAS 效益分析中心</div>
+                <div class="analytics-header-desc">即時連動雲端訂單庫與購物車數據，提供老闆最核心的電商經營指標、投報率模擬器與流失商機診斷。</div>
+            </div>
+            <div class="analytics-actions">
+                <button class="btn-export-csv" onclick="exportAnalyticsCSV()">
+                    📥 匯出電商營運報表 (CSV)
+                </button>
+                <button class="btn-recalc" onclick="updateEcommerceAnalytics()">
+                    🔄 即時重新計算
+                </button>
+            </div>
+        </div>
+
+        <!-- 8 大電商核心指標矩陣 (KPI Matrix) -->
+        <div class="kpi-grid">
+            <!-- 1. AOV 平均客單價 -->
+            <div class="kpi-card accent-purple">
+                <div class="kpi-top">
+                    <span class="kpi-label">🎯 平均客單價 (AOV)</span>
+                    <span class="kpi-badge" style="background:#f3e8ff; color:#7e22ce;">籃底深度</span>
+                </div>
+                <div class="kpi-value" id="kpi-aov">NT$ 0</div>
+                <div class="kpi-subtext">顧客每筆訂單平均消費額。<br><span class="kpi-formula">AOV = 營業額 ÷ 訂單數</span></div>
+            </div>
+
+            <!-- 2. ROAS 廣告投資報酬率 -->
+            <div class="kpi-card accent-emerald">
+                <div class="kpi-top">
+                    <span class="kpi-label">📈 廣告投資報酬率 (ROAS)</span>
+                    <span class="kpi-badge badge-roas-great" id="kpi-roas-badge">健康</span>
+                </div>
+                <div class="kpi-value" id="kpi-roas" style="color:#059669;">--</div>
+                <div class="kpi-subtext">每投入 $1 廣告費創造的營收。<br><span class="kpi-formula">ROAS = 總營收 ÷ 廣告花費</span></div>
+            </div>
+
+            <!-- 3. ROI 淨利投資報酬率 -->
+            <div class="kpi-card accent-emerald">
+                <div class="kpi-top">
+                    <span class="kpi-label">💎 投資報酬率 (淨利 ROI)</span>
+                    <span class="kpi-badge" style="background:#ecfdf5; color:#047857;">實質獲利</span>
+                </div>
+                <div class="kpi-value" id="kpi-roi" style="color:#047857;">--</div>
+                <div class="kpi-subtext">扣除進貨、廣告與物流後的淨投報。<br><span class="kpi-formula">ROI = (淨利 ÷ 總成本) × 100%</span></div>
+            </div>
+
+            <!-- 4. CAC 每筆訂單獲客成本 -->
+            <div class="kpi-card accent-amber">
+                <div class="kpi-top">
+                    <span class="kpi-label">🏷️ 每單取得成本 (CAC/CPA)</span>
+                    <span class="kpi-badge" style="background:#fef3c7; color:#b45309;">獲客代價</span>
+                </div>
+                <div class="kpi-value" id="kpi-cac">NT$ 0</div>
+                <div class="kpi-subtext">獲得每一筆成交訂單的廣告支出。<br><span class="kpi-formula">CAC = 廣告支出 ÷ 訂單數</span></div>
+            </div>
+
+            <!-- 5. 結帳轉換率 CR -->
+            <div class="kpi-card accent-blue">
+                <div class="kpi-top">
+                    <span class="kpi-label">⚡ 結帳轉化率 (CR)</span>
+                    <span class="kpi-badge" style="background:#e0f2fe; color:#0369a1;">漏斗效率</span>
+                </div>
+                <div class="kpi-value" id="kpi-cr" style="color:#0284c7;">--</div>
+                <div class="kpi-subtext">進入購物車後的最終完成結帳率。<br><span class="kpi-formula">CR = 訂單數 ÷ 總購物車數</span></div>
+            </div>
+
+            <!-- 6. 購物車遺棄率與流失價值 -->
+            <div class="kpi-card accent-rose">
+                <div class="kpi-top">
+                    <span class="kpi-label">🛒 購物車流失率 (Abandonment)</span>
+                    <span class="kpi-badge" style="background:#ffe4e6; color:#be123c;">挽回商機</span>
+                </div>
+                <div class="kpi-value" id="kpi-cart-abandon" style="color:#be123c;">--</div>
+                <div class="kpi-subtext">未結帳購物車總額：<strong id="kpi-cart-lost-val" style="color:#e11d48;">NT$ 0</strong><br><span class="kpi-formula">未結帳車數 ÷ 總意圖數</span></div>
+            </div>
+
+            <!-- 7. 會員回購率 (Repeat Rate) -->
+            <div class="kpi-card">
+                <div class="kpi-top">
+                    <span class="kpi-label">🔄 會員回購率 (Repeat Rate)</span>
+                    <span class="kpi-badge" style="background:#f1f5f9; color:#475569;">峰值複購</span>
+                </div>
+                <div class="kpi-value" id="kpi-repeat-rate">0%</div>
+                <div class="kpi-subtext">下單 2 次(含)以上的忠誠客戶比例。<br><span class="kpi-formula">複購顧客數 ÷ 總購買客數</span></div>
+            </div>
+
+            <!-- 8. ARPU 會員平均貢獻值 -->
+            <div class="kpi-card">
+                <div class="kpi-top">
+                    <span class="kpi-label">👤 會員平均產值 (ARPU)</span>
+                    <span class="kpi-badge" style="background:#f1f5f9; color:#475569;">用戶終身</span>
+                </div>
+                <div class="kpi-value" id="kpi-arpu">NT$ 0</div>
+                <div class="kpi-subtext">平均每位註冊會員帶來的總營收。<br><span class="kpi-formula">ARPU = 總營收 ÷ 會員檔案數</span></div>
+            </div>
+        </div>
+
+        <!-- 互動式行銷 ROI / ROAS 試算調控中心 (Interactive Simulator) -->
+        <div class="simulator-panel">
+            <div class="simulator-title">🎛️ 老闆行銷投報與成本試算模擬器 (ROI / Margin Simulator)</div>
+            <div class="simulator-subtitle">可依照本月實際投入的廣告預算或成本結構彈性微調，系統即時動態計算出真實 ROAS、淨利潤與損益平衡點（設定將自動儲存在您的瀏覽器中）。</div>
+
+            <div class="sim-grid">
+                <!-- 左側：輸入參數 -->
+                <div>
+                    <div class="sim-form-group">
+                        <label class="sim-form-label">
+                            <span>📣 本期廣告 / 行銷預算支出 (NT$)</span>
+                            <span id="sim-ad-mode-label" style="font-size:0.78rem; color:#64748b; font-weight:normal;">自訂花費</span>
+                        </label>
+                        <input type="number" id="sim-input-adspend" class="sim-input" placeholder="例如：5000" oninput="onSimulatorParamChange()">
+                        <div class="sim-quick-btns">
+                            <button type="button" class="sim-qbtn" onclick="setQuickAdSpend(0)">NT$ 0 (純自然流量)</button>
+                            <button type="button" class="sim-qbtn" onclick="setQuickAdSpend(3000)">NT$ 3,000</button>
+                            <button type="button" class="sim-qbtn" onclick="setQuickAdSpend(5000)">NT$ 5,000</button>
+                            <button type="button" class="sim-qbtn" onclick="setQuickAdSpend(10000)">NT$ 10,000</button>
+                            <button type="button" class="sim-qbtn" onclick="setQuickAdSpend(20000)">NT$ 20,000</button>
+                            <button type="button" class="sim-qbtn" onclick="setQuickAdSpend('auto')">按每單 $250 估算</button>
+                        </div>
+                    </div>
+
+                    <div class="sim-form-group">
+                        <label class="sim-form-label">
+                            <span>📦 平均商品銷貨成本率 (COGS %)</span>
+                            <span id="sim-cogs-val-display" style="color:var(--brand-main); font-size:0.95rem;">35%</span>
+                        </label>
+                        <input type="range" id="sim-input-cogs" min="15" max="65" value="35" step="1" style="width:100%;" oninput="onSimulatorParamChange()">
+                        <div style="font-size:0.76rem; color:#94a3b8; margin-top:4px;">植物盆栽、花器盆缽、介質土與基本耗材之進貨成本佔比。</div>
+                    </div>
+
+                    <div class="sim-form-group">
+                        <label class="sim-form-label">
+                            <span>🚚 每筆訂單包裝耗材與物流雜支 (NT$)</span>
+                        </label>
+                        <input type="number" id="sim-input-shipping" class="sim-input" value="100" placeholder="例如：100" oninput="onSimulatorParamChange()">
+                        <div style="font-size:0.76rem; color:#94a3b8; margin-top:4px;">植物專用抗震防撞固定盒、保濕棉與宅配運費補貼。</div>
+                    </div>
+                </div>
+
+                <!-- 右側：即時試算產出 -->
+                <div class="sim-output-box">
+                    <div class="sim-stat-row">
+                        <span class="sim-stat-name">💰 本期有效營業總額</span>
+                        <span class="sim-stat-val" id="sim-out-rev" style="color:var(--brand-main);">NT$ 0</span>
+                    </div>
+                    <div class="sim-stat-row">
+                        <span class="sim-stat-name">📦 預估商品銷貨成本 (COGS)</span>
+                        <span class="sim-stat-val" id="sim-out-cogs" style="color:#64748b;">NT$ 0</span>
+                    </div>
+                    <div class="sim-stat-row">
+                        <span class="sim-stat-name">📣 行銷廣告投入費用</span>
+                        <span class="sim-stat-val" id="sim-out-adspend" style="color:#d97706;">NT$ 0</span>
+                    </div>
+                    <div class="sim-stat-row">
+                        <span class="sim-stat-name">🚚 物流包裝總雜支</span>
+                        <span class="sim-stat-val" id="sim-out-shipping" style="color:#64748b;">NT$ 0</span>
+                    </div>
+                    <div class="sim-stat-row" style="background:#f1f5f9; padding:12px; border-radius:8px; border-bottom:none;">
+                        <span class="sim-stat-name" style="font-size:1rem; color:#0f172a;">💵 預估實質淨利潤 (Net Profit)</span>
+                        <span class="sim-stat-val" id="sim-out-netprofit" style="font-size:1.4rem; color:#059669;">NT$ 0</span>
+                    </div>
+                    <div class="sim-stat-row">
+                        <span class="sim-stat-name">📊 淨利潤率 (Net Margin %)</span>
+                        <span class="sim-stat-val" id="sim-out-netmargin">0%</span>
+                    </div>
+                    <div class="sim-stat-row">
+                        <span class="sim-stat-name">⚖️ 損益平衡點 ROAS (Break-even ROAS)</span>
+                        <span class="sim-stat-val" id="sim-out-breakeven" style="color:#475569;">--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 購物車漏斗與商品熱銷排行 -->
+        <div class="analytics-two-col">
+            <!-- 購物車轉化漏斗 -->
+            <div class="funnel-card">
+                <div class="card-header-bar">
+                    <span class="card-header-title">🛒 購物車結帳流失與漏斗轉化</span>
+                    <button class="btn-refresh" style="padding:4px 10px; font-size:0.78rem;" onclick="switchTab('carts', document.querySelectorAll('.tab-btn')[4])">查看購物車名單</button>
+                </div>
+                
+                <div class="funnel-stage">
+                    <div class="funnel-stage-header">
+                        <span>1. 產生購買意願（加入購物車）</span>
+                        <span id="funnel-step1-count">0 次 (100%)</span>
+                    </div>
+                    <div class="funnel-bar-bg">
+                        <div class="funnel-bar-fill" id="funnel-step1-bar" style="width:100%; background:#94a3b8;"></div>
+                    </div>
+                </div>
+
+                <div class="funnel-stage">
+                    <div class="funnel-stage-header">
+                        <span>2. 成功完成付款與結帳</span>
+                        <span id="funnel-step2-count" style="color:#059669; font-weight:700;">0 筆 (0%)</span>
+                    </div>
+                    <div class="funnel-bar-bg">
+                        <div class="funnel-bar-fill" id="funnel-step2-bar" style="width:0%; background:#10b981;"></div>
+                    </div>
+                </div>
+
+                <div class="funnel-stage" style="margin-bottom:0;">
+                    <div class="funnel-stage-header">
+                        <span>3. 購物車中途流失（未結帳挽回商機）</span>
+                        <span id="funnel-step3-count" style="color:#e11d48; font-weight:700;">0 筆 (0%)</span>
+                    </div>
+                    <div class="funnel-bar-bg">
+                        <div class="funnel-bar-fill" id="funnel-step3-bar" style="width:0%; background:#f43f5e;"></div>
+                    </div>
+                </div>
+
+                <div style="margin-top:16px; background:#fff1f2; border:1px solid #fecdd3; border-radius:8px; padding:12px; font-size:0.84rem; color:#9f1239;">
+                    💡 <strong>峰值轉化提醒</strong>：目前共有 <strong id="funnel-lost-carts-text">0</strong> 位客戶將盆栽放入購物車後未結帳，潛在流失價值達 <strong id="funnel-lost-val-text">NT$ 0</strong>！建議前往「潛在客戶購物車」藉由 LINE 官方帳號發送關懷或首購免運券進行挽回。
+                </div>
+            </div>
+
+            <!-- 熱銷植栽排行榜 -->
+            <div class="top-products-card">
+                <div class="card-header-bar">
+                    <span class="card-header-title">🌿 暢銷植栽與商品營收排行榜</span>
+                    <span style="font-size:0.8rem; color:#64748b;">累計銷售額</span>
+                </div>
+                <div id="top-products-list">
+                    <div class="empty-box" style="padding:20px;">載入訂單商品數據中...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 電商名詞速查與實務營運建議 (Playbook) -->
+        <div class="glossary-card">
+            <div style="font-weight:700; color:#1c1917; font-size:1.05rem;">📖 貓凝植栽電商數據字典與實務行動指南</div>
+            <div style="font-size:0.84rem; color:#78716c; margin-top:2px;">結合汪志謙《峰值體驗》MOT 與電商增長實戰，看懂數字背後的商業含義：</div>
+
+            <div class="glossary-grid">
+                <div class="glossary-item">
+                    <div class="glossary-term">🎯 AOV (平均客單價)</div>
+                    <div class="glossary-desc"><strong>客單價越高，抗廣告通膨能力越強！</strong>透過「巧遇店長推薦加價購（如專用介質、營養液、日式底盤）」或滿額免運階梯門檻，可有效拉抬客單價。</div>
+                </div>
+                <div class="glossary-item">
+                    <div class="glossary-term">📈 ROAS (廣告投資報酬率)</div>
+                    <div class="glossary-desc"><strong>ROAS 4.0x 以上代表健康獲利</strong>。若低於損益平衡點 ROAS，應檢視受眾素材是否精準、首頁與商品頁「最初時刻 (MOT)」信任感是否足夠。</div>
+                </div>
+                <div class="glossary-item">
+                    <div class="glossary-term">💎 ROI (淨利投資報酬率)</div>
+                    <div class="glossary-desc"><strong>真正落入口袋的投報比率</strong>。不僅扣除廣告，還計入了商品植物進貨與專用防震包裝成本，是檢驗每檔促銷活動是否「做白工」的真金白銀指標。</div>
+                </div>
+                <div class="glossary-item">
+                    <div class="glossary-term">🔄 複購率 (Repeat Rate)</div>
+                    <div class="glossary-desc"><strong>植物愛好者是典型的「存量複利資產」</strong>。盆栽養得好，顧客自然會想買下一盆。透過 LINE 官方帳號的售後養護指南（巧遇小叮嚀），是零廣告費推動複購的最佳護城河。</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -634,6 +1285,8 @@
     let cachedMembers = [];
     let cachedFavorites = {};
     let cachedProducts = {};
+    let cachedOrders = [];
+    let cachedCarts = [];
 
     function showAuthError(msg, isSuccess) {
         const errBox = document.getElementById('auth-error-msg');
@@ -825,6 +1478,10 @@
             document.getElementById('stat-pending-count').innerText = pendingCount;
             document.getElementById('stat-total-rev').innerText = "NT$ " + totalRev.toLocaleString();
             document.getElementById('tab-badge-orders').innerText = orderEntries.length;
+
+            // 快取訂單陣列供電商指標與 ROI 即時運算
+            cachedOrders = orderEntries.map(([k, o]) => ({ key: k, ...o }));
+            updateEcommerceAnalytics();
         });
     }
 
@@ -947,6 +1604,10 @@
                 `;
             });
             container.innerHTML = html;
+
+            // 快取購物車資料供漏斗與流失率計算
+            cachedCarts = entries;
+            updateEcommerceAnalytics();
         });
     }
 
@@ -1107,6 +1768,383 @@
         .nav-links a { text-decoration: none; color: #4a4a4a; font-weight: 500; font-size: 0.95rem; }
         #cart-count { background: #d14900; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -10px; right: -15px; font-weight: bold; }
         footer { background: #7F916A; color: white; text-align: center; padding: 3rem 0; margin-top: 4rem; }
+    
+        /* =========================================================
+           電商數據與 ROI 分析中心 (#panel-analytics)
+           ========================================================= */
+        .analytics-section {
+            margin-bottom: 24px;
+        }
+        .analytics-header-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #e2e8f0;
+            border-left: 5px solid var(--brand-main);
+            padding: 18px 22px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .analytics-header-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .analytics-header-desc {
+            font-size: 0.86rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+        .analytics-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn-export-csv {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-export-csv:hover {
+            background: #0369a1;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+        }
+        .btn-recalc {
+            background: white;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-recalc:hover {
+            border-color: var(--brand-main);
+            color: var(--brand-main);
+        }
+
+        /* KPI 指標網格 */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .kpi-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+            transition: 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        }
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--brand-main);
+        }
+        .kpi-card.accent-purple::before { background: #8b5cf6; }
+        .kpi-card.accent-emerald::before { background: #10b981; }
+        .kpi-card.accent-blue::before { background: #0284c7; }
+        .kpi-card.accent-amber::before { background: #f59e0b; }
+        .kpi-card.accent-rose::before { background: #f43f5e; }
+        
+        .kpi-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        .kpi-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+        .kpi-badge {
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+        .badge-roas-great { background: #dcfce7; color: #15803d; }
+        .badge-roas-fair { background: #fef3c7; color: #b45309; }
+        .badge-roas-low { background: #fee2e2; color: #b91c1c; }
+
+        .kpi-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #1e293b;
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+        .kpi-subtext {
+            font-size: 0.78rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+        .kpi-formula {
+            display: inline-block;
+            background: #f8fafc;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #64748b;
+            font-family: monospace;
+            font-size: 0.72rem;
+            margin-top: 4px;
+            border: 1px solid #f1f5f9;
+        }
+
+        /* 行銷效益調控中心 (Simulator) */
+        .simulator-panel {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            margin-bottom: 24px;
+        }
+        .simulator-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .simulator-subtitle {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+        .sim-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 860px) {
+            .sim-grid { grid-template-columns: 1fr; }
+        }
+        .sim-form-group {
+            margin-bottom: 18px;
+        }
+        .sim-form-label {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sim-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.2s;
+            box-sizing: border-box;
+        }
+        .sim-input:focus {
+            border-color: var(--brand-main);
+            box-shadow: 0 0 0 3px rgba(127,145,106,0.15);
+        }
+        .sim-quick-btns {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .sim-qbtn {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .sim-qbtn:hover {
+            background: var(--brand-main);
+            color: white;
+            border-color: var(--brand-main);
+        }
+        .sim-output-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 14px;
+        }
+        .sim-stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #e2e8f0;
+            padding-bottom: 10px;
+        }
+        .sim-stat-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .sim-stat-name {
+            font-size: 0.9rem;
+            color: #475569;
+            font-weight: 600;
+        }
+        .sim-stat-val {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        /* 漏斗與商品排行榜 */
+        .analytics-two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 860px) {
+            .analytics-two-col { grid-template-columns: 1fr; }
+        }
+        .funnel-card, .top-products-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+        }
+        .card-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .card-header-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .funnel-stage {
+            margin-bottom: 16px;
+        }
+        .funnel-stage-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.86rem;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .funnel-bar-bg {
+            background: #f1f5f9;
+            border-radius: 8px;
+            height: 14px;
+            overflow: hidden;
+        }
+        .funnel-bar-fill {
+            height: 100%;
+            border-radius: 8px;
+            transition: width 0.5s ease;
+        }
+        .rank-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.88rem;
+        }
+        .rank-item:last-child { border-bottom: none; }
+        .rank-badge {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #475569;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.76rem;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+        .rank-top1 { background: #fef08a; color: #854d0e; }
+        .rank-top2 { background: #e2e8f0; color: #475569; }
+        .rank-top3 { background: #fed7aa; color: #9a3412; }
+
+        /* 電商名詞速查與行動指南 */
+        .glossary-card {
+            background: #fafaf9;
+            border: 1px solid #e7e5e4;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-top: 14px;
+        }
+        .glossary-item {
+            background: white;
+            border: 1px solid #e7e5e4;
+            border-radius: 8px;
+            padding: 14px;
+        }
+        .glossary-term {
+            font-weight: 700;
+            color: #292524;
+            font-size: 0.92rem;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .glossary-desc {
+            font-size: 0.82rem;
+            color: #57534e;
+            line-height: 1.5;
+        }
+
     </style>
 </head>
 <body>
@@ -1383,7 +2421,392 @@ ${mainContent}
             });
 
             container.innerHTML = html;
+
+            // 快取購物車資料供漏斗與流失率計算
+            cachedCarts = entries;
+            updateEcommerceAnalytics();
         });
+    }
+
+    
+    // =========================================================================
+    // 5. 電商常用數據與 ROI / ROAS 效益分析核心計算機
+    // =========================================================================
+    const STORAGE_KEY_SIM = 'cat_gaze_admin_sim_params';
+
+    function getSimulatorParams() {
+        const defaultParams = {
+            adSpend: 5000,
+            adMode: 'manual', // 'manual' 或 'auto'
+            cogsRate: 35,     // 35%
+            shippingCost: 100 // 每單 100 元
+        };
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY_SIM);
+            if (saved) return { ...defaultParams, ...JSON.parse(saved) };
+        } catch (e) {
+            console.warn('讀取 localStorage 失敗:', e);
+        }
+        return defaultParams;
+    }
+
+    function saveSimulatorParams(params) {
+        try {
+            localStorage.setItem(STORAGE_KEY_SIM, JSON.stringify(params));
+        } catch (e) {
+            console.warn('儲存 localStorage 失敗:', e);
+        }
+    }
+
+    function setQuickAdSpend(val) {
+        const adInput = document.getElementById('sim-input-adspend');
+        const modeLabel = document.getElementById('sim-ad-mode-label');
+        let params = getSimulatorParams();
+
+        if (val === 'auto') {
+            params.adMode = 'auto';
+            const orderCount = cachedOrders.length || 0;
+            const autoSpend = orderCount * 250;
+            adInput.value = autoSpend;
+            modeLabel.innerText = '按每單 NT$ 250 自動估算';
+        } else {
+            params.adMode = 'manual';
+            params.adSpend = Number(val) || 0;
+            adInput.value = params.adSpend;
+            modeLabel.innerText = '自訂花費';
+        }
+        saveSimulatorParams(params);
+        updateEcommerceAnalytics();
+    }
+
+    function onSimulatorParamChange() {
+        const adInput = document.getElementById('sim-input-adspend');
+        const cogsInput = document.getElementById('sim-input-cogs');
+        const shipInput = document.getElementById('sim-input-shipping');
+        const cogsDisplay = document.getElementById('sim-cogs-val-display');
+
+        const cogsVal = Number(cogsInput.value) || 35;
+        cogsDisplay.innerText = cogsVal + '%';
+
+        const params = {
+            adSpend: Number(adInput.value) || 0,
+            adMode: 'manual',
+            cogsRate: cogsVal,
+            shippingCost: Number(shipInput.value) || 0
+        };
+        document.getElementById('sim-ad-mode-label').innerText = '自訂花費';
+        saveSimulatorParams(params);
+        updateEcommerceAnalytics();
+    }
+
+    function updateEcommerceAnalytics() {
+        // 1. 基本數據統計
+        const totalOrders = cachedOrders.length;
+        let totalRev = 0;
+        let completedOrders = 0;
+        let customerOrderCounts = {};
+        let productSales = {}; // { '商品名': { qty: 0, revenue: 0 } }
+
+        cachedOrders.forEach(order => {
+            const rev = Number(order.total_price !== undefined ? order.total_price : order.totalPrice) || 0;
+            totalRev += rev;
+            if (order.status === '已完成') completedOrders++;
+
+            // 統計顧客回購
+            const custEmail = (order.customer && order.customer.email) ? order.customer.email.toLowerCase().trim() : '';
+            const custPhone = (order.customer && order.customer.phone) ? order.customer.phone.trim() : '';
+            const custId = custEmail || custPhone || order.order_id || 'unknown';
+            customerOrderCounts[custId] = (customerOrderCounts[custId] || 0) + 1;
+
+            // 統計熱賣品項
+            const items = Array.isArray(order.items) ? order.items : [];
+            items.forEach(it => {
+                const name = it.name || '精選植栽';
+                const p = Number(it.price) || 0;
+                const q = Number(it.quantity) || 1;
+                if (!productSales[name]) productSales[name] = { qty: 0, revenue: 0 };
+                productSales[name].qty += q;
+                productSales[name].revenue += (p * q);
+            });
+        });
+
+        // 2. AOV 平均客單價
+        const aov = totalOrders > 0 ? Math.round(totalRev / totalOrders) : 0;
+
+        // 3. 讀取行銷參數
+        const params = getSimulatorParams();
+        const adSpendInput = document.getElementById('sim-input-adspend');
+        const cogsInput = document.getElementById('sim-input-cogs');
+        const shipInput = document.getElementById('sim-input-shipping');
+        const cogsDisplay = document.getElementById('sim-cogs-val-display');
+
+        if (adSpendInput && !adSpendInput.matches(':focus')) {
+            if (params.adMode === 'auto') {
+                const autoVal = totalOrders * 250;
+                adSpendInput.value = autoVal;
+                params.adSpend = autoVal;
+            } else {
+                adSpendInput.value = params.adSpend !== undefined ? params.adSpend : 5000;
+            }
+        }
+        if (cogsInput && !cogsInput.matches(':focus')) {
+            cogsInput.value = params.cogsRate || 35;
+            if (cogsDisplay) cogsDisplay.innerText = (params.cogsRate || 35) + '%';
+        }
+        if (shipInput && !shipInput.matches(':focus')) {
+            shipInput.value = params.shippingCost !== undefined ? params.shippingCost : 100;
+        }
+
+        const adSpend = Number(adSpendInput ? adSpendInput.value : params.adSpend) || 0;
+        const cogsRate = (Number(cogsInput ? cogsInput.value : params.cogsRate) || 35) / 100;
+        const shippingPerOrder = Number(shipInput ? shipInput.value : params.shippingCost) || 0;
+
+        // 4. ROAS (廣告投報率)
+        let roasVal = 0;
+        let roasStr = '--';
+        let roasBadge = '健康';
+        let roasBadgeClass = 'badge-roas-great';
+        if (adSpend > 0) {
+            roasVal = totalRev / adSpend;
+            roasStr = roasVal.toFixed(2) + 'x (' + Math.round(roasVal * 100) + '%)';
+            if (roasVal >= 4.0) {
+                roasBadge = '優秀 (高利潤)';
+                roasBadgeClass = 'badge-roas-great';
+            } else if (roasVal >= 2.5) {
+                roasBadge = '穩健 (平衡)';
+                roasBadgeClass = 'badge-roas-fair';
+            } else {
+                roasBadge = '需調優 (偏低)';
+                roasBadgeClass = 'badge-roas-low';
+            }
+        } else if (totalRev > 0) {
+            roasStr = '∞ (純自然流量)';
+            roasBadge = '極佳 (零行銷費)';
+            roasBadgeClass = 'badge-roas-great';
+        }
+
+        // 5. 成本與實質淨利潤 (Net Profit) & ROI
+        const totalCogs = Math.round(totalRev * cogsRate);
+        const totalShipping = totalOrders * shippingPerOrder;
+        const totalCost = totalCogs + adSpend + totalShipping;
+        const netProfit = totalRev - totalCost;
+        const netMargin = totalRev > 0 ? ((netProfit / totalRev) * 100).toFixed(1) : '0';
+        
+        let roiVal = 0;
+        let roiStr = '--';
+        if (totalCost > 0) {
+            roiVal = ((netProfit / totalCost) * 100);
+            roiStr = (roiVal >= 0 ? '+' : '') + roiVal.toFixed(1) + '%';
+        }
+
+        // 6. CAC 每單獲客成本
+        const cac = totalOrders > 0 ? Math.round(adSpend / totalOrders) : 0;
+
+        // 7. 損益平衡點 ROAS
+        let breakEvenRoas = '--';
+        const remainingMarginRate = 1 - cogsRate - (aov > 0 ? (shippingPerOrder / aov) : 0);
+        if (remainingMarginRate > 0) {
+            breakEvenRoas = (1 / remainingMarginRate).toFixed(2) + 'x';
+        }
+
+        // 8. 購物車流失與漏斗轉化
+        let abandonedCartsCount = 0;
+        let recoverableCartValue = 0;
+        if (Array.isArray(cachedCarts)) {
+            abandonedCartsCount = cachedCarts.length;
+            cachedCarts.forEach(([userKey, items]) => {
+                if (Array.isArray(items)) {
+                    items.forEach(it => {
+                        recoverableCartValue += (Number(it.price) || 0);
+                    });
+                }
+            });
+        }
+        const totalIntent = totalOrders + abandonedCartsCount;
+        const conversionRate = totalIntent > 0 ? ((totalOrders / totalIntent) * 100).toFixed(1) : '0';
+        const abandonmentRate = totalIntent > 0 ? ((abandonedCartsCount / totalIntent) * 100).toFixed(1) : '0';
+
+        // 9. 顧客回購率 (Repeat Purchase Rate)
+        const uniqueCustomers = Object.keys(customerOrderCounts).length;
+        const repeatCustomers = Object.values(customerOrderCounts).filter(cnt => cnt >= 2).length;
+        const repeatRate = uniqueCustomers > 0 ? ((repeatCustomers / uniqueCustomers) * 100).toFixed(1) : '0';
+
+        // 10. 會員平均產值 (ARPU)
+        const totalMembers = cachedMembers.length || 0;
+        const arpu = totalMembers > 0 ? Math.round(totalRev / totalMembers) : (totalOrders > 0 ? aov : 0);
+
+        // ==================== 渲染到畫面上 ====================
+        // 頂部核心指標更新
+        const elAov = document.getElementById('stat-aov');
+        const elRoas = document.getElementById('stat-roas');
+        const elCr = document.getElementById('stat-cr');
+        if (elAov) elAov.innerText = 'NT$ ' + aov.toLocaleString();
+        if (elRoas) elRoas.innerText = roasVal > 0 ? roasVal.toFixed(1) + 'x' : (adSpend === 0 && totalRev > 0 ? '自然流' : '--');
+        if (elCr) elCr.innerText = conversionRate + '%';
+
+        // 8 大 KPI 矩陣卡片更新
+        const kpiAov = document.getElementById('kpi-aov');
+        const kpiRoas = document.getElementById('kpi-roas');
+        const kpiRoasBadge = document.getElementById('kpi-roas-badge');
+        const kpiRoi = document.getElementById('kpi-roi');
+        const kpiCac = document.getElementById('kpi-cac');
+        const kpiCr = document.getElementById('kpi-cr');
+        const kpiAbandon = document.getElementById('kpi-cart-abandon');
+        const kpiLostVal = document.getElementById('kpi-cart-lost-val');
+        const kpiRepeat = document.getElementById('kpi-repeat-rate');
+        const kpiArpu = document.getElementById('kpi-arpu');
+
+        if (kpiAov) kpiAov.innerText = 'NT$ ' + aov.toLocaleString();
+        if (kpiRoas) {
+            kpiRoas.innerText = roasStr;
+            kpiRoas.style.color = roasVal >= 2.5 || (adSpend === 0 && totalRev > 0) ? '#059669' : '#dc2626';
+        }
+        if (kpiRoasBadge) {
+            kpiRoasBadge.innerText = roasBadge;
+            kpiRoasBadge.className = 'kpi-badge ' + roasBadgeClass;
+        }
+        if (kpiRoi) {
+            kpiRoi.innerText = roiStr;
+            kpiRoi.style.color = roiVal >= 0 ? '#047857' : '#dc2626';
+        }
+        if (kpiCac) kpiCac.innerText = 'NT$ ' + cac.toLocaleString();
+        if (kpiCr) kpiCr.innerText = conversionRate + '%';
+        if (kpiAbandon) kpiAbandon.innerText = abandonmentRate + '%';
+        if (kpiLostVal) kpiLostVal.innerText = 'NT$ ' + recoverableCartValue.toLocaleString();
+        if (kpiRepeat) kpiRepeat.innerText = repeatRate + '% (' + repeatCustomers + '/' + uniqueCustomers + '位)';
+        if (kpiArpu) kpiArpu.innerText = 'NT$ ' + arpu.toLocaleString();
+
+        // 模擬器即時輸出更新
+        const simRev = document.getElementById('sim-out-rev');
+        const simCogs = document.getElementById('sim-out-cogs');
+        const simAd = document.getElementById('sim-out-adspend');
+        const simShip = document.getElementById('sim-out-shipping');
+        const simNet = document.getElementById('sim-out-netprofit');
+        const simMargin = document.getElementById('sim-out-netmargin');
+        const simBe = document.getElementById('sim-out-breakeven');
+
+        if (simRev) simRev.innerText = 'NT$ ' + totalRev.toLocaleString();
+        if (simCogs) simCogs.innerText = 'NT$ ' + totalCogs.toLocaleString() + ' (' + Math.round(cogsRate * 100) + '%)';
+        if (simAd) simAd.innerText = 'NT$ ' + adSpend.toLocaleString();
+        if (simShip) simShip.innerText = 'NT$ ' + totalShipping.toLocaleString();
+        if (simNet) {
+            simNet.innerText = 'NT$ ' + netProfit.toLocaleString();
+            simNet.style.color = netProfit >= 0 ? '#059669' : '#dc2626';
+        }
+        if (simMargin) simMargin.innerText = netMargin + '%';
+        if (simBe) simBe.innerText = breakEvenRoas;
+
+        // 漏斗條視覺更新
+        const f1Count = document.getElementById('funnel-step1-count');
+        const f2Count = document.getElementById('funnel-step2-count');
+        const f2Bar = document.getElementById('funnel-step2-bar');
+        const f3Count = document.getElementById('funnel-step3-count');
+        const f3Bar = document.getElementById('funnel-step3-bar');
+        const fLostText = document.getElementById('funnel-lost-carts-text');
+        const fLostVal = document.getElementById('funnel-lost-val-text');
+
+        if (f1Count) f1Count.innerText = totalIntent + ' 次 (100%)';
+        if (f2Count) f2Count.innerText = totalOrders + ' 筆 (' + conversionRate + '%)';
+        if (f2Bar) f2Bar.style.width = conversionRate + '%';
+        if (f3Count) f3Count.innerText = abandonedCartsCount + ' 筆 (' + abandonmentRate + '%)';
+        if (f3Bar) f3Bar.style.width = abandonmentRate + '%';
+        if (fLostText) fLostText.innerText = abandonedCartsCount;
+        if (fLostVal) fLostVal.innerText = 'NT$ ' + recoverableCartValue.toLocaleString();
+
+        // 暢銷植栽與商品營收排行榜
+        renderTopProductsList(productSales, totalRev);
+    }
+
+    function renderTopProductsList(productSales, totalRev) {
+        const container = document.getElementById('top-products-list');
+        if (!container) return;
+
+        const entries = Object.entries(productSales).sort((a, b) => b[1].revenue - a[1].revenue);
+        if (entries.length === 0) {
+            container.innerHTML = "<div class='empty-box' style='padding:16px;'>目前尚無商品銷售累計。</div>";
+            return;
+        }
+
+        let html = "";
+        entries.slice(0, 5).forEach(([name, data], idx) => {
+            const rankClass = idx === 0 ? 'rank-top1' : (idx === 1 ? 'rank-top2' : (idx === 2 ? 'rank-top3' : ''));
+            const pct = totalRev > 0 ? Math.round((data.revenue / totalRev) * 100) : 0;
+            html += `
+            <div class="rank-item">
+                <div style="display:flex; align-items:center;">
+                    <span class="rank-badge ${rankClass}">${idx + 1}</span>
+                    <div>
+                        <strong>${name}</strong>
+                        <div style="font-size:0.75rem; color:#888;">銷量：${data.qty} 件 · 佔營收 ${pct}%</div>
+                    </div>
+                </div>
+                <div style="text-align:right;">
+                    <strong style="color:var(--brand-main);">NT$ ${data.revenue.toLocaleString()}</strong>
+                </div>
+            </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    // 匯出電商營運分析報表 (CSV)
+    function exportAnalyticsCSV() {
+        if (!cachedOrders || cachedOrders.length === 0) {
+            alert("目前尚無訂單資料可供匯出報表。");
+            return;
+        }
+
+        let totalRev = 0;
+        cachedOrders.forEach(o => {
+            totalRev += Number(o.total_price !== undefined ? o.total_price : o.totalPrice) || 0;
+        });
+        const totalOrders = cachedOrders.length;
+        const aov = totalOrders > 0 ? Math.round(totalRev / totalOrders) : 0;
+        
+        const params = getSimulatorParams();
+        const adSpend = Number(document.getElementById('sim-input-adspend')?.value) || params.adSpend || 0;
+        const cogsRate = ((Number(document.getElementById('sim-input-cogs')?.value) || params.cogsRate || 35) / 100);
+        const shippingPerOrder = Number(document.getElementById('sim-input-shipping')?.value) || params.shippingCost || 0;
+
+        const roas = adSpend > 0 ? (totalRev / adSpend).toFixed(2) : 'N/A';
+        const cogs = Math.round(totalRev * cogsRate);
+        const shipping = totalOrders * shippingPerOrder;
+        const totalCost = cogs + adSpend + shipping;
+        const netProfit = totalRev - totalCost;
+        const roi = totalCost > 0 ? ((netProfit / totalCost) * 100).toFixed(1) + '%' : 'N/A';
+        const cac = totalOrders > 0 ? Math.round(adSpend / totalOrders) : 0;
+
+        const abandonedCartsCount = Array.isArray(cachedCarts) ? cachedCarts.length : 0;
+        const totalIntent = totalOrders + abandonedCartsCount;
+        const cr = totalIntent > 0 ? ((totalOrders / totalIntent) * 100).toFixed(1) + '%' : '0%';
+
+        const rows = [
+            ["指標維度", "指標名稱", "數值", "單位", "備註說明"],
+            ["營收與規模", "總訂單數 (Total Orders)", totalOrders, "筆", "全站成立訂單數"],
+            ["營收與規模", "總營業額 (Total Revenue)", totalRev, "NT$", "已成交與待處理總額"],
+            ["客單與定價", "平均客單價 (AOV)", aov, "NT$/筆", "總營收 / 總訂單數"],
+            ["行銷投報", "廣告投資報酬率 (ROAS)", roas, "倍 (x)", "總營收 / 廣告花費"],
+            ["淨利回報", "淨投資報酬率 (ROI)", roi, "%", "(淨利潤 / 總成本) * 100%"],
+            ["獲客成本", "每筆訂單獲客成本 (CAC)", cac, "NT$/筆", "廣告費 / 總訂單數"],
+            ["獲利能力", "預估商品銷貨成本 (COGS)", cogs, "NT$", "進貨植物與資材成本"],
+            ["獲利能力", "廣告投入費用", adSpend, "NT$", "行銷花費"],
+            ["獲利能力", "物流與包裝雜支", shipping, "NT$", "包裝紙箱防撞棉與宅配補貼"],
+            ["獲利能力", "預估實質淨利潤", netProfit, "NT$", "營收 - 商品成本 - 廣告 - 物流"],
+            ["轉化漏斗", "購物車結帳轉化率 (CR)", cr, "%", "訂單數 / (訂單數 + 遺棄購物車)"],
+            ["轉化漏斗", "未結帳購物車數", abandonedCartsCount, "筆", "待挽回潛在客戶數"]
+        ];
+
+        let csvContent = "﻿" + rows.map(r => r.map(cell => `"${cell}"`).join(",")).join("\n");
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        const now = new Date();
+        const dateStr = now.toISOString().slice(0, 10);
+        link.setAttribute("href", url);
+        link.setAttribute("download", `CatGaze_電商營運與ROI分析報表_${dateStr}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
     // 預設先產生一組隨機商品代號方便直接填表

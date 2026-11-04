@@ -35,6 +35,60 @@ if (typeof firebase !== 'undefined' && !firebase.apps.length) {
 }
 const database = (typeof firebase !== 'undefined' && typeof firebase.database === 'function') ? firebase.database() : null;
 
+// 雙軌雲端會員 Session 橋接器：當 Firebase Console 尚未啟用 Auth 時，讓 orders.html 與 favorites.html 自動識別 CatGazeProfile 雲端會員
+(function initCloudMemberSessionBridge() {
+    if (typeof firebase === 'undefined' || !firebase.auth) return;
+    try {
+        const authInstance = firebase.auth();
+        const origOnAuth = authInstance.onAuthStateChanged.bind(authInstance);
+        authInstance.onAuthStateChanged = function(nextOrObserver, error, completed) {
+            return origOnAuth(function(user) {
+                if (user) {
+                    if (typeof nextOrObserver === 'function') nextOrObserver(user);
+                    else if (nextOrObserver && typeof nextOrObserver.next === 'function') nextOrObserver.next(user);
+                    return;
+                }
+                let localProf = null;
+                try { localProf = JSON.parse(localStorage.getItem('CatGazeProfile')); } catch (e) {}
+                const pageKey = (window.location.pathname.split('/').pop() || '').replace('.html', '');
+                if (localProf && localProf.email && pageKey !== 'admin') {
+                    const fallbackUid = localProf.uid || ('MEMBER_' + String(localProf.email).trim().toLowerCase().replace(/[.#$\[\]@]/g, '_'));
+                    const syntheticUser = {
+                        uid: fallbackUid,
+                        email: localProf.email,
+                        displayName: localProf.name || localProf.email.split('@')[0],
+                        phoneNumber: localProf.phone || '',
+                        updateProfile: function() { return Promise.resolve(); }
+                    };
+                    if (!authInstance.currentUser) {
+                        try {
+                            Object.defineProperty(authInstance, 'currentUser', {
+                                configurable: true,
+                                get: function() {
+                                    let p = null;
+                                    try { p = JSON.parse(localStorage.getItem('CatGazeProfile')); } catch (e) {}
+                                    if (!p || !p.email) return null;
+                                    return {
+                                        uid: p.uid || ('MEMBER_' + String(p.email).trim().toLowerCase().replace(/[.#$\[\]@]/g, '_')),
+                                        email: p.email,
+                                        displayName: p.name || p.email.split('@')[0]
+                                    };
+                                }
+                            });
+                        } catch (e) {}
+                    }
+                    if (typeof nextOrObserver === 'function') nextOrObserver(syntheticUser);
+                    else if (nextOrObserver && typeof nextOrObserver.next === 'function') nextOrObserver.next(syntheticUser);
+                    return;
+                }
+                if (typeof nextOrObserver === 'function') nextOrObserver(null);
+                else if (nextOrObserver && typeof nextOrObserver.next === 'function') nextOrObserver.next(null);
+            }, error, completed);
+        };
+    } catch (e) {}
+})();
+
+
 let cart = [];
 try {
     cart = JSON.parse(localStorage.getItem('CatGazeCart')) || [];
@@ -175,14 +229,15 @@ function addToCart(pName, pPrice, pImage) {
 }
 
 function addToFavorites(pName, pPrice, pImage) {
-    if (typeof firebase === 'undefined' || !firebase.auth) {
-        alert("請先登入會員才能收藏植物喔！");
-        window.location.href = "member.html";
-        return;
-    }
-    const user = firebase.auth().currentUser;
-    if (!user) {
-        alert("請先登入會員才能收藏植物喔！");
+    const user = (typeof firebase !== 'undefined' && firebase.auth) ? firebase.auth().currentUser : null;
+    let profile = null;
+    try {
+        profile = JSON.parse(localStorage.getItem('CatGazeProfile'));
+    } catch (e) {}
+
+    const targetUid = (user && user.uid) || (profile && profile.uid) || getUserKey();
+    if (!targetUid || !database) {
+        alert("請先至【👤 會員】登入或註冊，即可收藏喜愛的植物喔！");
         window.location.href = "member.html";
         return;
     }
@@ -195,8 +250,8 @@ function addToFavorites(pName, pPrice, pImage) {
     };
 
     const favKey = pName.replace(/[.#$\[\]\s]/g, '_');
-    firebase.database().ref('favorites/' + user.uid + '/' + favKey).set(favData)
-        .then(() => alert("✨ 已加入收藏清單"))
+    database.ref('favorites/' + targetUid + '/' + favKey).set(favData)
+        .then(() => alert("✨ 已加入您的收藏清單！"))
         .catch(() => alert("收藏失敗，請稍後再試"));
 }
 

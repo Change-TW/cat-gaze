@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>會員中心 | Cat Gaze</title>
+    <title>會員中心 | Cat Gaze 貓凝植栽</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --brand-main: #7F916A;
+            --brand-dark: #5d7065;
             --brand-cream: #FDFAD9;
             --bg-light: #fcfcf8;
             --text-dark: #4a4a4a;
+            --price-color: #d14900;
         }
         body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-light); margin: 0; color: var(--text-dark); line-height: 1.6; }
-        .container { width: 90%; max-width: 1000px; margin: 0 auto; }
-        
-        /* --- 全站統一 Header 導覽列 --- */
+        .container { width: 90%; max-width: 1040px; margin: 0 auto; }
         header {
             background-color: #ffffff;
             border-bottom: 1px solid #eeeeee;
@@ -39,7 +39,7 @@
             text-decoration: none;
             gap: 10px;
         }
-        .logo-img, .site-logo {
+        .logo-img {
             height: 42px;
             width: auto;
             border-radius: 50%;
@@ -83,90 +83,205 @@
             font-weight: bold;
             line-height: 1.2;
         }
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                height: auto;
-                padding: 10px 0;
-                gap: 12px;
-            }
-            .nav-links {
-                justify-content: center;
-                gap: 12px;
-                width: 100%;
-            }
-            .nav-links a {
-                font-size: 0.88rem;
-            }
-        }
-
         .member-wrapper {
             display: grid;
-            grid-template-columns: 240px 1fr;
+            grid-template-columns: 250px 1fr;
             gap: 30px;
             padding: 3rem 0;
         }
         .member-sidebar {
             background: white;
             padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
             height: fit-content;
+            border: 1px solid #f0f2ee;
         }
         .sidebar-item {
             display: block;
             text-decoration: none;
-            padding: 15px;
+            padding: 13px 15px;
             cursor: pointer;
-            border-radius: 8px;
-            margin-bottom: 5px;
+            border-radius: 10px;
+            margin-bottom: 6px;
             color: var(--text-dark);
-            transition: 0.3s;
+            transition: 0.25s;
             font-size: 0.95rem;
         }
-        .sidebar-item:hover, .sidebar-item.active { background: #f0f3ed; color: var(--brand-main); font-weight: bold; }
+        .sidebar-item:hover, .sidebar-item.active { background: #f0f4ec; color: var(--brand-main); font-weight: 700; }
         .sidebar-nav-mobile { display: flex; flex-direction: column; }
         .member-content {
             background: white;
-            padding: 35px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            padding: 36px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            border: 1px solid #f0f2ee;
         }
-        .form-section { margin-bottom: 40px; }
+
+        /* 認證狀態橫幅 */
+        #member-status-banner {
+            display: none;
+            padding: 13px 18px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        .banner-success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+        .banner-warn { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+        .banner-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+
+        /* 雙軌登入與快速註冊卡片 */
+        .auth-card {
+            background: linear-gradient(180deg, #fafcf8 0%, #f4f7f0 100%);
+            border: 1.5px solid #dce5d5;
+            border-radius: 14px;
+            padding: 26px 24px;
+            margin-bottom: 32px;
+        }
+        .auth-card-title {
+            font-size: 1.18rem;
+            font-weight: 700;
+            color: var(--brand-main);
+            margin: 0 0 6px;
+            text-align: center;
+        }
+        .auth-card-sub {
+            font-size: 0.86rem;
+            color: #666;
+            text-align: center;
+            margin: 0 0 20px;
+        }
+        .btn-google-login {
+            background: white;
+            color: #333;
+            border: 1.5px solid #d1d5db;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 0 auto 18px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            width: 100%;
+            max-width: 360px;
+            transition: 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .btn-google-login:hover {
+            border-color: var(--brand-main);
+            background: #fcfdf9;
+            transform: translateY(-1px);
+        }
+        .auth-divider {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.82rem;
+            margin: 16px 0;
+        }
+        .auth-mode-tabs {
+            display: flex;
+            max-width: 360px;
+            margin: 0 auto 16px;
+            background: #e5ece0;
+            border-radius: 10px;
+            padding: 4px;
+        }
+        .auth-tab-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: #556350;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .auth-tab-btn.active {
+            background: white;
+            color: var(--brand-main);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+        .auth-form-box {
+            max-width: 360px;
+            margin: 0 auto;
+        }
+        .auth-input {
+            width: 100%;
+            padding: 11px 14px;
+            margin-bottom: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 0.95rem;
+            background: white;
+            outline: none;
+        }
+        .auth-input:focus { border-color: var(--brand-main); box-shadow: 0 0 0 3px rgba(127,145,106,0.14); }
+        .btn-auth-submit {
+            width: 100%;
+            background: var(--brand-main);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.96rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 4px;
+        }
+        .btn-auth-submit:hover { background: var(--brand-dark); }
+
+        .form-section { margin-bottom: 36px; }
         .form-section h3 { 
-            font-size: 1.2rem;
+            font-size: 1.18rem;
             border-left: 5px solid var(--brand-main); 
-            padding-left: 15px; 
-            margin-bottom: 25px; 
+            padding-left: 14px; 
+            margin-bottom: 22px; 
             color: var(--brand-main); 
         }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 7px; font-weight: 600; font-size: 0.9rem; color: #374151; }
         .form-group input, .form-group select {
-            width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 10px; 
-            box-sizing: border-box; background: #fafafa; font-size: 1rem;
+            width: 100%; padding: 12px 14px; border: 1px solid #e5e7eb; border-radius: 10px; 
+            box-sizing: border-box; background: #fafafa; font-size: 0.96rem; outline: none;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--brand-main);
+            background: #ffffff;
         }
         .interest-tags { display: flex; gap: 10px; flex-wrap: wrap; }
         .tag-checkbox { display: none; }
         .tag-label {
-            padding: 8px 20px; border: 1px solid #eee; border-radius: 25px; 
-            cursor: pointer; transition: 0.3s; font-size: 0.85rem; background: white;
+            padding: 8px 18px; border: 1px solid #e5e7eb; border-radius: 25px; 
+            cursor: pointer; transition: 0.25s; font-size: 0.86rem; background: white; font-weight: 500;
         }
-        .tag-checkbox:checked + .tag-label { background: var(--brand-main); color: white; border-color: var(--brand-main); }
+        .tag-checkbox:checked + .tag-label { background: var(--brand-main); color: white; border-color: var(--brand-main); font-weight: 700; }
         .btn-save {
             background: var(--brand-main); color: white; border: none; padding: 15px;
             border-radius: 30px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1rem;
             box-shadow: 0 5px 15px rgba(127, 145, 106, 0.3); transition: 0.3s;
         }
         .btn-save:hover { transform: translateY(-2px); background: #6a7a59; }
+
         @media (max-width: 768px) {
+            .navbar { flex-direction: column; height: auto; padding: 10px 0; gap: 12px; }
+            .nav-links { justify-content: center; gap: 12px; width: 100%; }
+            .nav-links a { font-size: 0.88rem; }
             .member-wrapper { grid-template-columns: 1fr; padding: 1.5rem 0; gap: 20px; }
             .member-sidebar { padding: 15px; display: flex; flex-direction: column; align-items: center; }
             .sidebar-nav-mobile {
                 flex-direction: row; overflow-x: auto; width: 100%; gap: 10px; padding-bottom: 10px;
             }
             .sidebar-item { white-space: nowrap; margin-bottom: 0; padding: 8px 15px; background: #f5f5f5; font-size: 0.85rem; }
-            .member-content { padding: 25px 20px; }
+            .member-content { padding: 24px 18px; }
             .form-section h3 { font-size: 1.1rem; }
         }
     </style>
@@ -199,102 +314,120 @@
     <div class="member-wrapper">
         <aside class="member-sidebar">
             <div style="text-align: center; margin-bottom: 20px;">
-                <div style="width: 70px; height: 70px; background: var(--brand-cream); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; border: 2px solid white; box-shadow: 0 5px 10px rgba(0,0,0,0.05);">🐱</div>
-                <div style="font-weight: bold; color: var(--brand-main);" id="display-name">訪客</div>
-                <div style="font-size: 0.75rem; color: #aaa; letter-spacing: 1px;">GENERAL MEMBER</div>
+                <div style="width: 72px; height: 72px; background: var(--brand-cream); border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 1.85rem; border: 2px solid #7F916A; box-shadow: 0 5px 12px rgba(0,0,0,0.06);">🐾</div>
+                <div style="font-weight: 700; color: var(--brand-main); font-size: 1.05rem;" id="display-name">訪客</div>
+                <div style="font-size: 0.74rem; color: #888; letter-spacing: 0.5px; margin-top: 2px;" id="display-role-tag">GUEST VISITOR</div>
             </div>
             
             <div class="sidebar-nav-mobile">
-                <a href="member.html" class="sidebar-item active">個人資料</a>
-                <a href="orders.html" class="sidebar-item">訂單查詢</a>
-                <a href="favorites.html" class="sidebar-item">我的收藏</a>
-                <div class="sidebar-item" id="logout-btn" style="color: #ff4d4d;">登出</div>
+                <a href="member.html" class="sidebar-item active">👤 個人資料與偏好</a>
+                <a href="orders.html" class="sidebar-item">📦 歷史訂單查詢</a>
+                <a href="favorites.html" class="sidebar-item">❤️ 我的收藏植栽</a>
+                <a href="https://line.me/R/ti/p/@201zilzp" target="_blank" class="sidebar-item" style="color: #06C755; font-weight: 700;">💬 聯繫 LINE 官方客服</a>
+                <div class="sidebar-item" id="logout-btn" style="color: #e11d48; display: none;">🚪 登出帳號</div>
             </div>
         </aside>
 
         <main class="member-content">
-            <div class="form-section">
-                <h3>基本資料收集</h3>
-                <div class="form-group">
-                    <label>真實姓名</label>
-                    <input type="text" id="member-name" placeholder="請輸入姓名">
-                </div>
-                <div class="form-group">
-                    <label>聯絡電話 (供訂單配送聯繫)</label>
-                    <input type="tel" id="member-phone" placeholder="例如：0912-345-678">
-                </div>
+            <!-- 訊息通知橫幅 -->
+            <div id="member-status-banner"></div>
 
-                <div id="login-section" style="text-align: center; margin-bottom: 30px;">
-                    <p>登入後即可同步您的雲端購物車與收藏</p>
-                    
-                    <button onclick="handleGoogleLogin()" style="background: white; color: #444; border: 1px solid #ddd; padding: 10px 20px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-weight: bold; width: 100%; max-width: 300px;">
-                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" style="margin-right: 10px;" alt="Google">
-                        使用 Google 登入
-                    </button>
+            <!-- 未登入時顯示：Google 登入 ＋ 10秒快速註冊/登入雙軌區塊 -->
+            <div id="login-section" class="auth-card">
+                <div class="auth-card-title">🐾 歡迎來到 Cat Gaze 貓凝植栽會員中心</div>
+                <div class="auth-card-sub">註冊或登入後即可同步雲端購物車、查看訂單進度並享有專屬選植推薦</div>
+                
+                <button type="button" class="btn-google-login" onclick="handleGoogleLogin()">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
+                    <span>使用 Google 帳號一鍵登入</span>
+                </button>
 
-                    <div style="margin: 20px 0; color: #ccc;">─── 或使用帳號密碼 ───</div>
+                <div class="auth-divider">─── 或使用信箱快速註冊／登入（免驗證碼即刻開通） ───</div>
 
-                    <div style="max-width: 300px; margin: 0 auto;">
-                        <input type="email" id="login-email" placeholder="電子郵件" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                        <input type="password" id="login-pw" placeholder="密碼 (至少 6 位)" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                        
-                        <div style="display: flex; gap: 10px;">
-                            <button onclick="handleEmailLogin()" style="flex: 1; background: var(--brand-main); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">登入</button>
-                            <button onclick="handleEmailSignUp()" style="flex: 1; background: white; color: var(--brand-main); border: 1px solid var(--brand-main); padding: 10px; border-radius: 5px; cursor: pointer;">註冊</button>
-                        </div>
-                    </div>
+                <div class="auth-mode-tabs">
+                    <button type="button" class="auth-tab-btn active" id="tab-btn-signup" onclick="switchAuthMode('signup')">✨ 免費註冊新會員</button>
+                    <button type="button" class="auth-tab-btn" id="tab-btn-login" onclick="switchAuthMode('login')">🔑 既有會員登入</button>
                 </div>
 
-                <div id="profile-fields" style="display:none;">
-                    <div class="form-group">
-                        <label>電子郵件 (已綁定帳號)</label>
-                        <input type="email" id="member-email" readonly style="background: #f0f0f0;">
-                    </div>
+                <!-- 註冊表單 -->
+                <div id="box-signup" class="auth-form-box">
+                    <input type="text" id="signup-name" class="auth-input" placeholder="您的姓名或暱稱（例：王小明）">
+                    <input type="tel" id="signup-phone" class="auth-input" placeholder="聯絡電話（供訂單配送通知，例：0912-345-678）">
+                    <input type="email" id="signup-email" class="auth-input" placeholder="電子郵件 Email（作為登入帳號）">
+                    <input type="password" id="signup-pw" class="auth-input" placeholder="設定密碼（至少 6 位字元）">
+                    <button type="button" class="btn-auth-submit" onclick="handleEmailSignUp()">✨ 立即完成註冊並登入</button>
+                </div>
+
+                <!-- 登入表單 -->
+                <div id="box-login" class="auth-form-box" style="display: none;">
+                    <input type="email" id="login-email" class="auth-input" placeholder="註冊之電子郵件 Email">
+                    <input type="password" id="login-pw" class="auth-input" placeholder="您的密碼">
+                    <button type="button" class="btn-auth-submit" onclick="handleEmailLogin()">🔑 登入會員中心</button>
                 </div>
             </div>
 
+            <!-- 個人基本資料區 -->
             <div class="form-section">
-                <h3>植栽偏好調查 (數據收集重點)</h3>
-                <p style="font-size: 0.9rem; color: #777;">這些資訊能幫助我們為您挑選更適合您的植物。</p>
+                <h3>基本聯繫資料（下單與配送通知使用）</h3>
+
+                <div id="profile-fields" style="display:none;">
+                    <div class="form-group">
+                        <label>已綁定電子郵件帳號</label>
+                        <input type="email" id="member-email" readonly style="background: #f1f5f9; color: #475569; font-weight: 600;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>真實姓名 / 收件人稱呼</label>
+                    <input type="text" id="member-name" placeholder="請輸入姓名">
+                </div>
+                <div class="form-group">
+                    <label>聯絡電話（供訂單配送與 LINE 對接聯繫）</label>
+                    <input type="tel" id="member-phone" placeholder="例如：0912-345-678">
+                </div>
+            </div>
+
+            <!-- 植栽偏好調查區 -->
+            <div class="form-section">
+                <h3>🌿 您的植栽空間與偏好（巧遇店長選植依據）</h3>
+                <p style="font-size: 0.9rem; color: #666; margin-top: -10px; margin-bottom: 18px;">勾選後點擊下方儲存，巧遇店長與職人將能為您提供更精準的養護與選品建議。</p>
                 
                 <div class="form-group">
-                    <label>您的植栽經驗</label>
+                    <label>您的植栽養護經驗</label>
                     <select id="experience">
-                        <option value="beginner">我是新手 (剛開始凝視植物)</option>
-                        <option value="intermediate">略有經驗 (養過幾盆且存活)</option>
-                        <option value="expert">植栽達人 (對修剪與換盆有心得)</option>
+                        <option value="beginner">🌱 我是新手（剛開始在都市空間養植物，希望好顧不死）</option>
+                        <option value="intermediate">🪴 略有經驗（養過幾盆室內或陽台植物且順利存活）</option>
+                        <option value="expert">🌲 植栽達人（對松柏修剪、換盆與赤玉土調配有心得）</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label>感興趣的類別</label>
+                    <label>感興趣的植栽與資材類別（可複選）</label>
                     <div class="interest-tags">
-                        <input type="checkbox" id="tag1" class="tag-checkbox" value="松柏"><label for="tag1" class="tag-label">松柏類</label>
-                        <input type="checkbox" id="tag2" class="tag-checkbox" value="雜木"><label for="tag2" class="tag-label">雜木類</label>
-                        <input type="checkbox" id="tag3" class="tag-checkbox" value="迷你盆景"><label for="tag3" class="tag-label">迷你盆景</label>
-                        <input type="checkbox" id="tag4" class="tag-checkbox" value="開花類"><label for="tag4" class="tag-label">開花類</label>
+                        <input type="checkbox" id="tag-pet" class="tag-checkbox" value="寵物友善無毒"><label for="tag-pet" class="tag-label">🐾 寵物友善無毒</label>
+                        <input type="checkbox" id="tag1" class="tag-checkbox" value="松柏"><label for="tag1" class="tag-label">🌲 松柏盆景類</label>
+                        <input type="checkbox" id="tag2" class="tag-checkbox" value="辦公室療癒"><label for="tag2" class="tag-label">💻 辦公室桌面療癒</label>
+                        <input type="checkbox" id="tag3" class="tag-checkbox" value="風水招財"><label for="tag3" class="tag-label">💰 風水招財開運</label>
+                        <input type="checkbox" id="tag4" class="tag-checkbox" value="塊根多肉"><label for="tag4" class="tag-label">🌵 塊根與多肉植物</label>
+                        <input type="checkbox" id="tag5" class="tag-checkbox" value="養護資材"><label for="tag5" class="tag-label">🛠️ 日本盆器與養護資材</label>
                     </div>
                 </div>
             </div>
 
-            <button class="btn-save" onclick="saveProfile()">儲存個人檔案</button>
+            <button class="btn-save" onclick="saveProfile()">💾 儲存個人檔案與植栽偏好</button>
         </main>
     </div>
 </div>
 
-
 <div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
-
 <div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; max-width:90vw; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
         <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
         <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
     </div>
-
     <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;">
         <p style="text-align:center; color:#999;">目前沒有選購植物</p>
     </div>
-
     <div style="border-top:1px solid #eee; padding-top:20px;">
         <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
             <span>總計金額</span>
@@ -311,117 +444,388 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script src="cart-system.js"></script>
 
-
 <script>
+    // 確保 Firebase 獨立初始化不漏接
+    const memberFirebaseConfig = {
+        apiKey: "AIzaSyCe9jsOgigX1Ok4sMbr1P2o4RcSM15BI_U",
+        authDomain: "cat-gaze-bonsai.firebaseapp.com",
+        databaseURL: "https://cat-gaze-bonsai-default-rtdb.firebaseio.com",
+        projectId: "cat-gaze-bonsai",
+        storageBucket: "cat-gaze-bonsai.firebasestorage.app",
+        messagingSenderId: "411112352421",
+        appId: "1:411112352421:web:265bd6e1372df985cefb4c",
+        measurementId: "G-8ZW69YQQN0"
+    };
+    if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+        firebase.initializeApp(memberFirebaseConfig);
+    }
+
     const auth = firebase.auth();
+    const db = firebase.database();
     const provider = new firebase.auth.GoogleAuthProvider();
 
-    function updateUI(user) {
-        const profileFields = document.getElementById('profile-fields');
-        const loginSection = document.getElementById('login-section');
-        const displayName = document.getElementById('display-name');
+    function showMemberBanner(msg, type) {
+        const banner = document.getElementById('member-status-banner');
+        if (!banner) return;
+        banner.className = type === 'error' ? 'banner-error' : (type === 'warn' ? 'banner-warn' : 'banner-success');
+        banner.innerHTML = msg;
+        banner.style.display = 'block';
+        banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
 
-        if (user) {
-            profileFields.style.display = 'block';
-            loginSection.style.display = 'none';
-            displayName.innerText = user.displayName || user.email.split('@')[0];
-            
-            document.getElementById('member-name').value = user.displayName || "";
-            document.getElementById('member-email').value = user.email;
-
-            let savedPhone = "";
-            try {
-                const existing = JSON.parse(localStorage.getItem('CatGazeProfile'));
-                if (existing && existing.phone) savedPhone = existing.phone;
-            } catch(e) {}
-            if (savedPhone) document.getElementById('member-phone').value = savedPhone;
-
-            localStorage.setItem('CatGazeProfile', JSON.stringify({
-                name: user.displayName || user.email.split('@')[0],
-                email: user.email,
-                phone: savedPhone,
-                uid: user.uid
-            }));
+    function switchAuthMode(mode) {
+        const btnSignup = document.getElementById('tab-btn-signup');
+        const btnLogin = document.getElementById('tab-btn-login');
+        const boxSignup = document.getElementById('box-signup');
+        const boxLogin = document.getElementById('box-login');
+        if (mode === 'login') {
+            btnSignup.classList.remove('active');
+            btnLogin.classList.add('active');
+            boxSignup.style.display = 'none';
+            boxLogin.style.display = 'block';
         } else {
-            profileFields.style.display = 'none';
-            loginSection.style.display = 'block';
-            displayName.innerText = "訪客";
+            btnLogin.classList.remove('active');
+            btnSignup.classList.add('active');
+            boxLogin.style.display = 'none';
+            boxSignup.style.display = 'block';
         }
     }
 
-    auth.onAuthStateChanged(updateUI);
-
-    function handleGoogleLogin() {
-        auth.signInWithPopup(provider)
-            .then((result) => alert("歡迎回來，" + result.user.displayName))
-            .catch((error) => alert("Google 登入失敗: " + error.message));
+    function emailToCloudKey(email) {
+        return 'MEMBER_' + String(email || '').trim().toLowerCase().replace(/[.#$\[\]@]/g, '_');
     }
 
+    function simpleHash(str) {
+        let h = 0;
+        for (let i = 0; i < str.length; i++) {
+            h = ((h << 5) - h) + str.charCodeAt(i);
+            h |= 0;
+        }
+        return 'H' + Math.abs(h).toString(36);
+    }
+
+    // 統一更新會員中心畫面（同時支援 Firebase Auth User 與 Realtime Database 雲端直通會員）
+    function renderLoggedInMember(memberObj) {
+        const profileFields = document.getElementById('profile-fields');
+        const loginSection = document.getElementById('login-section');
+        const displayName = document.getElementById('display-name');
+        const roleTag = document.getElementById('display-role-tag');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        if (!memberObj || !memberObj.email) {
+            profileFields.style.display = 'none';
+            loginSection.style.display = 'block';
+            displayName.innerText = '訪客';
+            if (roleTag) roleTag.innerText = 'GUEST VISITOR';
+            if (logoutBtn) logoutBtn.style.display = 'none';
+            return;
+        }
+
+        const uid = memberObj.uid || emailToCloudKey(memberObj.email);
+        const defaultName = memberObj.name || memberObj.displayName || memberObj.email.split('@')[0];
+
+        profileFields.style.display = 'block';
+        loginSection.style.display = 'none';
+        if (logoutBtn) logoutBtn.style.display = 'block';
+        displayName.innerText = defaultName;
+        if (roleTag) roleTag.innerText = 'VIP MEMBER';
+
+        document.getElementById('member-name').value = defaultName;
+        document.getElementById('member-email').value = memberObj.email;
+        if (memberObj.phone) document.getElementById('member-phone').value = memberObj.phone;
+
+        db.ref('users/' + uid).once('value').then((snap) => {
+            const existing = snap.val();
+            if (existing) {
+                const finalName = existing.name || defaultName;
+                const finalPhone = existing.phone || memberObj.phone || '';
+                document.getElementById('member-name').value = finalName;
+                displayName.innerText = finalName;
+                if (finalPhone) document.getElementById('member-phone').value = finalPhone;
+                if (existing.experience) document.getElementById('experience').value = existing.experience;
+                if (Array.isArray(existing.interests)) {
+                    document.querySelectorAll('.tag-checkbox').forEach(cb => {
+                        cb.checked = existing.interests.includes(cb.value);
+                    });
+                }
+                db.ref('users/' + uid).update({
+                    email: memberObj.email,
+                    lastLogin: new Date().toISOString()
+                });
+                localStorage.setItem('CatGazeProfile', JSON.stringify({
+                    name: finalName,
+                    email: memberObj.email,
+                    phone: finalPhone,
+                    uid: uid
+                }));
+            } else {
+                const initData = {
+                    name: defaultName,
+                    email: memberObj.email,
+                    phone: memberObj.phone || '',
+                    experience: document.getElementById('experience').value || 'beginner',
+                    interests: Array.from(document.querySelectorAll('.tag-checkbox:checked')).map(cb => cb.value),
+                    createdAt: new Date().toISOString(),
+                    lastUpdate: new Date().toISOString()
+                };
+                db.ref('users/' + uid).set(initData);
+                localStorage.setItem('CatGazeProfile', JSON.stringify({
+                    name: defaultName,
+                    email: memberObj.email,
+                    phone: memberObj.phone || '',
+                    uid: uid
+                }));
+            }
+        });
+    }
+
+    // 監聽 Firebase Auth 狀態，若無則自動檢查本機與雲端直通會員 Session
+    auth.onAuthStateChanged((user) => {
+        if (user && user.email) {
+            renderLoggedInMember({
+                uid: user.uid,
+                name: user.displayName || user.email.split('@')[0],
+                email: user.email
+            });
+            return;
+        }
+        try {
+            const savedProfile = JSON.parse(localStorage.getItem('CatGazeProfile'));
+            if (savedProfile && savedProfile.email) {
+                renderLoggedInMember(savedProfile);
+                return;
+            }
+        } catch (e) {}
+        renderLoggedInMember(null);
+    });
+
+    // 處理 Google 彈窗 / 跳轉登入與智慧診斷
+    function handleGoogleLogin() {
+        const ua = navigator.userAgent || '';
+        if (/Line\/|Instagram|FBAN|FBAV/i.test(ua)) {
+            showMemberBanner(
+                '💡 <strong>溫馨提醒</strong>：您目前在 LINE 或社群 App 內建瀏覽器中，Google 安全政策會阻擋內建視窗登入。<br>👉 請直接使用下方<strong>「免費註冊新會員（輸入信箱與密碼）」</strong>3 秒完成登入，或點選右上角「以預設瀏覽器 Safari/Chrome 開啟」！',
+                'warn'
+            );
+            document.getElementById('signup-name').focus();
+            return;
+        }
+
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                showMemberBanner('✨ 歡迎回來，' + (result.user.displayName || result.user.email) + '！已同步您的雲端會員資料。', 'success');
+            })
+            .catch((error) => {
+                const code = error.code || '';
+                if (code === 'auth/popup-blocked') {
+                    auth.signInWithRedirect(provider);
+                    return;
+                }
+                if (code === 'auth/unauthorized-domain' || code === 'auth/operation-not-allowed' || code === 'auth/configuration-not-found') {
+                    showMemberBanner(
+                        '💡 <strong>目前可直接用下方「信箱快速註冊／登入」立即開通會員！</strong><br>' +
+                        '<span style="font-size:0.82rem; font-weight:normal;">（系統檢測提示：若管理員欲開啟 Google 彈窗登入，請至 Firebase Console → Authentication → Sign-in method 啟用 Google，並於 Settings → Authorized domains 新增 <code>change-tw.github.io</code>）</span>',
+                        'warn'
+                    );
+                    document.getElementById('signup-name').focus();
+                } else {
+                    showMemberBanner('💡 Google 登入未完成（' + (error.message || code) + '），請直接使用下方「信箱快速註冊／登入」！', 'warn');
+                }
+            });
+    }
+
+    // 雙引擎會員註冊：優先使用 Firebase Auth，若後台未啟用則自動切換為 Realtime Database 雲端直通註冊
     function handleEmailSignUp() {
-        const email = document.getElementById('login-email').value;
-        const pw = document.getElementById('login-pw').value;
-        if(!email || !pw) return alert("請填寫 Email 與密碼");
-        
+        const nameVal = document.getElementById('signup-name').value.trim();
+        const phoneVal = document.getElementById('signup-phone').value.trim();
+        const email = document.getElementById('signup-email').value.trim().toLowerCase();
+        const pw = document.getElementById('signup-pw').value;
+
+        if (!nameVal) {
+            showMemberBanner('請輸入您的姓名或暱稱！', 'error');
+            document.getElementById('signup-name').focus();
+            return;
+        }
+        if (!email || !email.includes('@')) {
+            showMemberBanner('請輸入有效的電子郵件 Email！', 'error');
+            document.getElementById('signup-email').focus();
+            return;
+        }
+        if (!pw || pw.length < 6) {
+            showMemberBanner('密碼長度請至少設定 6 個字元！', 'error');
+            document.getElementById('signup-pw').focus();
+            return;
+        }
+
+        const experience = document.getElementById('experience').value || 'beginner';
+        const interests = Array.from(document.querySelectorAll('.tag-checkbox:checked')).map(cb => cb.value);
+
         auth.createUserWithEmailAndPassword(email, pw)
             .then((userCredential) => {
-                alert("註冊成功！");
-                userCredential.user.updateProfile({ displayName: email.split('@')[0] });
+                const u = userCredential.user;
+                u.updateProfile({ displayName: nameVal }).catch(() => {});
+                const memberRecord = {
+                    name: nameVal,
+                    phone: phoneVal,
+                    email: email,
+                    pwHash: simpleHash(pw),
+                    experience: experience,
+                    interests: interests,
+                    createdAt: new Date().toISOString(),
+                    lastUpdate: new Date().toISOString()
+                };
+                return db.ref('users/' + u.uid).set(memberRecord).then(() => {
+                    renderLoggedInMember({ uid: u.uid, name: nameVal, phone: phoneVal, email: email });
+                    showMemberBanner('🎉 註冊成功！歡迎加入 Cat Gaze 貓凝植栽，您的會員資料已同步至雲端。', 'success');
+                });
             })
-            .catch((error) => alert("註冊失敗: " + error.message));
+            .catch((error) => {
+                const code = error.code || '';
+                if (code === 'auth/email-already-in-use') {
+                    showMemberBanner('此電子郵件已經註冊過囉！已為您切換至「既有會員登入」，請直接輸入密碼登入。', 'warn');
+                    switchAuthMode('login');
+                    document.getElementById('login-email').value = email;
+                    document.getElementById('login-pw').focus();
+                    return;
+                }
+                // 自動無縫切換至 Realtime Database 雲端直通會員引擎
+                const cloudUid = emailToCloudKey(email);
+                db.ref('users/' + cloudUid).once('value')
+                    .then((snap) => {
+                        const existing = snap.val();
+                        if (existing && existing.pwHash && existing.pwHash !== simpleHash(pw)) {
+                            showMemberBanner('此信箱已註冊過會員，請切換至「既有會員登入」並輸入正確密碼！', 'warn');
+                            switchAuthMode('login');
+                            document.getElementById('login-email').value = email;
+                            return;
+                        }
+                        const memberRecord = {
+                            name: nameVal,
+                            phone: phoneVal,
+                            email: email,
+                            pwHash: simpleHash(pw),
+                            experience: experience,
+                            interests: interests,
+                            createdAt: (existing && existing.createdAt) || new Date().toISOString(),
+                            lastUpdate: new Date().toISOString()
+                        };
+                        return db.ref('users/' + cloudUid).set(memberRecord).then(() => {
+                            renderLoggedInMember({ uid: cloudUid, name: nameVal, phone: phoneVal, email: email });
+                            showMemberBanner('🎉 註冊成功！歡迎 ' + nameVal + ' 加入 Cat Gaze 貓凝植栽，您的會員資料已同步至雲端後台！', 'success');
+                        });
+                    })
+                    .catch((dbErr) => {
+                        showMemberBanner('註冊連線異常：' + dbErr.message, 'error');
+                    });
+            });
     }
 
+    // 雙引擎會員登入：同時支援 Firebase Auth 與 Realtime Database 雲端直通會員驗證
     function handleEmailLogin() {
-        const email = document.getElementById('login-email').value;
+        const email = document.getElementById('login-email').value.trim().toLowerCase();
         const pw = document.getElementById('login-pw').value;
-        if(!email || !pw) return alert("請填寫 Email 與密碼");
+
+        if (!email || !pw) {
+            showMemberBanner('請輸入電子郵件與密碼！', 'error');
+            return;
+        }
 
         auth.signInWithEmailAndPassword(email, pw)
-            .then(() => alert("登入成功！"))
-            .catch((error) => alert("登入失敗: " + error.message));
+            .then((res) => {
+                showMemberBanner('✨ 歡迎回來！您已成功登入會員中心。', 'success');
+                renderLoggedInMember({
+                    uid: res.user.uid,
+                    name: res.user.displayName || email.split('@')[0],
+                    email: email
+                });
+            })
+            .catch(() => {
+                // 查詢 Realtime Database 雲端直通會員表
+                const cloudUid = emailToCloudKey(email);
+                db.ref('users/' + cloudUid).once('value')
+                    .then((snap) => {
+                        const userObj = snap.val();
+                        if (!userObj) {
+                            showMemberBanner('找不到此信箱的會員紀錄，已為您切換至「免費註冊新會員」，填寫姓名即可立即開通！', 'warn');
+                            switchAuthMode('signup');
+                            document.getElementById('signup-email').value = email;
+                            document.getElementById('signup-pw').value = pw;
+                            document.getElementById('signup-name').focus();
+                            return;
+                        }
+                        if (userObj.pwHash && userObj.pwHash !== simpleHash(pw)) {
+                            showMemberBanner('密碼輸入不正確，請重新確認！', 'error');
+                            return;
+                        }
+                        renderLoggedInMember({
+                            uid: cloudUid,
+                            name: userObj.name || email.split('@')[0],
+                            phone: userObj.phone || '',
+                            email: email
+                        });
+                        showMemberBanner('✨ 歡迎回來，' + (userObj.name || email) + '！已載入您的雲端會員檔案與偏好。', 'success');
+                    })
+                    .catch((err) => {
+                        showMemberBanner('登入失敗：' + err.message, 'error');
+                    });
+            });
     }
 
     function saveProfile() {
         const user = auth.currentUser;
-        const nameVal = document.getElementById('member-name').value.trim();
-        const phoneVal = document.getElementById('member-phone').value.trim();
-        const emailVal = user ? user.email : (document.getElementById('login-email').value.trim() || 'guest@catgaze.com');
+        let savedSession = null;
+        try { savedSession = JSON.parse(localStorage.getItem('CatGazeProfile')); } catch (e) {}
+
+        const nameVal = document.getElementById('member-name').value.trim() || document.getElementById('signup-name').value.trim();
+        const phoneVal = document.getElementById('member-phone').value.trim() || document.getElementById('signup-phone').value.trim();
+        const emailVal = (user && user.email) || (savedSession && savedSession.email) || document.getElementById('member-email').value.trim() || document.getElementById('signup-email').value.trim() || document.getElementById('login-email').value.trim();
         const experience = document.getElementById('experience').value;
         const interests = Array.from(document.querySelectorAll('.tag-checkbox:checked')).map(cb => cb.value);
 
-        if (!nameVal) return alert("請輸入您的姓名！");
+        if (!nameVal) {
+            showMemberBanner('請先輸入您的真實姓名或稱呼！', 'error');
+            document.getElementById('member-name').focus();
+            return;
+        }
+        if (!emailVal) {
+            showMemberBanner('請先於上方輸入電子郵件完成註冊，或填寫 Email 以綁定您的個人檔案！', 'error');
+            document.getElementById('signup-email').focus();
+            return;
+        }
+
+        const targetUid = (user && user.uid) || (savedSession && savedSession.uid) || emailToCloudKey(emailVal);
 
         const localProfile = {
             name: nameVal,
             email: emailVal,
             phone: phoneVal,
-            uid: user ? user.uid : emailVal.replace(/\./g, '_')
+            uid: targetUid
         };
         localStorage.setItem('CatGazeProfile', JSON.stringify(localProfile));
-        document.getElementById('display-name').innerText = nameVal;
-
-        if (!user) {
-            alert("✨ 個人聯繫資料已儲存於本機，現在可直接進行購物車下單！");
-            return;
-        }
 
         const profileData = {
             name: nameVal,
             phone: phoneVal,
-            email: user.email,
+            email: emailVal,
             experience: experience,
             interests: interests,
             lastUpdate: new Date().toISOString()
         };
 
-        firebase.database().ref('users/' + user.uid).set(profileData)
-            .then(() => alert("✨ 個人偏好與聯繫資料已同步儲存至雲端！"))
-            .catch(err => alert("儲存失敗: " + err));
+        db.ref('users/' + targetUid).update(profileData)
+            .then(() => {
+                renderLoggedInMember(localProfile);
+                showMemberBanner('✨ 個人檔案與植栽偏好已成功同步儲存至雲端後台！現在可直接前往選購植物並使用 LINE 結帳。', 'success');
+            })
+            .catch(err => {
+                showMemberBanner('儲存失敗：' + err.message, 'error');
+            });
     }
 
     document.getElementById('logout-btn').onclick = function() {
-        if(confirm("確定要登出嗎？")) {
+        if (confirm("確定要登出會員帳號嗎？")) {
             localStorage.removeItem('CatGazeProfile');
-            auth.signOut().then(() => window.location.reload());
+            auth.signOut().then(() => window.location.reload()).catch(() => window.location.reload());
         }
     };
 </script>

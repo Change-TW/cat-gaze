@@ -18,7 +18,9 @@ const firebaseConfig = {
 };
 
 const CATGAZE_SHEET_ID = "128TMT_BQmWfIwZGH01UrU_WoHm5W_STX26DkP9MeDN0";
-const CATGAZE_LINE_URL = "https://line.me/R/ti/p/@catgaze";
+const CATGAZE_LINE_ID = "@201zilzp";
+const CATGAZE_LINE_URL = "https://line.me/R/ti/p/@201zilzp";
+const CATGAZE_LINE_OA_MSG_URL = "https://line.me/R/oaMessage/@201zilzp/?";
 
 // 🐾 巧遇店長無損驗證插畫基底與輕量眨眼貼片 (透過 Canvas 即時無縫合成，100% 杜絕色塊破圖)
 const QIAOYU_MEDIA = {
@@ -98,6 +100,27 @@ const DEFAULT_CATALOG_FALLBACK = {
         badge: '職人盆器', categories: ['tools'], subCategoryLabel: '職人盆器',
         template: 'tool', url: 'product.html?id=CG-TL003',
         tagline: '✦ 高溫柴燒自然落灰肌理，富含透氣微孔隙，讓植物根系自由呼吸。'
+    },
+    'CG-TL004': {
+        id: 'CG-TL004', status: '上架', title: '日本好康多 1號 長效緩釋基肥 (350g)', price: 185,
+        image: 'https://pcm4.trplus.com.tw/1000x1000/sys-master/productImages/hff/hd3/10412624707614/000000000016105288-gallery-01-20211028115401401.jpg',
+        badge: '養護資材', categories: ['tools'], subCategoryLabel: '養護資材',
+        template: 'tool', url: 'product.html?id=CG-TL004',
+        tagline: '✦ 日本樹脂裹覆緩釋技術，肥效長達 90 天，完全無臭無味不引蚊蠅小黑飛。'
+    },
+    'CG-TL005': {
+        id: 'CG-TL005', status: '上架', title: '植萃苦楝油＋茶皂素 免稀釋防護噴霧 (500ml)', price: 280,
+        image: 'https://www.fwusow.com.tw/images/products/%E8%82%A5%E6%96%99%E8%B3%87%E6%9D%90/%E5%BE%A1%E8%8A%B1%E5%9C%92%E7%B3%BB%E5%88%97/4-5_%E5%BE%A1%E8%8A%B1%E5%9C%92%E9%99%A4%E8%9F%B2%E5%8A%91-%E5%85%A8%E8%88%AC500ml.png',
+        badge: '養護資材', categories: ['tools'], subCategoryLabel: '養護資材',
+        template: 'tool', url: 'product.html?id=CG-TL005',
+        tagline: '✦ 天然冷壓苦楝油結合茶皂素，免稀釋防範介殼蟲與小黑飛，對貓狗毛孩環境溫和安全。'
+    },
+    'CG-TL006': {
+        id: 'CG-TL006', status: '上架', title: '日式極細長嘴 不鏽鋼烤漆澆水壺 (1.2L)', price: 580,
+        image: 'https://img.pchome.com.tw/cs/items/DQBR12A900KI0BV/000001_1790400903.jpg',
+        badge: '養護資材', categories: ['tools'], subCategoryLabel: '養護資材',
+        template: 'tool', url: 'product.html?id=CG-TL006',
+        tagline: '✦ 極細長彎嘴直達盆土根部，水流平穩不沖散赤玉土，室內案頭澆灌美學神器。'
     }
 };
 
@@ -260,14 +283,22 @@ function checkoutToLine() {
         return;
     }
 
+    const itemLines = cart.map((item, idx) => `${idx + 1}. ${item.name} (NT$ ${(Number(item.price) || 0).toLocaleString()})`).join('\n');
+    const lineOrderMsg = `【Cat Gaze 貓凝植栽｜官網選植結帳單】\n📦 訂單編號：${orderId}\n👤 訂購人：${profile.name || '官網會員'}（${profile.phone || ''}）\n🪴 選購品項：\n${itemLines}\n💰 總計金額：NT$ ${totalSum.toLocaleString()}\n\n巧遇店長你好！我已在官網送出訂單，請協助確認植株與匯款資訊，謝謝🐾`;
+
     database.ref('orders/' + orderId).set(orderData)
         .then(() => database.ref('carts/' + userKey).remove())
         .then(() => {
             cart = [];
             localStorage.setItem('CatGazeCart', JSON.stringify(cart));
             updateCount();
-            alert("✨ 訂單已傳送到雲端！編號：" + orderId);
             toggleCart();
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(lineOrderMsg).catch(() => {});
+            }
+            const targetLineUrl = CATGAZE_LINE_OA_MSG_URL + encodeURIComponent(lineOrderMsg);
+            alert("✨ 訂單已成立（編號：" + orderId + "）！\n系統已為您複製訂單明細，即將為您開啟【Cat Gaze LINE 官方帳號 (@201zilzp)】完成結帳確認🐾");
+            window.open(targetLineUrl, '_blank');
         })
         .catch(() => alert("傳送失敗，請檢查網路"));
 }
@@ -876,6 +907,11 @@ function applyQiaoyuVisualState(isBlinking, isGazingBonsai) {
 }
 
 function syncStaticPageQiaoyuAvatars() {
+    document.querySelectorAll('p, span, a, div, li').forEach(el => {
+        if (el.children.length === 0 && el.textContent && el.textContent.includes('@catgaze')) {
+            el.innerHTML = el.textContent.replace('@catgaze', '<a href="https://line.me/R/ti/p/@201zilzp" target="_blank" style="color:#06C755; font-weight:700; text-decoration:underline;">@201zilzp（點此加入 LINE 官方帳號）</a>');
+        }
+    });
     document.querySelectorAll('.qiaoyu-avatar, img[src="qiaoyu.jpg"]').forEach(img => {
         if (!img.classList.contains('qiaoyu-dynamic-avatar')) {
             img.src = QIAOYU_MEDIA.illus_open;
@@ -1519,6 +1555,7 @@ function injectQiaoyuManagerWidget() {
                 <div class="qiaoyu-style-bar">
                     <button type="button" class="qiaoyu-style-pill ${currentMode === 'anim' ? 'active' : ''}" data-mode="anim" onclick="window.switchQiaoyuMode('anim')">✨ 巧遇動畫</button>
                     <button type="button" class="qiaoyu-style-pill ${currentMode === 'illus' ? 'active' : ''}" data-mode="illus" onclick="window.switchQiaoyuMode('illus')">🎨 巧遇插畫</button>
+                    <a href="https://line.me/R/ti/p/@201zilzp" target="_blank" rel="noopener" class="qiaoyu-style-pill" style="text-decoration:none; background:#06C755; color:#ffffff; border-color:#06C755; font-weight:700;">💬 LINE 客服 (@201zilzp)</a>
                 </div>
             </div>
 
@@ -1530,6 +1567,7 @@ function injectQiaoyuManagerWidget() {
                 <button class="q-chip-btn" onclick="window.askQiaoyu('🌲 陽台喜光松柏盆景推薦')">🌲 松柏盆景推薦</button>
                 <button class="q-chip-btn" onclick="window.askQiaoyu('💧 怎麼判斷植物該澆水了？')">💧 澆水判斷法</button>
                 <button class="q-chip-btn" onclick="window.askQiaoyu('🪴 赤玉土跟修剪工具推薦')">🪴 介質與工具</button>
+                <button class="q-chip-btn" style="border-color:#06C755; color:#059669;" onclick="window.open('https://line.me/R/ti/p/@201zilzp', '_blank')">💬 加 LINE 診斷 (@201zilzp)</button>
             </div>
 
             <form class="qiaoyu-input-area" onsubmit="window.submitQiaoyuInput(event)">

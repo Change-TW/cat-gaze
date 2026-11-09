@@ -96,7 +96,7 @@ try {
     cart = [];
 }
 
-// 預設商品庫備援（僅保留我們新製作上架的 8 款主力植栽與資材，舊版範本商品已全面下架）
+// 預設商品庫備援（僅保留我們新製作上架的 7 款主力植栽與資材，舊版範本商品已全面下架）
 const DEFAULT_CATALOG_FALLBACK = {
     'CG-XD001': {
         id: 'CG-XD001', status: '上架', title: '小豆樹 | 療癒羽葉微景觀', price: 1200,
@@ -741,11 +741,23 @@ function bindDynamicCategoryFilters() {
 }
 
 function parseSheetRowToProduct(cells) {
-    const val = (idx) => (cells[idx] && cells[idx].v !== null && cells[idx].v !== undefined) ? String(cells[idx].v).trim() : '';
+    const val = (idx) => {
+        if (!cells[idx]) return '';
+        if (cells[idx].v !== null && cells[idx].v !== undefined && String(cells[idx].v).trim() !== '') {
+            return String(cells[idx].v).trim();
+        }
+        if (cells[idx].f !== null && cells[idx].f !== undefined) {
+            return String(cells[idx].f).trim();
+        }
+        return '';
+    };
     const id = val(0);
     const status = val(1);
     const title = val(2);
-    const priceRaw = cells[3] && cells[3].v !== null ? Number(String(cells[3].v).replace(/[^0-9.]/g, '')) : 0;
+    const rawPriceStr = val(3);
+    const parsedPrice = rawPriceStr ? (Number(String(rawPriceStr).replace(/[^0-9.]/g, '')) || 0) : 0;
+    const fallbackPrice = (DEFAULT_CATALOG_FALLBACK[id] && Number(DEFAULT_CATALOG_FALLBACK[id].price)) || 0;
+    const priceRaw = parsedPrice > 0 ? parsedPrice : fallbackPrice;
     const image = val(4) || 'CG_logo w bg_vertica_green.png';
     const badge = val(5) || '嚴選上架';
 

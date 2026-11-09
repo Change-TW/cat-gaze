@@ -687,55 +687,125 @@ function insertProductCardOnPage(p, pageKey) {
     }
 }
 
+
+function purgeAllLegacyStaticCards() {
+    const pageKey = getCurrentPageKey();
+    if (pageKey === 'admin') return;
+    document.querySelectorAll('.product-card, .bonsai-card, .feature-item').forEach(card => {
+        if (card.closest('.categories-section')) return;
+        if (!card.id || !card.id.startsWith('cloud-prod-')) {
+            card.innerHTML = '';
+            card.style.setProperty('display', 'none', 'important');
+            if (card.parentNode) {
+                card.parentNode.removeChild(card);
+            }
+        }
+    });
+}
+
+function updateFilterEmptyNotice(visibleCount, categoryLabel) {
+    const grid = getTargetProductGrid(getCurrentPageKey());
+    if (!grid) return;
+    let emptyEl = document.getElementById('catgaze-empty-filter-msg');
+    if (visibleCount === 0) {
+        if (!emptyEl) {
+            emptyEl = document.createElement('div');
+            emptyEl.id = 'catgaze-empty-filter-msg';
+            emptyEl.style.cssText = 'grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: #ffffff; border: 1.5px dashed #cdd9c5; border-radius: 16px; color: #5d7065; font-size: 1rem; font-weight: 600; margin: 10px 0;';
+            grid.appendChild(emptyEl);
+        }
+        emptyEl.innerHTML = `🐾 「<strong>${categoryLabel}</strong>」分類目前尚無上架商品，巧遇店長正為您嚴選準備中喵！`;
+        emptyEl.style.display = 'block';
+    } else if (emptyEl) {
+        emptyEl.style.display = 'none';
+    }
+}
+
 function bindDynamicCategoryFilters() {
     const pageKey = getCurrentPageKey();
+    purgeAllLegacyStaticCards();
 
     if (pageKey === 'pet-friendly') {
         const btns = document.querySelectorAll('.filter-tag');
         btns.forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.onclick = () => {
+                btns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
                 const selected = btn.textContent.trim();
-                document.querySelectorAll('.product-card').forEach(card => {
+                let shown = 0;
+                document.querySelectorAll('.product-card[id^="cloud-prod-"]').forEach(card => {
                     const cats = card.getAttribute('data-category') || '';
                     if (selected === '全部植物' || cats.includes(selected)) {
                         card.classList.remove('hidden');
                         card.style.display = '';
+                        shown++;
                     } else {
                         card.classList.add('hidden');
+                        card.style.display = 'none';
                     }
                 });
-            });
+                updateFilterEmptyNotice(shown, selected);
+            };
         });
     } else if (pageKey === 'products-mini') {
         const btns = document.querySelectorAll('.filter-btn');
         btns.forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.onclick = () => {
+                btns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
                 const filterVal = btn.getAttribute('data-filter') || 'all';
-                document.querySelectorAll('.product-card').forEach(card => {
+                const label = btn.textContent.trim();
+                let shown = 0;
+                document.querySelectorAll('.product-card[id^="cloud-prod-"]').forEach(card => {
                     const cats = card.getAttribute('data-category') || '';
                     if (filterVal === 'all' || cats.includes(filterVal)) {
                         card.style.display = 'block';
+                        shown++;
                     } else {
                         card.style.display = 'none';
                     }
                 });
-            });
+                updateFilterEmptyNotice(shown, label);
+            };
         });
+    } else if (pageKey === 'products-caudex') {
+        window.filterType = function(type, btn) {
+            document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            const label = btn ? btn.textContent.trim() : type;
+            let shown = 0;
+            document.querySelectorAll('.product-card[id^="cloud-prod-"]').forEach(card => {
+                if (type === 'all' || card.getAttribute('data-type') === type) {
+                    card.classList.remove('hidden');
+                    card.style.display = '';
+                    shown++;
+                } else {
+                    card.classList.add('hidden');
+                    card.style.display = 'none';
+                }
+            });
+            updateFilterEmptyNotice(shown, label);
+        };
     } else if (pageKey === 'tools') {
         const btns = document.querySelectorAll('.filter-btn');
         btns.forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.onclick = () => {
+                btns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
                 const selectedTag = btn.textContent.trim();
-                document.querySelectorAll('.product-card').forEach(card => {
+                let shown = 0;
+                document.querySelectorAll('.product-card[id^="cloud-prod-"]').forEach(card => {
                     const tagEl = card.querySelector('.product-tag');
                     const cardTag = tagEl ? tagEl.textContent.trim() : '';
                     if (selectedTag === '全部' || cardTag.includes(selectedTag)) {
                         card.style.display = 'flex';
+                        shown++;
                     } else {
                         card.style.display = 'none';
                     }
                 });
-            });
+                updateFilterEmptyNotice(shown, selectedTag);
+            };
         });
     }
 }
@@ -848,14 +918,8 @@ window.__onCatGazeSheetLoaded = function(response) {
     const wrongCardInCat = document.querySelector('.categories-section [id^="cloud-prod-"]');
     if (wrongCardInCat) wrongCardInCat.remove();
 
-    // 全面隱藏網頁內建的舊版靜態寫死商品卡片，讓官網 100% 只顯示雲端表單中設為「上架」的新商品
-    document.querySelectorAll('.product-card, .bonsai-card, .feature-item').forEach(card => {
-        if (card.closest('.categories-section')) return;
-        if (!card.id || !card.id.startsWith('cloud-prod-')) {
-            card.style.display = 'none';
-            card.setAttribute('data-legacy-hidden', 'true');
-        }
-    });
+    // 徹底從 DOM 移除網頁內建的舊版靜態寫死商品卡片，杜絕點擊篩選按鈕時舊商品復活
+    purgeAllLegacyStaticCards();
 
     rows.forEach((r) => {
         if (!r || !r.c) return;
@@ -1954,11 +2018,14 @@ function injectAutoSEOSchema() {
     }, 1500);
 }
 
-// 立即掛載巧遇店長
+// 立即移除所有舊版寫死的靜態商品卡片（早於頁面底部 inline script 抓取 .product-card 之前執行）並掛載巧遇店長
 if (document.body) {
+    try { purgeAllLegacyStaticCards(); } catch (e) {}
     try { injectQiaoyuManagerWidget(); } catch (e) {}
 }
 document.addEventListener('DOMContentLoaded', function() {
+    try { purgeAllLegacyStaticCards(); } catch (e) {}
+    try { bindDynamicCategoryFilters(); } catch (e) {}
     try { injectQiaoyuManagerWidget(); } catch (e) {}
 });
 

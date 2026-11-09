@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圓葉山烏龜 | 招財納福塊根微景觀 | Cat Gaze 貓凝植栽</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-main: #7F916A;
+            --brand-accent: #B0C4B8;
+            --brand-cream: #FDFAD9;
+            --bg-light: #fcfcf8;
+            --text-dark: #4a4a4a;
+            --price-color: #d14900;
+        }
+        body { font-family: 'Noto Sans TC', sans-serif; margin: 0; padding: 0; background-color: var(--bg-light); color: var(--text-dark); line-height: 1.75; }
+        .container { width: 90%; max-width: 1140px; margin: 0 auto; }
+        header { background-color: #ffffff; border-bottom: 1px solid #eeeeee; padding: 0.8rem 0; position: sticky; top: 0; z-index: 1000; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; width: 90%; max-width: 1200px; margin: 0 auto; min-height: 55px; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; gap: 10px; }
+        .logo-img { height: 42px; width: auto; border-radius: 50%; }
+        .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--brand-main); letter-spacing: 1px; }
+        .nav-links { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+        .nav-links a { text-decoration: none; color: #4a4a4a; font-weight: 500; font-size: 0.95rem; }
+        #cart-count { background: #d14900; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -10px; right: -15px; font-weight: bold; }
+        .breadcrumb { padding: 22px 0 10px; font-size: 0.9rem; color: #888; }
+        .breadcrumb a { color: var(--brand-main); text-decoration: none; }
+        .product-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding: 20px 0 50px; align-items: start; }
+        .img-frame { background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 12px 35px rgba(0,0,0,0.06); border: 1px solid #f0f0f0; position: relative; }
+        .img-frame img { width: 100%; height: 460px; object-fit: cover; display: block; }
+        .badge-float { position: absolute; top: 18px; left: 18px; background: var(--brand-main); color: white; padding: 6px 16px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; letter-spacing: 1px; }
+        .info-panel h1 { font-size: 1.9rem; color: #2c3527; margin: 8px 0 12px; line-height: 1.35; }
+        .price-box { font-size: 1.85rem; color: var(--price-color); font-weight: 700; margin-bottom: 18px; }
+        .tagline-box { background: #f4f7f0; border-left: 4px solid var(--brand-main); padding: 15px 18px; border-radius: 8px; margin-bottom: 22px; font-size: 0.95rem; color: #3d4a35; }
+        .spec-table { width: 100%; border-collapse: collapse; margin-bottom: 22px; background: white; border-radius: 12px; overflow: hidden; border: 1px solid #eee; }
+        .spec-table td { padding: 12px 16px; border-bottom: 1px solid #f2f2f2; font-size: 0.92rem; }
+        .spec-table td:first-child { width: 32%; font-weight: 700; color: var(--brand-main); background: #fafcf8; }
+        .pet-banner { background: #FDFAD9; border: 1px solid #e5dec0; padding: 12px 16px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; color: #5c5336; margin-bottom: 24px; }
+        .btn-group { display: flex; gap: 14px; }
+        .btn-buy { flex: 1; background: var(--brand-main); color: white; border: none; padding: 15px 24px; border-radius: 30px; font-size: 1.02rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-buy:hover { background: #5d7065; transform: translateY(-2px); }
+        .btn-fav { background: white; color: var(--brand-main); border: 1.5px solid var(--brand-main); padding: 15px 22px; border-radius: 30px; font-weight: 700; cursor: pointer; }
+        .care-section { background: white; border-radius: 18px; padding: 36px; margin: 20px 0 60px; box-shadow: 0 8px 25px rgba(0,0,0,0.03); }
+        .care-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 24px; margin-top: 22px; }
+        .care-card { background: #fafcf8; border: 1px solid #edf2e8; border-radius: 12px; padding: 20px; }
+        .care-card h4 { margin: 0 0 8px; color: var(--brand-main); font-size: 1.05rem; }
+        .care-card p { margin: 0; font-size: 0.88rem; color: #666; }
+        footer { background-color: var(--brand-main); color: white; text-align: center; padding: 3rem 0; margin-top: 4rem; }
+        @media (max-width: 768px) { .product-hero { grid-template-columns: 1fr; gap: 24px; } .img-frame img { height: 320px; } }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container navbar">
+        <a href="index.html" class="logo-container">
+            <img src="CG_logo w bg_vertica_green.png" alt="Cat Gaze Logo" class="logo-img">
+            <span class="logo-text">Cat Gaze</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">首頁</a>
+            <a href="new-arrivals.html">嚴選新品</a>
+            <a href="categories.html">各類品項</a>
+            <a href="tools.html">資材用具</a>
+            <a href="knowledge.html">知識中心</a>
+            <a href="about.html">關於我們</a>
+            <a href="contact.html">聯繫我們</a>
+            <a href="member.html">👤 會員</a>
+            <a href="javascript:void(0)" onclick="toggleCart()" style="position: relative;">
+                🛒 購物車 <span id="cart-count">0</span>
+            </a>
+        </nav>
+    </div>
+</header>
+
+<div class="container">
+    <div class="breadcrumb">
+        <a href="index.html">首頁</a> / <a href="categories.html">綠手指入門｜塊根植物</a> / <span>圓葉山烏龜 | 招財納福塊根微景觀</span>
+    </div>
+
+    <div class="product-hero">
+        <div class="img-frame">
+            <span class="badge-float">本週熱銷 Top 1</span>
+            <img id="display-img" src="https://cdn01.pinkoi.com/product/3THgAMJZ/0/1/640x530.jpg" alt="圓葉山烏龜 | 招財納福塊根微景觀" onerror="this.src='CG_logo w bg_vertica_green.png'">
+        </div>
+        <div class="info-panel">
+            <div style="font-size:0.85rem; color:#7F916A; font-weight:700; letter-spacing:1px;">ITEM ID: CG-WK1108-01 ｜ 綠手指入門｜塊根植物</div>
+            <h1 id="display-title">圓葉山烏龜 | 招財納福塊根微景觀</h1>
+            <div class="price-box" id="display-price">NT$ 980</div>
+            <div class="tagline-box" id="display-tagline">✦ 貓凝嚴選：渾圓質樸的塊根肚身宛如山林間靜臥的靈龜，頂端抽出翠綠圓潤如銅錢般的盾形小葉，象徵「富貴守財、福壽綿長」。極度耐旱免常澆水，搭配三本線赤玉土與手作粗陶盆，是都市書桌與窗台最討喜的療癒塊根。</div>
+            <div class="pet-banner">⚠️ 塊根含天然生物鹼，建議擺放於毛孩觸及不到之書架或窗台高處。</div>
+
+            <table class="spec-table">
+                <tr><td>品種學名</td><td id="file-species">圓葉山烏龜 (Stephania erecta)</td></tr>
+                <tr><td>規格狀態</td><td id="file-age">球徑約 4-6cm 穩根熟球</td></tr>
+                <tr><td>植株尺寸</td><td id="file-size">含盆高約 15-20 公分</td></tr>
+                <tr><td>搭配盆器</td><td id="file-pot">職人手作透氣粗陶盆（含三本線赤玉土＋鹿沼土顆粒介質）</td></tr>
+            </table>
+
+            <div class="btn-group">
+                <button class="btn-buy" onclick="addToCart('圓葉山烏龜 | 招財納福塊根微景觀', 980, 'https://cdn01.pinkoi.com/product/3THgAMJZ/0/1/640x530.jpg')">🌿 將這份綠意帶回家（加入購物車）</button>
+                <button class="btn-fav" onclick="addToFavorites('圓葉山烏龜 | 招財納福塊根微景觀', 980, 'https://cdn01.pinkoi.com/product/3THgAMJZ/0/1/640x530.jpg')">♡ 收藏</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="care-section">
+        <h2 style="margin:0; color:var(--brand-main); font-size:1.4rem;">🌿 職人與巧遇店長的日常養護指南</h2>
+        <div class="care-grid">
+            <div class="care-card"><h4>☀️ 光照環境</h4><p>喜愛明亮散射光或溫和半日照，適合擺放於公寓窗邊或書桌採光處，避免盛夏正午烈日直曬塊根。</p></div>
+            <div class="care-card"><h4>💧 澆水原則</h4><p>塊根肚身能儲存大量水分，極度耐旱；請待顆粒土完全乾透（約 10-14 天）再沿盆緣繞圈微澆，切忌積水。</p></div>
+            <div class="care-card"><h4>🌬️ 通風與介質</h4><p>保持環境空氣流通，搭配 Cat Gaze 預調的三本線硬質赤玉土與鹿沼土，能徹底預防悶根。</p></div>
+            <div class="care-card"><h4>✨ 四季保養訣竅</h4><p>冬季氣溫低於 15°C 時藤蔓黃葉休眠屬自然現象，休眠期僅需每月微量給水，春季回暖即會重新萌發翠綠圓葉。</p></div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container"><p>© 2026 Cat Gaze | 透過貓眼凝視，發掘植栽的靈魂</p></div>
+</footer>
+
+<div id="cart-overlay" onclick="toggleCart()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
+<div id="cart-drawer" style="position:fixed; top:0; right:-400px; width:350px; max-width:90vw; height:100%; background:white; z-index:1000; transition:0.4s; padding:20px; box-shadow:-5px 0 15px rgba(0,0,0,0.1); display:flex; flex-direction:column; box-sizing:border-box;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #7F916A; padding-bottom:10px;">
+        <h3 style="margin:0; color:#7F916A;">您的選植清單</h3>
+        <button onclick="toggleCart()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
+    </div>
+    <div id="cart-items-content" style="flex-grow:1; overflow-y:auto; padding:20px 0;"></div>
+    <div style="border-top:1px solid #eee; padding-top:20px;">
+        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; margin-bottom:20px;">
+            <span>總計金額</span>
+            <span id="cart-total-price" style="color:#d14900;">NT$ 0</span>
+        </div>
+        <button onclick="checkoutToLine()" style="width:100%; background:#7F916A; color:white; border:none; padding:15px; border-radius:30px; font-weight:bold; cursor:pointer;">
+            帶它們回家 (聯繫 LINE 結帳)
+        </button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="cart-system.js"></script>
+</body>
+</html>

@@ -96,64 +96,59 @@ try {
     cart = [];
 }
 
-// 預設商品庫備援
+// 預設商品庫備援（僅保留我們新製作上架的 8 款主力植栽與資材，舊版範本商品已全面下架）
 const DEFAULT_CATALOG_FALLBACK = {
-    'CG-LH001': {
-        id: 'CG-LH001', status: '既有基準', title: '小葉羅漢松 | 寵物友善長壽守護', price: 2200, image: 'luohan.jpg',
-        badge: '100% 寵物無毒', categories: ['pet-friendly', 'products-deciduous', 'index'], subCategoryLabel: '陽台喜光',
-        template: 'pet', url: 'luohan-detail.html',
-        petDetails: { light: '半日照 / 通風', water: '每週 2-3 次', safe: '100% 寵物無害', qiaoyu: '「這棵樹的葉子尖尖的，但我咬過之後發現一點也不好吃（而且沒毒），本店長批准它進駐客廳！」' }
-    },
-    'CG-FN001': {
-        id: 'CG-FN001', status: '既有基準', title: '銀脈鳳尾蕨 | 室內耐陰保濕首選', price: 980, image: 'fern.jpg',
-        badge: '100% 寵物無毒', categories: ['pet-friendly', 'products-deciduous', 'index'], subCategoryLabel: '耐陰室內',
-        template: 'pet', url: 'fern-detail.html',
-        petDetails: { light: '室內散射光 / 耐陰', water: '保持盆土微濕', safe: '100% 寵物無害', qiaoyu: '「冷氣房太乾了？這盆銀白色的蕨類能幫你的空間保濕，而且就算本喵不小心撥到葉子也完全安全無毒喵！」' }
-    },
     'CG-XD001': {
-        id: 'CG-XD001', status: '上架', title: '小豆樹 | 療癒羽葉微景觀', price: 1200, image: 'xiaodou.jpg',
+        id: 'CG-XD001', status: '上架', title: '小豆樹 | 療癒羽葉微景觀', price: 1200,
+        image: 'https://cdn01.pinkoi.com/product/2ZJjrS5f/0/1/640x530.jpg',
         badge: '療癒新品', categories: ['pet-friendly', 'products-deciduous', 'index', 'new-arrivals'], subCategoryLabel: '耐陰室內',
         template: 'pet', url: 'product.html?id=CG-XD001',
-        petDetails: { light: '明亮散射光 / 半日照', water: '表土微乾即澆透', safe: '含盆高約 20-25 公分', qiaoyu: '「這棵小豆樹跟本喵一樣作息超規律！太陽下山它的葉子就會合起來睡覺，放在書桌旁陪你工作超療癒喵～」' }
+        tagline: '✦ 小豆樹擁有輕盈細緻的羽狀複葉，清晨舒展、夜晚則會像進入夢鄉般輕輕閉合（睡眠運動），是極具生命互動感的案頭療癒系植栽。',
+        petDetails: {
+            desc: '小豆樹擁有輕盈細緻的羽狀複葉，清晨舒展、夜晚則會像進入夢鄉般輕輕閉合（睡眠運動），對貓狗完全無毒。',
+            light: '明亮散射光 / 半日照', water: '表土微乾即澆透', safe: '🐾 100% 寵物無害',
+            qiaoyu: '「這棵小豆樹跟本喵一樣作息超規律！太陽下山它的葉子就會合起來睡覺，放在書桌旁陪你工作超療癒喵～」'
+        }
     },
-    'CG-SB002': {
-        id: 'CG-SB002', status: '既有基準', title: '系魚川真柏 | 職人手作雲朵造型', price: 4500, image: 'shimpaku_main.jpg',
-        badge: '一物一拍', categories: ['products-deciduous', 'index', 'new-arrivals'], subCategoryLabel: '桌面山林',
-        template: 'bonsai', url: 'shimpaku.html',
-        tagline: '✦ 貓凝嚴選：葉質細緻，雲朵造型、樹性強健、極耐修剪',
-        files: { species: '系魚川真柏', age: '約 8 年', size: '含盆高約 22 公分', pot: '復古朱泥圓盆' }
+    'CG-WK1108-01': {
+        id: 'CG-WK1108-01', status: '上架', title: '圓葉山烏龜 | 招財納福塊根微景觀', price: 980,
+        image: 'https://cdn.store-assets.com/s/739826/f/9100003.png',
+        badge: '本週熱銷 Top 1', categories: ['products-caudex', 'index', 'new-arrivals'], subCategoryLabel: '塊根植物',
+        template: 'bonsai', url: 'product.html?id=CG-WK1108-01',
+        tagline: '✦ 貓凝嚴選：渾圓質樸的塊根肚身宛如靈龜，頂端抽出翠綠圓潤如銅錢般的盾形小葉，象徵「富貴守財、福壽綿長」，極度耐旱免常澆水。',
+        files: { species: '圓葉山烏龜 (Stephania erecta)', age: '球徑 4-6cm 穩根熟球', size: '含盆高約 15-20 公分', pot: '職人手作透氣粗陶盆（含三本線赤玉土）' }
     },
-    'CG-BP001': {
-        id: 'CG-BP001', status: '既有基準', title: '黑松 | 扭幹文人風', price: 1800, image: 'black_pine.jpg',
-        badge: '職人雕塑', categories: ['products-deciduous', 'index', 'new-arrivals'], subCategoryLabel: '桌面山林',
-        template: 'bonsai', url: 'black-pine.html',
-        tagline: '✦ 貓眼嚴選：蒼勁扭幹文人風，樹皮老態鱗片縱裂，居家窗台首選',
-        files: { species: '日本黑松', age: '約 8 年', size: '含盆高約 25 公分', pot: '復古紫砂圓盆' }
+    'CG-WK1108-02': {
+        id: 'CG-WK1108-02', status: '上架', title: '青蘋果竹芋 | 北歐銀綠寬葉・100%寵物無毒', price: 980,
+        image: 'http://jardinforestier.com.tw/cdn/shop/files/6__1E1_4_1000x1000_df922290-b45c-459d-83c3-cc70bfbe1025.png?v=1777082008',
+        badge: '100% 寵物無毒', categories: ['pet-friendly', 'products-deciduous', 'index', 'new-arrivals'], subCategoryLabel: '耐陰室內',
+        template: 'pet', url: 'product.html?id=CG-WK1108-02',
+        tagline: '✦ 圓潤寬大的扇形葉片交織銀白色羽狀條紋，經 ASPCA 認證對貓狗 100% 無毒安全，極耐室內散射光且能淨化甲醛。',
+        petDetails: {
+            desc: '圓潤寬大的扇形葉片交織銀白色羽狀條紋，經 ASPCA 認證對貓狗 100% 無毒安全，是都市無陽台養貓家庭的滿分綠植。',
+            light: '室內柔和散射光 / 耐陰', water: '表土微乾即澆透', safe: '🐾 100% 貓狗無毒安全',
+            qiaoyu: '「這盆大大的圓葉子摸起來超舒服，而且本喵認證 100% 無毒安全！放在客廳沙發旁也能長得超美喵～」'
+        }
     },
-    'CG-RM003': {
-        id: 'CG-RM003', status: '既有基準', title: '日本紅楓 | 季節色彩首選', price: 1200, image: 'red-maple.jpg',
-        badge: '季節限定', categories: ['products-deciduous', 'index', 'new-arrivals'], subCategoryLabel: '桌面山林',
-        template: 'bonsai', url: 'red-maple.html',
-        tagline: '✦ 貓眼嚴選：春季新芽火紅，適合居家陽台點綴',
-        files: { species: '日本紅楓', age: '約 2 年', size: '含盆高約 32 公分', pot: '造型陶盆' }
+    'CG-WK1108-03': {
+        id: 'CG-WK1108-03', status: '上架', title: '榔榆（錢榆）| 職人露根小品盆景・100%寵物無毒', price: 1380,
+        image: 'https://bs.plantnet.org/image/o/5e2e48898b70d0f1d7d95d2c8b3687bd5a100d0c',
+        badge: '職人雕塑', categories: ['pet-friendly', 'products-deciduous', 'index', 'new-arrivals'], subCategoryLabel: '陽台喜光',
+        template: 'bonsai', url: 'product.html?id=CG-WK1108-03',
+        tagline: '✦ 貓凝嚴選：榔榆俗稱「錢榆」，細密翠綠的小葉如層層綠雲，搭配蒼勁曲折的露根老幹，樹性強健且對貓狗完全無毒。',
+        files: { species: '榔榆 (Ulmus parvifolia)', age: '約 5 年露根老樁', size: '含盆高約 20-24 公分', pot: '日式古風長方釉盆（附青苔微景觀）' }
     },
-    'CG-TL001': {
-        id: 'CG-TL001', status: '上架', title: '日本製 職人級黑鋼剪定鋏', price: 1880, image: 'tool-1.jpg',
-        badge: '修剪工具', categories: ['tools'], subCategoryLabel: '修剪工具',
-        template: 'tool', url: 'product.html?id=CG-TL001',
-        tagline: '✦ 日本鍛造高碳黑鋼，刀口俐落不傷維管束，切口平整癒合快。'
-    },
-    'CG-TL002': {
-        id: 'CG-TL002', status: '上架', title: '三本線 赤玉土 (極硬質 - 5L)', price: 450, image: 'tool-2.jpg',
-        badge: '專業介質', categories: ['tools'], subCategoryLabel: '專業介質',
-        template: 'tool', url: 'product.html?id=CG-TL002',
-        tagline: '✦ 日本進口三本線極硬質赤玉土，排水透氣極佳、不易崩解粉化，徹底預防爛根。'
-    },
-    'CG-TL003': {
-        id: 'CG-TL003', status: '上架', title: '墨染手作 柴燒粗陶盆', price: 1200, image: 'tool-3.jpg',
-        badge: '職人盆器', categories: ['tools'], subCategoryLabel: '職人盆器',
-        template: 'tool', url: 'product.html?id=CG-TL003',
-        tagline: '✦ 高溫柴燒自然落灰肌理，富含透氣微孔隙，讓植物根系自由呼吸。'
+    'CG-WK1108-04': {
+        id: 'CG-WK1108-04', status: '上架', title: '日本竹柏 | 招財平安案頭綠植・100%寵物無毒', price: 680,
+        image: 'https://cdn01.pinkoi.com/product/isuen3Lm/0/3/640x530.jpg',
+        badge: '招財熱銷', categories: ['products-mini', 'index', 'new-arrivals'], subCategoryLabel: '桌面盆栽',
+        template: 'pet', url: 'product.html?id=CG-WK1108-04',
+        tagline: '✦ 日本竹柏又稱「日本艾草、發財樹」，象徵節節高升與招財納福，極耐室內散射光且對貓狗溫和無毒。',
+        petDetails: {
+            desc: '日本竹柏又稱「日本艾草、發財樹」，象徵節節高升與招財納福，極耐室內散射光且對貓狗溫和無毒。',
+            light: '室內明亮散射光 / 辦公桌', water: '表土微乾即澆透', safe: '🐾 100% 寵物無毒安全',
+            qiaoyu: '「這盆竹柏葉子油亮亮的，放在辦公桌幫你招財買罐罐給本喵～」'
+        }
     },
     'CG-TL004': {
         id: 'CG-TL004', status: '上架', title: '日本好康多 1號 長效緩釋基肥 (350g)', price: 185,
@@ -453,6 +448,7 @@ function findMatchingStaticCard(p) {
     const allCards = document.querySelectorAll('.product-card, .bonsai-card, .feature-item');
     for (let i = 0; i < allCards.length; i++) {
         const card = allCards[i];
+        if (card.getAttribute('data-legacy-hidden') === 'true' && p.status === '上架') continue;
         if (card.id && card.id.startsWith('cloud-prod-')) continue;
         if (card.closest('.categories-section')) continue;
         const heading = card.querySelector('.product-title, .card-title, h3, h2');
@@ -839,6 +835,15 @@ window.__onCatGazeSheetLoaded = function(response) {
 
     const wrongCardInCat = document.querySelector('.categories-section [id^="cloud-prod-"]');
     if (wrongCardInCat) wrongCardInCat.remove();
+
+    // 全面隱藏網頁內建的舊版靜態寫死商品卡片，讓官網 100% 只顯示雲端表單中設為「上架」的新商品
+    document.querySelectorAll('.product-card, .bonsai-card, .feature-item').forEach(card => {
+        if (card.closest('.categories-section')) return;
+        if (!card.id || !card.id.startsWith('cloud-prod-')) {
+            card.style.display = 'none';
+            card.setAttribute('data-legacy-hidden', 'true');
+        }
+    });
 
     rows.forEach((r) => {
         if (!r || !r.c) return;

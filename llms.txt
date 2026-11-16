@@ -1,0 +1,36 @@
+# 貓凝植栽 Cat Gaze
+
+> 專為台灣都市空間（公寓陽台、室內窗台、辦公室桌面）與養貓家庭打造的精選植栽品牌，主打 ASPCA 認證 100% 寵物無毒觀葉、小品盆景與高透氣顆粒介質塊根，並由 AI 店貓「巧遇店長」提供一對一線上養護與售後諮詢。
+
+## 品牌核心特色
+- **寵物友善嚴格把關**：明確標示 ASPCA 寵物無毒安全等級（🐾 100% 貓狗無毒安全 vs. ⚠️ 需避開毛孩觸及），解決養貓家庭想美化空間卻怕毛孩誤食中毒的痛點。
+- **都市空間適配與換盆升級**：全數選品皆針對台灣公寓散射光、冷氣房環境調校，預先更換三本線硬質赤玉土等高透氣疏水介質，徹底改善新手買 3 吋膠盆回家容易悶根爛葉的問題。
+- **AI 巧遇店長即時服務**：結合 LINE 官方帳號（@201zilzp）提供買前空間推薦、購物車一鍵帶單結帳與買後植物看診服務。
+
+## 網站五大主題館別
+- [首頁與巧遇店長推薦](https://change-tw.github.io/cat-gaze/): 精選都市熱銷植栽與品牌故事導覽。
+- [寵物友善專區](https://change-tw.github.io/cat-gaze/pet-friendly.html): 經 ASPCA 認證對貓狗 100% 無毒安全的室內耐陰與陽台植物。
+- [辦公室療癒類](https://change-tw.github.io/cat-gaze/products-deciduous.html): 適合書桌、辦公桌與茶席的桌面山林小品盆景與減壓觀葉。
+- [風水招財、桃花類](https://change-tw.github.io/cat-gaze/products-mini.html): 涵蓋大型落地（琴葉榕）、桌面盆栽（日本竹柏、馬拉巴栗）與珍稀斑葉（白油畫竹芋、柏金蔓綠絨）。
+- [綠手指入門館](https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/products-caudex.html): 耐旱免常澆水的塊根植物（圓葉山烏龜、酒瓶蘭、阿拉伯沙漠玫瑰）與室內多肉（水晶姬玉露、熊童子）。
+- [養護資材與工具館](https://change-tw.github.io/cat-gaze/tools.html): 日本製近正芽切剪、古流盆景修枝剪、日本好康多緩釋肥、植萃苦楝油噴霧與日式極細長嘴澆水壺。
+
+## 主力精選商品目錄
+- **小豆樹（海南菜豆樹）** (NT$ 1,200) — 寵物 100% 無毒安全、耐陰室內招財桌面植物：[商品頁](https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/product.html%3Fid%3DCG-XD001)
+- **青蘋果竹芋** (NT$ 980) — 寵物 100% 無毒安全、寬圓翠綠淨化空氣觀葉：[商品頁](https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/product.html%3Fid%3DCG-WK1108-02)
+- **海龜串椒草** (NT$ 580) — 寵物 100% 無毒安全、耐旱垂吊龜甲紋小葉：[商品頁](https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/product.html%3Fid%3DCG-SOT01)
+- **皺葉山蘇（波浪鳥巢蕨）** (NT$ 580) — 寵物 100% 無毒安全、耐冷氣房且不掉碎葉：[商品頁](https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/product.html%3Fid%3DCG-AN001)
+- **馬拉巴栗（五辮編織發財樹）** (NT$ 780) — 寵物 100% 無毒安全、少數對貓狗無毒的經典招財樹：[商品頁](https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/product.html%3Fid%3DCG-PA001)
+- **白油畫竹芋** (NT$ 980) — 寵物 100% 無毒安全、珍稀莫內水彩風白斑觀葉：[商品頁](https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/product.html%3Fid%3DCG-CFW01)
+- **酒瓶蘭（實生圓肚塊根）** (NT$ 880) — 寵物 100% 無毒安全、罕見無毒耐旱塊根植物：[商品頁](https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/product.html%3Fid%3DCG-PP001)
+- **水晶姬玉露** (NT$ 680) — 寵物 100% 無毒安全、極耐室內窗台散射光之透光多肉：[商品頁](https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/product.html%3Fid%3DCG-HC001)
+- **日本竹柏** (NT$ 680) — 風水招財桌面盆栽、四季常青辟邪招財：[商品頁](https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/product.html%3Fid%3DCG-WK1108-04)
+- **琴葉榕（歐風極簡霧面落地盆）** (NT$ 1,580) — 大型落地聚財觀葉（高幹設計避開毛孩誤觸）：[商品頁](https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/product.html%3Fid%3DCG-FL001)
+- **柏金蔓綠絨（手作水泥盆）** (NT$ 880) — 珍稀鉑金拉線斑葉（需放高架避開毛孩啃咬）：[商品頁](https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/product.html%3Fid%3DCG-BK001)
+- **榔榆（小品盆景）** (NT$ 1,380) — 陽台喜光小品盆景、貓狗無毒：[商品頁](https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/product.html%3Fid%3DCG-WK1108-03)
+- **福建茶（四季花果老樁盆景）** (NT$ 1,280) — 辦公室桌面山林、四季開白花結紅果：[商品頁](https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/product.html%3Fid%3DCG-CM001)
+
+## 購買與聯繫方式
+- 官網網址：https://change-tw.github.io/cat-gaze/
+- LINE 官方帳號（巧遇店長一對一諮詢與訂購）：https://www.google.com/search?q=https://line.me/R/ti/p/%40201zilzp （ID：`@201zilzp`）
+- 服務地區：台灣（台北市、新北市與全台宅配寄送）

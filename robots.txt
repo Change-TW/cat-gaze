@@ -1,7 +1,6 @@
 User-agent: *
 Allow: /
-Disallow: /admin.html
-Disallow: /orders.html
-Disallow: /favorites.html
+Disallow: /cat-gaze/admin.html
+Disallow: /cat-gaze/member.html
 
-Sitemap: https://change-tw.github.io/cat-gaze/sitemap.xml
+Sitemap: https://www.google.com/search?q=https://change-tw.github.io/cat-gaze/sitemap.xml

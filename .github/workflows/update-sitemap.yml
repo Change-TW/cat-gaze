@@ -1,0 +1,129 @@
+name: Auto Update Sitemap
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**.html"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-sitemap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate sitemap.xml
+        run: |
+          python3 - << 'EOF'
+          import datetime
+          import glob
+          import os
+          import subprocess
+          import xml.etree.ElementTree as ET
+          from xml.sax.saxutils import escape
+
+          BASE_URL = "https://change-tw.github.io/cat-gaze/"
+          EXCLUDE_FILES = {"404.html", "admin.html", "product.html", "cart.html", "checkout.html", "member.html", "login.html"}
+          EXCLUDE_PREFIXES = ("google", "test-", "draft-")
+
+          def get_lastmod(filepath):
+              try:
+                  out = subprocess.check_output(
+                      ["git", "log", "-1", "--format=%cs", "--", filepath],
+                      stderr=subprocess.DEVNULL,
+                      text=True,
+                  ).strip()
+                  if out:
+                      return out
+              except Exception:
+                  pass
+              return datetime.date.today().isoformat()
+
+          def get_meta(filename):
+              if filename == "index.html":
+                  return BASE_URL, "weekly", "1.0"
+              url = f"{BASE_URL}{filename}"
+              if filename in ("knowledge.html", "pet-friendly.html"):
+                  return url, "weekly", "0.9"
+              if filename.startswith("article-"):
+                  return url, "monthly", "0.8"
+              if filename.startswith("products-") or filename == "tools.html":
+                  return url, "weekly", "0.8"
+              return url, "monthly", "0.6"
+
+          # 保留既有的動態單品頁（product.html?id=...）避免自動更新時被覆蓋掉
+          preserved_products = []
+          if os.path.exists("sitemap.xml"):
+              try:
+                  tree = ET.parse("sitemap.xml")
+                  ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+                  for url_el in tree.findall("sm:url", ns):
+                      loc_el = url_el.find("sm:loc", ns)
+                      if loc_el is not None and loc_el.text and "product.html?id=" in loc_el.text:
+                          lastmod_el = url_el.find("sm:lastmod", ns)
+                          lastmod = lastmod_el.text.strip() if (lastmod_el is not None and lastmod_el.text) else datetime.date.today().isoformat()
+                          preserved_products.append((loc_el.text.strip(), lastmod, "weekly", "0.7"))
+              except Exception:
+                  pass
+
+          entries = []
+          html_files = sorted(glob.glob("*.html"))
+
+          # 確保首頁排在最前面
+          if "index.html" in html_files:
+              html_files.remove("index.html")
+              html_files.insert(0, "index.html")
+
+          for f in html_files:
+              if f in EXCLUDE_FILES or f.startswith(EXCLUDE_PREFIXES):
+                  continue
+              url, changefreq, priority = get_meta(f)
+              entries.append((url, get_lastmod(f), changefreq, priority))
+
+          # 附加保留的單品頁（去除重複）
+          seen = {e[0] for e in entries}
+          for item in preserved_products:
+              if item[0] not in seen:
+                  entries.append(item)
+                  seen.add(item[0])
+
+          lines = [
+              '<?xml version="1.0" encoding="UTF-8"?>',
+              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+          ]
+          for loc, lastmod, changefreq, priority in entries:
+              lines.extend([
+                  "  <url>",
+                  f"    <loc>{escape(loc)}</loc>",
+                  f"    <lastmod>{escape(lastmod)}</lastmod>",
+                  f"    <changefreq>{changefreq}</changefreq>",
+                  f"    <priority>{priority}</priority>",
+                  "  </url>",
+              ])
+          lines.append("</urlset>")
+
+          with open("sitemap.xml", "w", encoding="utf-8", newline="\n") as fp:
+              fp.write("\n".join(lines) + "\n")
+
+          print(f"Generated sitemap.xml with {len(entries)} URLs.")
+          EOF
+
+      - name: Commit and push sitemap.xml if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet sitemap.xml; then
+            echo "No changes to sitemap.xml"
+          else
+            git add sitemap.xml
+            git commit -m "chore: auto-update sitemap.xml [skip ci]"
+            git push
+          fi

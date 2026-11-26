@@ -1,57 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- 首頁 -->
   <url>
     <loc>https://change-tw.github.io/cat-gaze/</loc>
-    <lastmod>2026-11-26</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-
-  <!-- 知識中心總覽 -->
   <url>
-    <loc>https://change-tw.github.io/cat-gaze/knowledge.html</loc>
-    <lastmod>2026-11-26</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- 五大商品主分類頁 -->
-  <url>
-    <loc>https://change-tw.github.io/cat-gaze/pet-friendly.html</loc>
-    <lastmod>2026-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://change-tw.github.io/cat-gaze/about.html</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://change-tw.github.io/cat-gaze/products-deciduous.html</loc>
-    <lastmod>2026-11-26</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://change-tw.github.io/cat-gaze/article-interview.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://change-tw.github.io/cat-gaze/products-mini.html</loc>
-    <lastmod>2026-11-26</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://change-tw.github.io/cat-gaze/article-pet-safe.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://change-tw.github.io/cat-gaze/products-caudex.html</loc>
-    <lastmod>2026-11-26</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://change-tw.github.io/cat-gaze/article-pine-bud.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://change-tw.github.io/cat-gaze/tools.html</loc>
-    <lastmod>2026-11-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 知識中心已上架文章（8 篇） -->
   <url>
     <loc>https://change-tw.github.io/cat-gaze/article-pot-matching.html</loc>
     <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/article-soil-mix.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/article-soul-bonsai.html</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/article-watering.html</loc>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -62,43 +61,125 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://change-tw.github.io/cat-gaze/article-soil-mix.html</loc>
-    <lastmod>2026-01-28</lastmod>
+    <loc>https://change-tw.github.io/cat-gaze/black-pine.html</loc>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://change-tw.github.io/cat-gaze/article-pet-safe.html</loc>
-    <lastmod>2026-01-26</lastmod>
+    <loc>https://change-tw.github.io/cat-gaze/categories.html</loc>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/contact.html</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/favorites.html</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/fern-detail.html</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/knowledge.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://change-tw.github.io/cat-gaze/article-soul-bonsai.html</loc>
-    <lastmod>2026-01-10</lastmod>
+    <loc>https://change-tw.github.io/cat-gaze/luohan-detail.html</loc>
+    <lastmod>2026-10-30</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/new-arrivals.html</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/orders.html</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/pet-friendly.html</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/podocarpus.html</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/products-caudex.html</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://change-tw.github.io/cat-gaze/article-watering.html</loc>
-    <lastmod>2026-01-05</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://change-tw.github.io/cat-gaze/products-deciduous.html</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://change-tw.github.io/cat-gaze/article-interview.html</loc>
-    <lastmod>2025-12-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://change-tw.github.io/cat-gaze/article-pine-bud.html</loc>
-    <lastmod>2025-12-15</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://change-tw.github.io/cat-gaze/products-mini.html</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- 目前「上架」中商品單品頁（8 件） -->
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/red-maple.html</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/shimpaku.html</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/tools.html</loc>
+    <lastmod>2026-10-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/weekly-top1-stephania.html</loc>
+    <lastmod>2026-11-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/weekly-top2-calathea-orbifolia.html</loc>
+    <lastmod>2026-11-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://change-tw.github.io/cat-gaze/weekly-top3-chinese-elm-bonsai.html</loc>
+    <lastmod>2026-11-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
   <url>
     <loc>https://change-tw.github.io/cat-gaze/product.html?id=CG-XD001</loc>
     <lastmod>2026-11-26</lastmod>
@@ -133,18 +214,18 @@
     <loc>https://change-tw.github.io/cat-gaze/product.html?id=CG-TL004</loc>
     <lastmod>2026-11-26</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://change-tw.github.io/cat-gaze/product.html?id=CG-TL005</loc>
     <lastmod>2026-11-26</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://change-tw.github.io/cat-gaze/product.html?id=CG-TL006</loc>
     <lastmod>2026-11-26</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
 </urlset>
